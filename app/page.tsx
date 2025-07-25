@@ -5,6 +5,7 @@ import WindSpeedCard from "@/components/WindSpeedCard";
 import ParameterCards from "@/components/ParameterCards";
 import LightningCard from "@/components/LightningCard";
 import TemperatureCard from "@/components/TemperatureCard";
+import ForecastCard from "@/components/ForecastCard";
 import { LocationWeatherData } from "@/lib/types";
 
 export default async function Home() {
@@ -37,7 +38,10 @@ export default async function Home() {
             Object.keys(oceanSummary).length > 0;
 
           return (
-            <li key={index} className="p-6 border rounded-lg shadow-lg bg-white">
+            <li
+              key={index}
+              className="p-6 border rounded-lg shadow-lg bg-white"
+            >
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h2 className="text-2xl font-semibold capitalize">
@@ -67,14 +71,16 @@ export default async function Home() {
                 </div>
               )}
 
+              <ForecastCard forecastData={data.forecastData} />
+
               <LightningCard lightningData={data.lightningData} />
 
               <TemperatureCard temperatureData={data.temperatureData} />
 
-            <WindSpeedCard 
-              windspeedData={data.windspeedData} 
-              locationCoords={data.coordinates}
-            />
+              <WindSpeedCard
+                windspeedData={data.windspeedData}
+                locationCoords={data.coordinates}
+              />
 
               <ParameterCards
                 title="🌤️ Meteorological Data"

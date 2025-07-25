@@ -85,13 +85,29 @@ export const wetherApis = {
         };
       },
     },
-    radar: {
-      name: "DMI Radar",
-      url: "https://dmigw.govcloud.dk/v1/radardata",
-      apiKey: process.env.NEXT_PUBLIC_RADAR_API_KEY,
+    // radar: {
+    //   name: "DMI Radar",
+    //   url: "https://dmigw.govcloud.dk/v1/radardata",
+    //   apiKey: process.env.NEXT_PUBLIC_RADAR_API_KEY,
+    //   getHeaders: () => {
+    //     return {
+    //       "X-Gravitee-Api-Key": wetherApis.dmi.radar.apiKey || "",
+    //       "Content-Type": "application/json",
+    //     };
+    //   },
+    // },
+    forecast: {
+      name: "DMI Forecast",
+      url: "https://dmigw.govcloud.dk/v1/forecastedr",
+      apiKey: "e837091e-6812-4c8f-9f3f-11835961e91d",
+      getPositionUrl: (lat: number, lon: number, parameters: string[]) => {
+        const coords = `POINT(${lon}%20${lat})`;
+        const parameterNames = parameters.join(",");
+        return `${wetherApis.dmi.forecast.url}/collections/dkss_nsbs/position?coords=${coords}&parameter-name=${parameterNames}`;
+      },
       getHeaders: () => {
         return {
-          "X-Gravitee-Api-Key": wetherApis.dmi.radar.apiKey || "",
+          "X-Gravitee-Api-Key": wetherApis.dmi.forecast.apiKey || "",
           "Content-Type": "application/json",
         };
       },
