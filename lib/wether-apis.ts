@@ -11,8 +11,8 @@ export const wetherApis = {
       },
       getHeaders: () => {
         return {
-          'X-Gravitee-Api-Key': wetherApis.dmi.ocean.apiKey || '',
-          'Content-Type': 'application/json',
+          "X-Gravitee-Api-Key": wetherApis.dmi.ocean.apiKey || "",
+          "Content-Type": "application/json",
         };
       },
     },
@@ -20,18 +20,22 @@ export const wetherApis = {
       name: "DMI Meteorological",
       url: "https://dmigw.govcloud.dk/v2/metObs",
       apiKey: process.env.NEXT_PUBLIC_MET_OBS_API_KEY,
-      getObservationsUrl: (parameterId?: string, bbox?: string, limit?: number) => {
-        let url = `${wetherApis.dmi.meteo.url}/collections/observation/items`;
+      getObservationsUrl: (
+        parameterId?: string,
+        bbox?: string,
+        limit?: number
+      ) => {
+        const url = `${wetherApis.dmi.meteo.url}/collections/observation/items`;
         const params = [];
         if (parameterId) params.push(`parameterId=${parameterId}`);
         if (bbox) params.push(`bbox=${bbox}`);
         if (limit) params.push(`limit=${limit}`);
-        return params.length > 0 ? `${url}?${params.join('&')}` : url;
+        return params.length > 0 ? `${url}?${params.join("&")}` : url;
       },
       getHeaders: () => {
         return {
-          'X-Gravitee-Api-Key': wetherApis.dmi.meteo.apiKey || '',
-          'Content-Type': 'application/json',
+          "X-Gravitee-Api-Key": wetherApis.dmi.meteo.apiKey || "",
+          "Content-Type": "application/json",
         };
       },
     },
@@ -39,18 +43,22 @@ export const wetherApis = {
       name: "DMI Lightning",
       url: "https://dmigw.govcloud.dk/v2/lightningdata",
       apiKey: process.env.NEXT_PUBLIC_LIGHTNING_API_KEY,
-      getObservationsUrl: (bbox?: string, datetime?: string, limit?: number) => {
-        let url = `${wetherApis.dmi.lightning.url}/collections/observation/items`;
+      getObservationsUrl: (
+        bbox?: string,
+        datetime?: string,
+        limit?: number
+      ) => {
+        const url = `${wetherApis.dmi.lightning.url}/collections/observation/items`;
         const params = [];
         if (bbox) params.push(`bbox=${bbox}`);
         if (datetime) params.push(`datetime=${datetime}`);
         if (limit) params.push(`limit=${limit}`);
-        return params.length > 0 ? `${url}?${params.join('&')}` : url;
+        return params.length > 0 ? `${url}?${params.join("&")}` : url;
       },
       getHeaders: () => {
         return {
-          'X-Gravitee-Api-Key': wetherApis.dmi.lightning.apiKey || '',
-          'Content-Type': 'application/json',
+          "X-Gravitee-Api-Key": wetherApis.dmi.lightning.apiKey || "",
+          "Content-Type": "application/json",
         };
       },
     },
@@ -58,18 +66,22 @@ export const wetherApis = {
       name: "DMI Climate",
       url: "https://dmigw.govcloud.dk/v2/climateData",
       apiKey: process.env.NEXT_PUBLIC_CLIMATE_API_KEY,
-      getObservationsUrl: (parameterId?: string, stationId?: string, datetime?: string) => {
-        let url = `${wetherApis.dmi.climate.url}/collections/observation/items`;
+      getObservationsUrl: (
+        parameterId?: string,
+        stationId?: string,
+        datetime?: string
+      ) => {
+        const url = `${wetherApis.dmi.climate.url}/collections/observation/items`;
         const params = [];
         if (parameterId) params.push(`parameterId=${parameterId}`);
         if (stationId) params.push(`stationId=${stationId}`);
         if (datetime) params.push(`datetime=${datetime}`);
-        return params.length > 0 ? `${url}?${params.join('&')}` : url;
+        return params.length > 0 ? `${url}?${params.join("&")}` : url;
       },
       getHeaders: () => {
         return {
-          'X-Gravitee-Api-Key': wetherApis.dmi.climate.apiKey || '',
-          'Content-Type': 'application/json',
+          "X-Gravitee-Api-Key": wetherApis.dmi.climate.apiKey || "",
+          "Content-Type": "application/json",
         };
       },
     },
@@ -79,8 +91,8 @@ export const wetherApis = {
       apiKey: process.env.NEXT_PUBLIC_RADAR_API_KEY,
       getHeaders: () => {
         return {
-          'X-Gravitee-Api-Key': wetherApis.dmi.radar.apiKey || '',
-          'Content-Type': 'application/json',
+          "X-Gravitee-Api-Key": wetherApis.dmi.radar.apiKey || "",
+          "Content-Type": "application/json",
         };
       },
     },
