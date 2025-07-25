@@ -1,5 +1,34 @@
+// Forecast data interfaces
+interface ForecastDomain {
+  axes: {
+    t: {
+      values: string[];
+    };
+  };
+}
+
+interface ForecastRanges {
+  'wind-u'?: {
+    values: (number | null)[];
+  };
+  'wind-v'?: {
+    values: (number | null)[];
+  };
+  'water-temperature'?: {
+    values: (number | null)[];
+  };
+  'sea-mean-deviation'?: {
+    values: (number | null)[];
+  };
+}
+
+interface ForecastData {
+  domain?: ForecastDomain;
+  ranges?: ForecastRanges;
+}
+
 interface ForecastCardProps {
-  forecastData: any;
+  forecastData: ForecastData | null;
 }
 
 interface ForecastPoint {
@@ -27,7 +56,27 @@ function getWindDirectionArrow(degrees: number): string {
   return directions[index];
 }
 
-function processTimeSeriesData(forecastData: any): ForecastPoint[] {
+function getWindDirectionName(degrees: number): string {
+  const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+  const index = Math.round(degrees / 45) % 8;
+  return directions[index];
+}
+
+function getWindSpeedColor(speed: number): string {
+  if (speed >= 15) return "text-red-600 bg-red-50";
+  if (speed >= 10) return "text-orange-600 bg-orange-50";
+  if (speed >= 5) return "text-blue-600 bg-blue-50";
+  return "text-green-600 bg-green-50";
+}
+
+function getWindSpeedDescription(speed: number): string {
+  if (speed >= 15) return "Strong";
+  if (speed >= 10) return "Fresh";
+  if (speed >= 5) return "Moderate";
+  return "Light";
+}
+
+function processTimeSeriesData(forecastData: ForecastData | null): ForecastPoint[] {
   if (!forecastData?.domain?.axes?.t?.values || !forecastData?.ranges) {
     return [];
   }
@@ -52,7 +101,7 @@ function processTimeSeriesData(forecastData: any): ForecastPoint[] {
         seaLevel: seaLevel[index] || 0,
       };
     })
-    .filter((point) => point.windSpeed > 0); // Filter out null/invalid data points
+    .filter((point: ForecastPoint) => point.windSpeed > 0); // Filter out null/invalid data points
 }
 
 export default function ForecastCard({ forecastData }: ForecastCardProps) {
@@ -108,14 +157,14 @@ export default function ForecastCard({ forecastData }: ForecastCardProps) {
     next24Hours.reduce((sum, p) => sum + p.waterTemp, 0) / next24Hours.length;
 
   return (
-    <div className="p-6 rounded-lg mb-6 border bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
-      <h3 className="text-xl font-bold mb-4 text-blue-800">
+    <div className="p-6 rounded-lg mb-6 border bg-gradient-to-r from-cyan-50 to-indigo-50 border-cyan-200 shadow-xl">
+      <h3 className="text-2xl font-bold mb-6 text-cyan-900">
         🔮 Weather Forecast
       </h3>
 
-      <div className="space-y-4">
+      <div className="space-y-6">
         {/* Current forecast summary */}
-        <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded">
+        <div className="bg-cyan-100 border border-cyan-300 text-cyan-800 px-6 py-4 rounded-md">
           <strong>📊 Forecast Available:</strong> {forecastPoints.length} hourly
           forecasts covering the next {Math.ceil(forecastPoints.length / 24)}{" "}
           days.
@@ -123,32 +172,36 @@ export default function ForecastCard({ forecastData }: ForecastCardProps) {
 
         {/* Current conditions */}
         {currentConditions && (
-          <div className="bg-white p-4 rounded-lg shadow">
-            <h4 className="font-semibold text-blue-800 mb-2">
+          <div className="p-6 rounded-lg shadow-lg border-l-4 border-cyan-500">
+            <h4 className="font-semibold text-cyan-800 text-lg mb-4">
               🌊 Current Forecast
             </h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-base">
               <div>
-                <p className="text-gray-600">Wind Speed</p>
-                <p className="font-bold">
+                <p className="text-gray-700">Wind Speed</p>
+                <p className={getWindSpeedColor(currentConditions.windSpeed)}>
                   {currentConditions.windSpeed.toFixed(1)} m/s
+                  <span className="font-light">
+                    {getWindSpeedDescription(currentConditions.windSpeed)}
+                  </span>
                 </p>
               </div>
               <div>
-                <p className="text-gray-600">Wind Direction</p>
+                <p className="text-gray-700">Wind Direction</p>
                 <p className="font-bold">
+                  {getWindDirectionName(currentConditions.windDirection)}{" "}
                   {getWindDirectionArrow(currentConditions.windDirection)}{" "}
                   {currentConditions.windDirection.toFixed(0)}°
                 </p>
               </div>
               <div>
-                <p className="text-gray-600">Water Temp</p>
+                <p className="text-gray-700">Water Temp</p>
                 <p className="font-bold">
                   {currentConditions.waterTemp.toFixed(1)}°C
                 </p>
               </div>
               <div>
-                <p className="text-gray-600">Sea Level</p>
+                <p className="text-gray-700">Sea Level</p>
                 <p className="font-bold">
                   {(currentConditions.seaLevel * 100).toFixed(0)} cm
                 </p>
@@ -158,42 +211,42 @@ export default function ForecastCard({ forecastData }: ForecastCardProps) {
         )}
 
         {/* 24-hour summary */}
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h4 className="font-semibold text-blue-800 mb-2">
+        <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-cyan-500">
+          <h4 className="font-semibold text-cyan-800 text-lg mb-4">
             📈 Next 24 Hours Summary
           </h4>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-base">
             <div>
-              <p className="text-gray-600">Max Wind Speed</p>
+              <p className="text-gray-700">Max Wind Speed</p>
               <p className="font-bold">{maxWindNext24h.toFixed(1)} m/s</p>
             </div>
             <div>
-              <p className="text-gray-600">Avg Water Temp</p>
+              <p className="text-gray-700">Avg Water Temp</p>
               <p className="font-bold">{avgWaterTemp.toFixed(1)}°C</p>
             </div>
             <div>
-              <p className="text-gray-600">Forecast Points</p>
+              <p className="text-gray-700">Forecast Points</p>
               <p className="font-bold">{next24Hours.length}</p>
             </div>
           </div>
         </div>
 
         {/* Next 24 hours detailed */}
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h4 className="font-semibold text-blue-800 mb-2">
+        <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-cyan-500">
+          <h4 className="font-semibold text-cyan-800 text-lg mb-4">
             🕐 Next 24 Hours (Every 3 Hours)
           </h4>
           <div className="overflow-x-auto">
-            <div className="grid grid-cols-8 gap-2 text-xs min-w-max">
+            <div className="grid grid-cols-8 gap-2 text-sm min-w-max">
               {next24Hours
                 .filter((_, index) => index % 3 === 0)
                 .slice(0, 8)
                 .map((point, index) => (
                   <div
                     key={index}
-                    className="text-center p-2 bg-gray-50 rounded"
+                    className="flex flex-col justify-center text-center p-3 rounded bg-cyan-50 border border-cyan-200"
                   >
-                    <div className="font-medium text-gray-600">
+                    <div className="font-medium text-cyan-700">
                       {new Date(point.time).toLocaleTimeString("en-DK", {
                         hour: "2-digit",
                         minute: "2-digit",
@@ -205,7 +258,7 @@ export default function ForecastCard({ forecastData }: ForecastCardProps) {
                     <div className="font-bold">
                       {point.windSpeed.toFixed(1)} m/s
                     </div>
-                    <div className="text-gray-500">
+                    <div className="text-cyan-600">
                       {point.waterTemp.toFixed(1)}°C
                     </div>
                   </div>
@@ -215,9 +268,11 @@ export default function ForecastCard({ forecastData }: ForecastCardProps) {
         </div>
 
         {/* 5-day outlook */}
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h4 className="font-semibold text-blue-800 mb-2">📅 5-Day Outlook</h4>
-          <div className="grid grid-cols-1 gap-2 text-sm">
+        <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-cyan-500">
+          <h4 className="font-semibold text-cyan-800 text-lg mb-4">
+            📅 5-Day Outlook
+          </h4>
+          <div className="grid grid-cols-1 gap-4 text-base">
             {next5Days.slice(0, 5).map((point, index) => {
               const date = new Date(point.time);
               const dayName = date.toLocaleDateString("en-DK", {
@@ -231,13 +286,13 @@ export default function ForecastCard({ forecastData }: ForecastCardProps) {
               return (
                 <div
                   key={index}
-                  className="flex justify-between items-center p-2 bg-gray-50 rounded"
+                  className="flex justify-between items-center p-3 bg-cyan-50 rounded-md border border-cyan-200"
                 >
                   <div className="flex-1">
                     <div className="font-medium">
                       {dayName}, {dateStr}
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-gray-600">
                       {date.toLocaleTimeString("en-DK", {
                         hour: "2-digit",
                         minute: "2-digit",
@@ -257,7 +312,7 @@ export default function ForecastCard({ forecastData }: ForecastCardProps) {
                       <div className="font-medium">
                         {point.waterTemp.toFixed(1)}°C
                       </div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-gray-600">
                         {(point.seaLevel * 100).toFixed(0)} cm
                       </div>
                     </div>
@@ -269,9 +324,9 @@ export default function ForecastCard({ forecastData }: ForecastCardProps) {
         </div>
 
         {/* Information about forecast data */}
-        <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded text-sm">
+        <div className="bg-yellow-100 border border-yellow-300 text-yellow-900 px-5 py-4 rounded-md text-base">
           <strong>ℹ️ About Forecast Data:</strong> This forecast data comes from
-          DMI's DKSS North Sea Baltic Sea model, providing hourly predictions
+          DMI&apos;s DKSS North Sea Baltic Sea model, providing hourly predictions
           for wind conditions, water temperature, and sea level. Perfect for
           planning your windsurfing sessions in advance!
         </div>

@@ -16,14 +16,14 @@ export default function ParameterCards({
 
   const colorClasses = {
     blue: {
-      bg: "bg-blue-50",
-      border: "border-blue-200",
+      bg: "bg-gradient-to-r from-blue-50 to-cyan-50",
+      border: "border-blue-500",
       text: "text-blue-800",
       value: "text-blue-600",
     },
     yellow: {
-      bg: "bg-yellow-50",
-      border: "border-yellow-200",
+      bg: "bg-gradient-to-r from-yellow-50 to-amber-50",
+      border: "border-yellow-500",
       text: "text-yellow-800",
       value: "text-yellow-600",
     },
@@ -32,25 +32,27 @@ export default function ParameterCards({
   const colors = colorClasses[colorScheme];
 
   return (
-    <div className="mb-6">
-      <h3 className="text-lg font-medium mb-3">{title}</h3>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="mb-8">
+      <h3 className="text-2xl font-bold mb-6 text-gray-800">{title}</h3>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {Object.entries(parameters).map(([paramId, summary]) => (
           <div
             key={paramId}
-            className={`${colors.bg} p-4 rounded-lg border ${colors.border}`}
+            className={`${colors.bg} p-6 rounded-2xl border-l-4 ${colors.border} shadow-lg hover:shadow-xl transition-all duration-300`}
           >
-            <h4 className={`font-semibold ${colors.text}`}>
+            <h4 className={`font-semibold text-lg ${colors.text} mb-3`}>
               {getParameterDisplayName(paramId)}
             </h4>
-            <div className={`text-2xl font-bold ${colors.value}`}>
+            <div className={`text-3xl font-bold ${colors.value} mb-4`}>
               {summary.latestValue} {getParameterUnit(paramId)}
             </div>
-            <div className="text-xs text-gray-600 mt-1">
-              📊 {summary.count} observations
-            </div>
-            <div className="text-xs text-gray-600">
-              🕒 {new Date(summary.latestTime).toLocaleString()}
+            <div className="space-y-1">
+              <div className="text-xs text-gray-600">
+                📊 {summary.count} observations
+              </div>
+              <div className="text-xs text-gray-600">
+                🕒 {new Date(summary.latestTime).toLocaleString()}
+              </div>
             </div>
           </div>
         ))}

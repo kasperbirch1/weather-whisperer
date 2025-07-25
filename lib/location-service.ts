@@ -19,7 +19,7 @@ export async function fetchLocationData(
     type: "FeatureCollection",
     features: [],
   };
-  let forecastData: any = null;
+  let forecastData: Record<string, unknown> | null = null;
   let error: string | undefined;
 
   // Fetch all data in parallel for better performance

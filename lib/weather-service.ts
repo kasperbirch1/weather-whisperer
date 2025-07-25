@@ -110,7 +110,7 @@ async function tryForecastCollection(
   lon: number,
   parameters: string[],
   headers: Record<string, string>
-): Promise<any> {
+): Promise<Record<string, unknown> | null> {
   const coords = `POINT(${lon}%20${lat})`;
   const parameterNames = parameters.join(",");
   const url = `${wetherApis.dmi.forecast.url}/collections/${collection}/position?coords=${coords}&parameter-name=${parameterNames}`;
@@ -129,10 +129,17 @@ async function tryForecastCollection(
     // Check if the data contains valid (non-null) values
     const hasValidData =
       data.ranges &&
-      Object.values(data.ranges).some(
-        (range: any) =>
-          range.values && range.values.some((value: any) => value !== null)
-      );
+      Object.values(data.ranges).some((range: unknown) => {
+        if (typeof range === "object" && range !== null) {
+          const rangeObj = range as Record<string, unknown>;
+          return (
+            rangeObj.values &&
+            Array.isArray(rangeObj.values) &&
+            rangeObj.values.some((value: unknown) => value !== null)
+          );
+        }
+        return false;
+      });
 
     if (hasValidData) {
       console.log(`Found valid forecast data in ${collection} collection`);
@@ -152,7 +159,7 @@ async function tryForecastCollection(
 export async function fetchForecastData(
   lat: number,
   lon: number
-): Promise<any> {
+): Promise<Record<string, unknown> | null> {
   try {
     // Fetch wind and ocean forecast parameters most relevant to windsurfers
     const parameters = [

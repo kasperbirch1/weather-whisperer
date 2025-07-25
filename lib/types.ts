@@ -35,6 +35,6 @@ export interface LocationWeatherData {
   meteoData: WeatherData;
   lightningData: WeatherData;
   temperatureData: WeatherData;
-  forecastData: any; // Forecast data has a different structure (CoverageJSON)
+  forecastData: Record<string, unknown> | null; // Forecast data has a different structure (CoverageJSON)
   error?: string;
 }
