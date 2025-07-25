@@ -2,9 +2,10 @@ import WeatherDataSection from "@/components/WeatherDataSection";
 import DMITempCard from "@/components/weather-sources/temp/DMITempCard";
 import OpenWeatherTempCard from "@/components/weather-sources/temp/OpenWeatherTempCard";
 import WeatherAPITempCard from "@/components/weather-sources/temp/WeatherAPITempCard";
+import { Coordinates } from "@/lib/types";
 
 interface TemperatureDataWrapperProps {
-  coords: { lat: number; lon: number };
+  coords: Coordinates;
 }
 
 export default function TemperatureDataWrapper({

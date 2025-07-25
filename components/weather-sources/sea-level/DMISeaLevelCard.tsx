@@ -2,9 +2,10 @@ import { Suspense } from "react";
 import SeaLevelCard from "@/components/SeaLevelCard";
 import NoDataCard from "@/components/NoDataCard";
 import { fetchDMISeaLevelData } from "@/lib/weather-service";
+import { Coordinates } from "@/lib/types";
 
 interface DMISeaLevelCardProps {
-  coords: { lat: number; lon: number };
+  coords: Coordinates;
 }
 
 async function DMISeaLevelContent({ coords }: DMISeaLevelCardProps) {

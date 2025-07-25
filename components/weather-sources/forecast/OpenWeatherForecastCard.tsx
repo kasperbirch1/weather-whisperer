@@ -2,9 +2,10 @@ import { Suspense } from "react";
 import ForecastCard from "@/components/ForecastCard";
 import NoDataCard from "@/components/NoDataCard";
 import { fetchOpenWeatherForecast } from "@/lib/weather-service";
+import { Coordinates } from "@/lib/types";
 
 interface OpenWeatherForecastCardProps {
-  coords: { lat: number; lon: number };
+  coords: Coordinates;
 }
 
 async function OpenWeatherForecastContent({

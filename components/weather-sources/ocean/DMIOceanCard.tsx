@@ -2,9 +2,10 @@ import { Suspense } from "react";
 import OceanCard from "@/components/OceanCard";
 import NoDataCard from "@/components/NoDataCard";
 import { fetchDMIOceanData } from "@/lib/weather-service";
+import { Coordinates } from "@/lib/types";
 
 interface DMIOceanCardProps {
-  coords: { lat: number; lon: number };
+  coords: Coordinates;
 }
 
 async function DMIOceanContent({ coords }: DMIOceanCardProps) {

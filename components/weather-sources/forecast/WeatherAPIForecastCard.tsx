@@ -2,9 +2,10 @@ import { Suspense } from "react";
 import ForecastCard from "@/components/ForecastCard";
 import NoDataCard from "@/components/NoDataCard";
 import { fetchWeatherAPIForecast } from "@/lib/weather-service";
+import { Coordinates } from "@/lib/types";
 
 interface WeatherAPIForecastCardProps {
-  coords: { lat: number; lon: number };
+  coords: Coordinates;
 }
 
 async function WeatherAPIForecastContent({

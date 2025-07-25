@@ -2,9 +2,10 @@ import WeatherDataSection from "@/components/WeatherDataSection";
 import DMIWindCard from "@/components/weather-sources/wind/DMIWindCard";
 import OpenWeatherWindCard from "@/components/weather-sources/wind/OpenWeatherWindCard";
 import WeatherAPIWindCard from "@/components/weather-sources/wind/WeatherAPIWindCard";
+import { Coordinates } from "@/lib/types";
 
 interface WindDataWrapperProps {
-  coords: { lat: number; lon: number };
+  coords: Coordinates;
 }
 
 export default function WindDataWrapper({ coords }: WindDataWrapperProps) {

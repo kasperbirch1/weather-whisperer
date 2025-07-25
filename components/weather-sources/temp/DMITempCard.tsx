@@ -2,9 +2,10 @@ import { Suspense } from "react";
 import TempCard from "@/components/TempCard";
 import NoDataCard from "@/components/NoDataCard";
 import { fetchDMITempData } from "@/lib/weather-service";
+import { Coordinates } from "@/lib/types";
 
 interface DMITempCardProps {
-  coords: { lat: number; lon: number };
+  coords: Coordinates;
 }
 
 async function DMITempContent({ coords }: DMITempCardProps) {

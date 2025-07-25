@@ -2,9 +2,10 @@ import { Suspense } from "react";
 import TempCard from "@/components/TempCard";
 import NoDataCard from "@/components/NoDataCard";
 import { fetchWeatherAPIData } from "@/lib/weather-service";
+import { Coordinates } from "@/lib/types";
 
 interface WeatherAPITempCardProps {
-  coords: { lat: number; lon: number };
+  coords: Coordinates;
 }
 
 async function WeatherAPITempContent({ coords }: WeatherAPITempCardProps) {

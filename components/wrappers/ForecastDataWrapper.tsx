@@ -2,9 +2,10 @@ import WeatherDataSection from "@/components/WeatherDataSection";
 import DMIForecastCard from "@/components/weather-sources/forecast/DMIForecastCard";
 import OpenWeatherForecastCard from "@/components/weather-sources/forecast/OpenWeatherForecastCard";
 import WeatherAPIForecastCard from "@/components/weather-sources/forecast/WeatherAPIForecastCard";
+import { Coordinates } from "@/lib/types";
 
 interface ForecastDataWrapperProps {
-  coords: { lat: number; lon: number };
+  coords: Coordinates;
 }
 
 export default function ForecastDataWrapper({

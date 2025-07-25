@@ -2,9 +2,10 @@ import { Suspense } from "react";
 import WindCard from "@/components/WindCard";
 import NoDataCard from "@/components/NoDataCard";
 import { fetchOpenWeatherData } from "@/lib/weather-service";
+import { Coordinates } from "@/lib/types";
 
 interface OpenWeatherWindCardProps {
-  coords: { lat: number; lon: number };
+  coords: Coordinates;
 }
 
 async function OpenWeatherWindContent({ coords }: OpenWeatherWindCardProps) {

@@ -1,8 +1,9 @@
 import WeatherDataSection from "@/components/WeatherDataSection";
 import DMISeaLevelCard from "@/components/weather-sources/sea-level/DMISeaLevelCard";
+import { Coordinates } from "@/lib/types";
 
 interface SeaLevelDataWrapperProps {
-  coords: { lat: number; lon: number };
+  coords: Coordinates;
 }
 
 export default function SeaLevelDataWrapper({

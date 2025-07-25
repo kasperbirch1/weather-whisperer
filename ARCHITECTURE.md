@@ -177,7 +177,7 @@ interface WeatherCardProps {
 
 ```typescript
 interface APISourceCardProps {
-  coords: { lat: number; lon: number };
+  coords: Coordinates;
 }
 
 // Each API source has its own independent component
@@ -265,7 +265,7 @@ export default function DataWrapper({ coords }: DataWrapperProps) {
 
 ```typescript
 interface DataWrapperProps {
-  coords: { lat: number; lon: number };
+  coords: Coordinates;
 }
 
 async function DataContent({ coords }: DataWrapperProps) {

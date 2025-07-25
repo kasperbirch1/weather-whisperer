@@ -1,3 +1,9 @@
+// Shared coordinate interface for consistency across components
+export interface Coordinates {
+  lat: number;
+  lon: number;
+}
+
 export interface WeatherObservation {
   id: string;
   type: string;
@@ -29,7 +35,7 @@ export interface ParameterSummary {
 
 export interface LocationWeatherData {
   location: string;
-  coordinates: { lat: number; lon: number };
+  coordinates: Coordinates;
   windspeedData: WeatherObservation[];
   oceanData: WeatherData;
   meteoData: WeatherData;
@@ -42,7 +48,7 @@ export interface LocationWeatherData {
 // Enhanced types for improved API handling
 export interface EnhancedLocationWeatherData {
   location: string;
-  coordinates: { lat: number; lon: number };
+  coordinates: Coordinates;
   windspeedData: WeatherObservation[];
   ocean: {
     data: WeatherData | null;

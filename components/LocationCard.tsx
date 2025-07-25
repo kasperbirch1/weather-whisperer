@@ -3,10 +3,11 @@ import TemperatureDataWrapper from "@/components/wrappers/TemperatureDataWrapper
 import SeaLevelDataWrapper from "@/components/wrappers/SeaLevelDataWrapper";
 import OceanDataWrapper from "@/components/wrappers/OceanDataWrapper";
 import ForecastDataWrapper from "@/components/wrappers/ForecastDataWrapper";
+import { Coordinates } from "@/lib/types";
 
 interface LocationCardProps {
   locationName: string;
-  coords: { lat: number; lon: number };
+  coords: Coordinates;
 }
 
 export default function LocationCard({
