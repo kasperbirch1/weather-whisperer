@@ -11,6 +11,10 @@ export function getParameterDisplayName(parameterId: string): string {
     temp_mean_past1h: "Air Temperature (1h avg)",
     humidity: "Humidity",
     pressure: "Atmospheric Pressure",
+    visibility: "Visibility",
+    precip: "Precipitation",
+    cloud: "Cloud Cover",
+    uv: "UV Index",
   };
   return parameterNames[parameterId] || parameterId;
 }
@@ -22,8 +26,14 @@ export function getParameterUnit(parameterId: string): string {
     wind_speed: "m/s",
     wind_dir: "°",
     temp: "°C",
+    temp_dry: "°C",
+    temp_mean_past1h: "°C",
     humidity: "%",
     pressure: "hPa",
+    visibility: "km",
+    precip: "mm",
+    cloud: "%",
+    uv: "",
   };
   return parameterUnits[parameterId] || "";
 }
@@ -64,19 +74,22 @@ export function extractWindspeedData(
   const windObservations = weatherData.features.filter(
     (feature) => feature.properties.parameterId === "wind_speed"
   );
-  
+
   // Group by station ID and keep only the most recent observation from each station
   const stationMap = new Map<string, WeatherObservation>();
-  
-  windObservations.forEach(obs => {
+
+  windObservations.forEach((obs) => {
     const stationId = obs.properties.stationId;
     const existing = stationMap.get(stationId);
-    
-    if (!existing || new Date(obs.properties.observed) > new Date(existing.properties.observed)) {
+
+    if (
+      !existing ||
+      new Date(obs.properties.observed) > new Date(existing.properties.observed)
+    ) {
       stationMap.set(stationId, obs);
     }
   });
-  
+
   // Return array of unique stations with their latest observations
   return Array.from(stationMap.values());
 }

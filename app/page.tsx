@@ -1,163 +1,561 @@
 import { locations } from "@/data/locations";
-import { fetchLocationData } from "@/lib/location-service";
-import { analyzeParameters } from "@/lib/weather-utils";
-import WindSpeedCard from "@/components/WindSpeedCard";
-import ParameterCards from "@/components/ParameterCards";
-import LightningCard from "@/components/LightningCard";
-import TemperatureCard from "@/components/TemperatureCard";
+import WindCard from "@/components/WindCard";
+import TempCard from "@/components/TempCard";
 import ForecastCard from "@/components/ForecastCard";
-import { LocationWeatherData } from "@/lib/types";
+import LightningCard from "@/components/LightningCard";
+import OceanCard from "@/components/OceanCard";
+import SeaLevelCard from "@/components/SeaLevelCard";
+import ParameterCards from "@/components/ParameterCards";
+import {
+  fetchOpenWeatherData,
+  fetchWeatherAPIData,
+  fetchDMIWindData,
+  fetchDMITempData,
+  fetchDMISeaLevelData,
+  fetchDMIMeteoData,
+  fetchDMIOceanData,
+  fetchDMILightningData,
+  fetchDMIForecast,
+  fetchOpenWeatherForecast,
+  fetchWeatherAPIForecast,
+} from "@/lib/weather-service";
 
 export default async function Home() {
   // Fetch data for all locations
-  const locationData: LocationWeatherData[] = await Promise.all(
-    Object.entries(locations).map(([locationName, coords]) =>
-      fetchLocationData(locationName, coords)
-    )
-  );
+  const locationData = await Promise.all(
+    Object.entries(locations).map(async ([locationName, coords]) => {
+      // Fetch data from all APIs in parallel for each location
+      const [
+        openWeatherData,
+        weatherAPIData,
+        dmiWindData,
+        dmiTempData,
+        dmiSeaLevelData,
+        dmiMeteoData,
+        dmiOceanData,
+        dmiLightningData,
+        dmiForecast,
+        openWeatherForecast,
+        weatherAPIForecast,
+      ] = await Promise.all([
+        fetchOpenWeatherData(coords.lat, coords.lon),
+        fetchWeatherAPIData(coords.lat, coords.lon),
+        fetchDMIWindData(coords.lat, coords.lon),
+        fetchDMITempData(coords.lat, coords.lon),
+        fetchDMISeaLevelData(coords.lat, coords.lon),
+        fetchDMIMeteoData(coords.lat, coords.lon),
+        fetchDMIOceanData(coords.lat, coords.lon),
+        fetchDMILightningData(coords.lat, coords.lon),
+        fetchDMIForecast(coords.lat, coords.lon),
+        fetchOpenWeatherForecast(coords.lat, coords.lon),
+        fetchWeatherAPIForecast(coords.lat, coords.lon),
+      ]);
 
+      return {
+        locationName,
+        coords,
+        openWeatherData,
+        weatherAPIData,
+        dmiWindData,
+        dmiTempData,
+        dmiSeaLevelData,
+        dmiMeteoData,
+        dmiOceanData,
+        dmiLightningData,
+        dmiForecast,
+        openWeatherForecast,
+        weatherAPIForecast,
+      };
+    })
+  );
   return (
     <main className="container mx-auto p-4 max-w-7xl">
-      {/* Modern Hero Section */}
-      <div className="mb-12 text-center relative">
-        <div className="bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 text-white p-8 rounded-2xl shadow-2xl">
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white to-cyan-100 bg-clip-text text-transparent">
-            🌊 Weather Whisperer
-          </h1>
-          <p className="text-xl text-cyan-100 mb-2">
-            Professional Windsurfing Weather Intelligence
-          </p>
-          <p className="text-cyan-200">
-            Real-time wind and ocean conditions for Danish waters
-          </p>
-          <div className="mt-4 inline-flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-sm text-cyan-100">
-            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse mr-2"></span>
-            Live data from Danish Meteorological Institute (DMI) • Updated every
-            5 minutes
-          </div>
-        </div>
-      </div>
+      {/* Hero Section */}
+      <header className="mb-12 text-center">
+        <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+          🌊 Weather Whisperer
+        </h1>
+        <p className="text-xl text-gray-600 mb-2">
+          Multi-API Weather Data for All Locations
+        </p>
+        <p className="text-gray-500">
+          📍 {Object.keys(locations).length} locations monitored
+        </p>
+      </header>
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        {locationData.map((data, index) => {
-          const oceanSummary = analyzeParameters(data.oceanData);
-          const meteoSummary = analyzeParameters(data.meteoData);
-          const hasData =
-            data.windspeedData.length > 0 ||
-            Object.keys(oceanSummary).length > 0;
-
-          return (
-            <div
-              key={index}
-              className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-2xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-300"
-            >
-              {/* Location Header */}
-              <div className="flex justify-between items-start mb-6">
-                <div>
-                  <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                    🏄‍♂️ {data.location.replace(/([A-Z])/g, " $1").trim()}
-                  </h2>
-                  <p className="text-gray-600 flex items-center">
-                    📍 {data.coordinates.lat}°N, {data.coordinates.lon}°E
+      {/* Locations Section */}
+      <section className="mb-12">
+        <h2 className="text-3xl font-bold text-gray-800 mb-8">
+          📍 Weather Data by Location
+        </h2>
+        <ul
+          className="grid grid-cols-1 xl:grid-cols-2 gap-12 list-none"
+          role="list"
+        >
+          {locationData.map((location) => (
+            <li key={location.locationName}>
+              <article className="p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+                {/* Location Header */}
+                <header className="mb-10 text-center border-b border-gray-200 pb-6">
+                  <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                    {location.locationName.replace(/([A-Z])/g, " $1").trim()}
+                  </h3>
+                  <p className="text-gray-600">
+                    📍 {location.coords.lat}°N, {location.coords.lon}°E
                   </p>
-                </div>
-                <div className="text-right">
-                  {data.windspeedData.length > 0 && (
-                    <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                      ✅ Live Data
-                    </div>
-                  )}
-                  {data.windspeedData.length === 0 && (
-                    <div className="bg-gradient-to-r from-gray-400 to-gray-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                      📡 Checking...
-                    </div>
-                  )}
-                </div>
-              </div>
+                </header>
 
-              {data.error && (
-                <div className="bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-500 text-red-800 px-6 py-4 rounded-lg mb-6 shadow-lg">
-                  <strong>⚠️ Error:</strong> {data.error}
-                </div>
-              )}
+                {/* Wind Data for this location */}
+                <section className="mb-12">
+                  <h4 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                    💨 Wind Data
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2 gap-6">
+                    {/* DMI Wind */}
+                    {location.dmiWindData && (
+                      <WindCard
+                        apiName="DMI"
+                        windSpeed={location.dmiWindData.windSpeed}
+                        windDirection={location.dmiWindData.windDirection}
+                        location={location.dmiWindData.location}
+                        timestamp={location.dmiWindData.timestamp}
+                      />
+                    )}
 
-              <ForecastCard forecastData={data.forecastData} />
+                    {/* OpenWeatherMap Wind */}
+                    {location.openWeatherData && (
+                      <WindCard
+                        apiName="OpenWeatherMap"
+                        windSpeed={location.openWeatherData.wind?.speed || 0}
+                        windDirection={location.openWeatherData.wind?.deg || 0}
+                        location={location.openWeatherData.name}
+                        timestamp={new Date(
+                          location.openWeatherData.dt * 1000
+                        ).toISOString()}
+                      />
+                    )}
 
-              <LightningCard lightningData={data.lightningData} />
-
-              <TemperatureCard temperatureData={data.temperatureData} />
-
-              <WindSpeedCard windspeedData={data.windspeedData} />
-
-              <ParameterCards
-                title="🌤️ Meteorological Data"
-                parameters={meteoSummary}
-                colorScheme="yellow"
-              />
-
-              <ParameterCards
-                title="🌊 Ocean Data"
-                parameters={oceanSummary}
-                colorScheme="blue"
-              />
-
-              <div className="bg-gradient-to-r from-slate-50 to-gray-50 p-6 rounded-xl mb-6 border border-gray-200 shadow-lg">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">
-                  📈 Data Summary
-                </h3>
-                <div className="grid md:grid-cols-3 gap-6">
-                  <div className="text-center">
-                    <div className="bg-white p-4 rounded-lg shadow">
-                      <p className="text-sm text-gray-600 mb-1">
-                        Wind Observations
-                      </p>
-                      <p className="text-2xl font-bold text-blue-600">
-                        {data.windspeedData.length}
-                      </p>
-                    </div>
+                    {/* WeatherAPI Wind */}
+                    {location.weatherAPIData && (
+                      <WindCard
+                        apiName="WeatherAPI.com"
+                        windSpeed={
+                          (location.weatherAPIData.current?.wind_kph || 0) / 3.6
+                        }
+                        windDirection={
+                          location.weatherAPIData.current?.wind_degree || 0
+                        }
+                        location={location.weatherAPIData.location?.name}
+                        timestamp={new Date(
+                          location.weatherAPIData.current?.last_updated_epoch *
+                            1000
+                        ).toISOString()}
+                      />
+                    )}
                   </div>
-                  <div className="text-center">
-                    <div className="bg-white p-4 rounded-lg shadow">
-                      <p className="text-sm text-gray-600 mb-1">
-                        Ocean Observations
-                      </p>
-                      <p className="text-2xl font-bold text-cyan-600">
-                        {data.oceanData.features?.length || 0}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="bg-white p-4 rounded-lg shadow">
-                      <p className="text-sm text-gray-600 mb-1">
-                        Meteo Observations
-                      </p>
-                      <p className="text-2xl font-bold text-green-600">
-                        {data.meteoData.features?.length || 0}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                </section>
 
-              {!hasData && (
-                <div className="bg-gradient-to-r from-yellow-50 to-amber-50 border-l-4 border-yellow-500 text-yellow-800 px-6 py-4 rounded-lg mb-6">
-                  <strong>ℹ️ Info:</strong> No weather data available for this
-                  location.
-                </div>
-              )}
+                {/* Temperature Data for this location */}
+                <section className="mb-12">
+                  <h4 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                    🌡️ Temperature Data
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2 gap-6">
+                    {/* DMI Temperature */}
+                    {location.dmiTempData && (
+                      <TempCard
+                        apiName="DMI"
+                        temperature={location.dmiTempData.temperature}
+                        location={location.dmiTempData.location}
+                        timestamp={location.dmiTempData.timestamp}
+                      />
+                    )}
 
-              <details className="mt-6">
-                <summary className="cursor-pointer text-blue-600 hover:text-blue-800 font-medium py-2 px-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
-                  🔍 Show Raw JSON Data
-                </summary>
-                <pre className="mt-4 p-4 bg-gray-900 text-green-400 rounded-lg text-xs overflow-auto max-h-96 border shadow-inner">
-                  {JSON.stringify(data, null, 2)}
-                </pre>
-              </details>
+                    {/* OpenWeatherMap Temperature */}
+                    {location.openWeatherData && (
+                      <TempCard
+                        apiName="OpenWeatherMap"
+                        temperature={location.openWeatherData.main?.temp || 0}
+                        feelsLike={location.openWeatherData.main?.feels_like}
+                        humidity={location.openWeatherData.main?.humidity}
+                        location={location.openWeatherData.name}
+                        timestamp={new Date(
+                          location.openWeatherData.dt * 1000
+                        ).toISOString()}
+                      />
+                    )}
+
+                    {/* WeatherAPI Temperature */}
+                    {location.weatherAPIData && (
+                      <TempCard
+                        apiName="WeatherAPI.com"
+                        temperature={
+                          location.weatherAPIData.current?.temp_c || 0
+                        }
+                        feelsLike={location.weatherAPIData.current?.feelslike_c}
+                        humidity={location.weatherAPIData.current?.humidity}
+                        location={location.weatherAPIData.location?.name}
+                        timestamp={new Date(
+                          location.weatherAPIData.current?.last_updated_epoch *
+                            1000
+                        ).toISOString()}
+                      />
+                    )}
+                  </div>
+                </section>
+
+                {/* Sea Level Data for this location - only show if data exists */}
+                {location.dmiSeaLevelData && (
+                  <section className="mb-12">
+                    <h4 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                      📏 Sea Level (Nivå) Data
+                    </h4>
+                    <div className="grid grid-cols-1 gap-6">
+                      <SeaLevelCard
+                        apiName="DMI Sea Level"
+                        seaLevel={location.dmiSeaLevelData.seaLevel}
+                        location={location.dmiSeaLevelData.location}
+                        timestamp={location.dmiSeaLevelData.timestamp}
+                      />
+                    </div>
+                  </section>
+                )}
+
+                {/* Additional Meteorological Data */}
+                <section className="mb-12">
+                  <h4 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                    🌤️ Meteorological Data
+                  </h4>
+                  <div className="grid grid-cols-1 gap-8">
+                    {/* DMI Meteo Data */}
+                    {location.dmiMeteoData && (
+                      <ParameterCards
+                        title="🌬️ DMI Meteorological Data"
+                        parameters={{
+                          ...(location.dmiMeteoData.pressure && {
+                            pressure: {
+                              count: 1,
+                              latestValue: location.dmiMeteoData.pressure,
+                              latestTime: location.dmiMeteoData.timestamp,
+                            },
+                          }),
+                          ...(location.dmiMeteoData.humidity && {
+                            humidity: {
+                              count: 1,
+                              latestValue: location.dmiMeteoData.humidity,
+                              latestTime: location.dmiMeteoData.timestamp,
+                            },
+                          }),
+                          ...(location.dmiMeteoData.windDirection && {
+                            wind_dir: {
+                              count: 1,
+                              latestValue: location.dmiMeteoData.windDirection,
+                              latestTime: location.dmiMeteoData.timestamp,
+                            },
+                          }),
+                        }}
+                        colorScheme="yellow"
+                      />
+                    )}
+
+                    {/* OpenWeatherMap Additional Data */}
+                    {location.openWeatherData && (
+                      <ParameterCards
+                        title="🌐 OpenWeatherMap Extended Data"
+                        parameters={{
+                          pressure: {
+                            count: 1,
+                            latestValue:
+                              location.openWeatherData.main?.pressure || 0,
+                            latestTime: new Date(
+                              location.openWeatherData.dt * 1000
+                            ).toISOString(),
+                          },
+                          humidity: {
+                            count: 1,
+                            latestValue:
+                              location.openWeatherData.main?.humidity || 0,
+                            latestTime: new Date(
+                              location.openWeatherData.dt * 1000
+                            ).toISOString(),
+                          },
+                          visibility: {
+                            count: 1,
+                            latestValue:
+                              (location.openWeatherData.visibility || 0) / 1000, // Convert to km
+                            latestTime: new Date(
+                              location.openWeatherData.dt * 1000
+                            ).toISOString(),
+                          },
+                          cloud: {
+                            count: 1,
+                            latestValue:
+                              location.openWeatherData.clouds?.all || 0,
+                            latestTime: new Date(
+                              location.openWeatherData.dt * 1000
+                            ).toISOString(),
+                          },
+                        }}
+                        colorScheme="yellow"
+                      />
+                    )}
+
+                    {/* WeatherAPI Additional Data */}
+                    {location.weatherAPIData && (
+                      <ParameterCards
+                        title="🌈 WeatherAPI Extended Data"
+                        parameters={{
+                          pressure: {
+                            count: 1,
+                            latestValue:
+                              location.weatherAPIData.current?.pressure_mb || 0,
+                            latestTime: new Date(
+                              location.weatherAPIData.current
+                                ?.last_updated_epoch * 1000
+                            ).toISOString(),
+                          },
+                          humidity: {
+                            count: 1,
+                            latestValue:
+                              location.weatherAPIData.current?.humidity || 0,
+                            latestTime: new Date(
+                              location.weatherAPIData.current
+                                ?.last_updated_epoch * 1000
+                            ).toISOString(),
+                          },
+                          visibility: {
+                            count: 1,
+                            latestValue:
+                              location.weatherAPIData.current?.vis_km || 0,
+                            latestTime: new Date(
+                              location.weatherAPIData.current
+                                ?.last_updated_epoch * 1000
+                            ).toISOString(),
+                          },
+                          cloud: {
+                            count: 1,
+                            latestValue:
+                              location.weatherAPIData.current?.cloud || 0,
+                            latestTime: new Date(
+                              location.weatherAPIData.current
+                                ?.last_updated_epoch * 1000
+                            ).toISOString(),
+                          },
+                          uv: {
+                            count: 1,
+                            latestValue:
+                              location.weatherAPIData.current?.uv || 0,
+                            latestTime: new Date(
+                              location.weatherAPIData.current
+                                ?.last_updated_epoch * 1000
+                            ).toISOString(),
+                          },
+                          precip: {
+                            count: 1,
+                            latestValue:
+                              location.weatherAPIData.current?.precip_mm || 0,
+                            latestTime: new Date(
+                              location.weatherAPIData.current
+                                ?.last_updated_epoch * 1000
+                            ).toISOString(),
+                          },
+                        }}
+                        colorScheme="yellow"
+                      />
+                    )}
+                  </div>
+                </section>
+
+                {/* Ocean Data for this location */}
+                <section className="mb-12">
+                  <h4 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                    🌊 Ocean Data
+                  </h4>
+                  <div className="grid grid-cols-1 gap-6">
+                    {/* DMI Ocean */}
+                    {location.dmiOceanData && (
+                      <OceanCard
+                        apiName="DMI Ocean"
+                        waveHeight={location.dmiOceanData.waveHeight}
+                        waterTemperature={
+                          location.dmiOceanData.waterTemperature
+                        }
+                        salinity={location.dmiOceanData.salinity}
+                        location={location.dmiOceanData.location}
+                        timestamp={location.dmiOceanData.timestamp}
+                      />
+                    )}
+                  </div>
+                </section>
+
+                {/* Forecast Data for this location */}
+                <section className="mb-12">
+                  <h4 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                    🔮 Forecast Data
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2 gap-6">
+                    {/* DMI Forecast */}
+                    {location.dmiForecast && (
+                      <ForecastCard
+                        apiName="DMI Forecast"
+                        temperature={
+                          location.dmiForecast.waterTemp ||
+                          location.dmiForecast.temperature
+                        }
+                        description={location.dmiForecast.description}
+                        highTemp={
+                          location.dmiForecast.waterTemp ||
+                          location.dmiForecast.temperature
+                        }
+                        lowTemp={
+                          (location.dmiForecast.waterTemp ||
+                            location.dmiForecast.temperature) - 2
+                        }
+                        location={location.dmiForecast.location}
+                        timestamp={location.dmiForecast.timestamp}
+                      />
+                    )}
+
+                    {/* OpenWeatherMap Forecast */}
+                    {location.openWeatherForecast && (
+                      <ForecastCard
+                        apiName="OpenWeatherMap"
+                        temperature={location.openWeatherForecast.temperature}
+                        description={location.openWeatherForecast.description}
+                        icon={location.openWeatherForecast.icon}
+                        highTemp={location.openWeatherForecast.highTemp}
+                        lowTemp={location.openWeatherForecast.lowTemp}
+                        precipitationChance={
+                          location.openWeatherForecast.precipitationChance
+                        }
+                        tomorrowHighTemp={
+                          location.openWeatherForecast.tomorrowHighTemp
+                        }
+                        tomorrowLowTemp={
+                          location.openWeatherForecast.tomorrowLowTemp
+                        }
+                        tomorrowDescription={
+                          location.openWeatherForecast.tomorrowDescription
+                        }
+                        tomorrowPrecipChance={
+                          location.openWeatherForecast.tomorrowPrecipChance
+                        }
+                        location={location.openWeatherForecast.location}
+                        timestamp={location.openWeatherForecast.timestamp}
+                      />
+                    )}
+
+                    {/* WeatherAPI Forecast */}
+                    {location.weatherAPIForecast && (
+                      <ForecastCard
+                        apiName="WeatherAPI.com"
+                        temperature={location.weatherAPIForecast.temperature}
+                        description={location.weatherAPIForecast.description}
+                        icon={location.weatherAPIForecast.icon}
+                        highTemp={location.weatherAPIForecast.highTemp}
+                        lowTemp={location.weatherAPIForecast.lowTemp}
+                        precipitationChance={
+                          location.weatherAPIForecast.precipitationChance
+                        }
+                        tomorrowHighTemp={
+                          location.weatherAPIForecast.tomorrowHighTemp
+                        }
+                        tomorrowLowTemp={
+                          location.weatherAPIForecast.tomorrowLowTemp
+                        }
+                        tomorrowDescription={
+                          location.weatherAPIForecast.tomorrowDescription
+                        }
+                        tomorrowPrecipChance={
+                          location.weatherAPIForecast.tomorrowPrecipChance
+                        }
+                        location={location.weatherAPIForecast.location}
+                        timestamp={location.weatherAPIForecast.timestamp}
+                      />
+                    )}
+                  </div>
+                </section>
+
+                {/* Lightning Data for this location */}
+                <section className="mb-8">
+                  <h4 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                    ⚡ Lightning Data
+                  </h4>
+                  <div className="grid grid-cols-1 gap-6">
+                    {/* DMI Lightning */}
+                    {location.dmiLightningData && (
+                      <LightningCard
+                        apiName="DMI"
+                        strikeCount={location.dmiLightningData.strikeCount}
+                        lastStrikeTime={
+                          location.dmiLightningData.lastStrikeTime
+                        }
+                        distance={location.dmiLightningData.distance}
+                        intensity={location.dmiLightningData.intensity}
+                        areaStrikeCount={
+                          location.dmiLightningData.areaStrikeCount
+                        }
+                        riskLevel={location.dmiLightningData.riskLevel}
+                        location={location.dmiLightningData.location}
+                        timestamp={location.dmiLightningData.timestamp}
+                      />
+                    )}
+                  </div>
+                </section>
+              </article>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* API Status Section */}
+      <section className="mb-12">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">📊 API Status</h2>
+        <ul className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list">
+          <li
+            className={`p-4 rounded-lg ${
+              locationData.some((l) => l.dmiWindData || l.dmiTempData)
+                ? "bg-green-100 text-green-800"
+                : "bg-red-100 text-red-800"
+            }`}
+          >
+            <div className="font-bold">DMI API</div>
+            <div className="text-sm">
+              {locationData.some((l) => l.dmiWindData || l.dmiTempData)
+                ? "✅ Online"
+                : "❌ Offline"}
             </div>
-          );
-        })}
-      </div>
+          </li>
+          <li
+            className={`p-4 rounded-lg ${
+              locationData.some((l) => l.openWeatherData)
+                ? "bg-green-100 text-green-800"
+                : "bg-red-100 text-red-800"
+            }`}
+          >
+            <div className="font-bold">OpenWeatherMap</div>
+            <div className="text-sm">
+              {locationData.some((l) => l.openWeatherData)
+                ? "✅ Online"
+                : "❌ Offline"}
+            </div>
+          </li>
+          <li
+            className={`p-4 rounded-lg ${
+              locationData.some((l) => l.weatherAPIData)
+                ? "bg-green-100 text-green-800"
+                : "bg-red-100 text-red-800"
+            }`}
+          >
+            <div className="font-bold">WeatherAPI.com</div>
+            <div className="text-sm">
+              {locationData.some((l) => l.weatherAPIData)
+                ? "✅ Online"
+                : "❌ Offline"}
+            </div>
+          </li>
+        </ul>
+      </section>
     </main>
   );
 }
