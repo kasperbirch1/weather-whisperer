@@ -300,13 +300,22 @@ export async function fetchDMIOceanData(lat: number, lon: number) {
         const data = await response.json();
         if (data.features && data.features.length > 0) {
           const feature = data.features[0];
-          return {
-            waveHeight: feature.properties?.value || 0,
-            waterTemperature: feature.properties?.temp || 0,
-            salinity: feature.properties?.salinity || 0,
-            location: feature.properties?.stationId || "DMI Ocean Station",
-            timestamp: feature.properties?.observed || new Date().toISOString(),
-          };
+          const props = feature.properties;
+
+          // Only return data if we have at least one valid measurement
+          if (
+            props?.value !== undefined ||
+            props?.temp !== undefined ||
+            props?.salinity !== undefined
+          ) {
+            return {
+              waveHeight: props?.value,
+              waterTemperature: props?.temp,
+              salinity: props?.salinity,
+              location: props?.stationId || "DMI Ocean Station",
+              timestamp: props?.observed || new Date().toISOString(),
+            };
+          }
         }
       }
     } catch (error) {
@@ -495,17 +504,8 @@ export async function fetchDMILightningData(lat: number, lon: number) {
       };
     }
 
-    // Return "no activity" data structure instead of null
-    return {
-      strikeCount: 0,
-      areaStrikeCount: 0,
-      lastStrikeTime: null,
-      distance: null,
-      intensity: null,
-      riskLevel: "low" as "low" | "moderate" | "high" | "extreme",
-      location: "No Lightning Activity",
-      timestamp: new Date().toISOString(),
-    };
+    // Return null when no lightning activity is detected
+    return null;
   } catch (error) {
     console.error("DMI lightning API error:", error);
     return null;
