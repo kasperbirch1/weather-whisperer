@@ -113,4 +113,40 @@ export const wetherApis = {
       },
     },
   },
+  openweather: {
+    name: "OpenWeatherMap",
+    url: "https://api.openweathermap.org/data/2.5",
+    apiKey: process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY,
+    getCurrentWeatherUrl: (lat: number, lon: number) => {
+      return `${wetherApis.openweather.url}/weather?lat=${lat}&lon=${lon}&appid=${wetherApis.openweather.apiKey}&units=metric`;
+    },
+    getForecastUrl: (lat: number, lon: number) => {
+      return `${wetherApis.openweather.url}/forecast?lat=${lat}&lon=${lon}&appid=${wetherApis.openweather.apiKey}&units=metric`;
+    },
+    getOneCallUrl: (lat: number, lon: number) => {
+      return `${wetherApis.openweather.url}/onecall?lat=${lat}&lon=${lon}&appid=${wetherApis.openweather.apiKey}&units=metric&exclude=minutely,alerts`;
+    },
+    getHeaders: () => {
+      return {
+        "Content-Type": "application/json",
+      };
+    },
+  },
+  // Example of another weather API - WeatherAPI.com
+  weatherapi: {
+    name: "WeatherAPI.com",
+    url: "https://api.weatherapi.com/v1",
+    apiKey: process.env.NEXT_PUBLIC_WEATHERAPI_KEY,
+    getCurrentWeatherUrl: (lat: number, lon: number) => {
+      return `${wetherApis.weatherapi.url}/current.json?key=${wetherApis.weatherapi.apiKey}&q=${lat},${lon}&aqi=yes`;
+    },
+    getForecastUrl: (lat: number, lon: number, days: number = 3) => {
+      return `${wetherApis.weatherapi.url}/forecast.json?key=${wetherApis.weatherapi.apiKey}&q=${lat},${lon}&days=${days}&aqi=yes&alerts=yes`;
+    },
+    getHeaders: () => {
+      return {
+        "Content-Type": "application/json",
+      };
+    },
+  },
 };
