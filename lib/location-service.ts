@@ -1,5 +1,10 @@
 import { LocationWeatherData, WeatherData } from "./types";
-import { fetchOceanData, fetchWindData } from "./weather-service";
+import {
+  fetchOceanData,
+  fetchWindData,
+  fetchLightningData,
+  fetchTemperatureData,
+} from "./weather-service";
 import { extractWindspeedData } from "./weather-utils";
 
 export async function fetchLocationData(
@@ -8,22 +13,41 @@ export async function fetchLocationData(
 ): Promise<LocationWeatherData> {
   let oceanData: WeatherData = { type: "FeatureCollection", features: [] };
   let meteoData: WeatherData = { type: "FeatureCollection", features: [] };
+  let lightningData: WeatherData = { type: "FeatureCollection", features: [] };
+  let temperatureData: WeatherData = {
+    type: "FeatureCollection",
+    features: [],
+  };
   let error: string | undefined;
 
-  // Fetch ocean data
+  // Fetch all data in parallel for better performance
   try {
-    oceanData = await fetchOceanData(coords.lat, coords.lon);
-  } catch (oceanError) {
-    console.warn(`Failed to fetch ocean data for ${locationName}:`, oceanError);
-    error = `Ocean data unavailable: ${String(oceanError)}`;
-  }
+    const [ocean, wind, lightning, temperature] = await Promise.all([
+      fetchOceanData(coords.lat, coords.lon).catch(() => ({
+        type: "FeatureCollection",
+        features: [],
+      })),
+      fetchWindData(coords.lat, coords.lon).catch(() => ({
+        type: "FeatureCollection",
+        features: [],
+      })),
+      fetchLightningData(coords.lat, coords.lon).catch(() => ({
+        type: "FeatureCollection",
+        features: [],
+      })),
+      fetchTemperatureData(coords.lat, coords.lon).catch(() => ({
+        type: "FeatureCollection",
+        features: [],
+      })),
+    ]);
 
-  // Fetch wind data
-  try {
-    meteoData = await fetchWindData();
-  } catch (meteoError) {
-    console.warn(`Failed to fetch wind data for ${locationName}:`, meteoError);
-    if (!error) error = `Wind data unavailable: ${String(meteoError)}`;
+    oceanData = ocean;
+    meteoData = wind;
+    lightningData = lightning;
+    temperatureData = temperature;
+  } catch (fetchError) {
+    console.warn(`Failed to fetch data for ${locationName}:`, fetchError);
+    error = `Data unavailable: ${String(fetchError)}`;
   }
 
   return {
@@ -32,6 +56,8 @@ export async function fetchLocationData(
     windspeedData: extractWindspeedData(meteoData),
     oceanData,
     meteoData,
+    lightningData,
+    temperatureData,
     error,
   };
 }

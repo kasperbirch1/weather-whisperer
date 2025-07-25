@@ -33,5 +33,7 @@ export interface LocationWeatherData {
   windspeedData: WeatherObservation[];
   oceanData: WeatherData;
   meteoData: WeatherData;
+  lightningData: WeatherData;
+  temperatureData: WeatherData;
   error?: string;
 }

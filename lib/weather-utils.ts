@@ -7,6 +7,8 @@ export function getParameterDisplayName(parameterId: string): string {
     wind_speed: "Wind Speed",
     wind_dir: "Wind Direction",
     temp: "Air Temperature",
+    temp_dry: "Air Temperature",
+    temp_mean_past1h: "Air Temperature (1h avg)",
     humidity: "Humidity",
     pressure: "Atmospheric Pressure",
   };
@@ -59,7 +61,22 @@ export function analyzeParameters(
 export function extractWindspeedData(
   weatherData: WeatherData
 ): WeatherObservation[] {
-  return weatherData.features.filter(
+  const windObservations = weatherData.features.filter(
     (feature) => feature.properties.parameterId === "wind_speed"
   );
+  
+  // Group by station ID and keep only the most recent observation from each station
+  const stationMap = new Map<string, WeatherObservation>();
+  
+  windObservations.forEach(obs => {
+    const stationId = obs.properties.stationId;
+    const existing = stationMap.get(stationId);
+    
+    if (!existing || new Date(obs.properties.observed) > new Date(existing.properties.observed)) {
+      stationMap.set(stationId, obs);
+    }
+  });
+  
+  // Return array of unique stations with their latest observations
+  return Array.from(stationMap.values());
 }

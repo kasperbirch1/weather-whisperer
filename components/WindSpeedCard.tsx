@@ -1,10 +1,15 @@
 import { WeatherObservation } from "@/lib/types";
+import WindStationCard from "./WindStationCard";
 
 interface WindSpeedCardProps {
   windspeedData: WeatherObservation[];
+  locationCoords: { lat: number; lon: number };
 }
 
-export default function WindSpeedCard({ windspeedData }: WindSpeedCardProps) {
+export default function WindSpeedCard({
+  windspeedData,
+  locationCoords,
+}: WindSpeedCardProps) {
   if (windspeedData.length === 0) return null;
 
   return (
@@ -12,23 +17,10 @@ export default function WindSpeedCard({ windspeedData }: WindSpeedCardProps) {
       <h3 className="text-xl font-bold text-green-800 mb-4">
         💨 Wind Speed Data
       </h3>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {windspeedData.slice(0, 6).map((obs, index) => (
-          <div key={index} className="bg-white p-4 rounded-lg shadow">
-            <div className="text-2xl font-bold text-green-600">
-              {obs.properties.value} m/s
-            </div>
-            <div className="text-sm text-gray-600">
-              Station: {obs.properties.stationId}
-            </div>
-            <div className="text-xs text-gray-500">
-              {new Date(obs.properties.observed).toLocaleString()}
-            </div>
-            <div className="text-xs text-gray-500">
-              📍 {obs.geometry?.coordinates?.[1].toFixed(2)},{" "}
-              {obs.geometry?.coordinates?.[0].toFixed(2)}
-            </div>
-          </div>
+          <WindStationCard key={index} observation={obs} />
         ))}
       </div>
       {windspeedData.length > 6 && (
