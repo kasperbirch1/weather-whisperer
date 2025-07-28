@@ -25,8 +25,8 @@ import type {
   GetForecastParams
 } from "./openweather-schemas";
 
-import { customInstance } from "../mutator/mutator";
-import type { ErrorType } from "../mutator/mutator";
+import { openWeatherMutator } from "../mutator/openweather-mutator";
+import type { ErrorType } from "../mutator/openweather-mutator";
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 /**
@@ -35,10 +35,10 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  */
 export const getCurrentWeather = (
   params: GetCurrentWeatherParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof openWeatherMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<CurrentWeatherResponse>(
+  return openWeatherMutator<CurrentWeatherResponse>(
     { url: `/weather`, method: "GET", params, signal },
     options
   );
@@ -63,7 +63,7 @@ export const getGetCurrentWeatherQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof openWeatherMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -108,7 +108,7 @@ export function useGetCurrentWeather<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof openWeatherMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -135,7 +135,7 @@ export function useGetCurrentWeather<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof openWeatherMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -154,7 +154,7 @@ export function useGetCurrentWeather<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof openWeatherMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -177,7 +177,7 @@ export function useGetCurrentWeather<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof openWeatherMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -201,10 +201,10 @@ export function useGetCurrentWeather<
  */
 export const getForecast = (
   params: GetForecastParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof openWeatherMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<ForecastResponse>(
+  return openWeatherMutator<ForecastResponse>(
     { url: `/forecast`, method: "GET", params, signal },
     options
   );
@@ -223,7 +223,7 @@ export const getGetForecastQueryOptions = <
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getForecast>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof openWeatherMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -263,7 +263,7 @@ export function useGetForecast<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof openWeatherMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -286,7 +286,7 @@ export function useGetForecast<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof openWeatherMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -301,7 +301,7 @@ export function useGetForecast<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getForecast>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof openWeatherMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -320,7 +320,7 @@ export function useGetForecast<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getForecast>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof openWeatherMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {

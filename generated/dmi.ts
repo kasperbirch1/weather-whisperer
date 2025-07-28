@@ -31,8 +31,8 @@ import type {
   OceanObservationResponse
 } from "./dmi-schemas";
 
-import { customInstance } from "../mutator/mutator";
-import type { ErrorType } from "../mutator/mutator";
+import { dmiMutator } from "../mutator/dmi-mutator";
+import type { ErrorType } from "../mutator/dmi-mutator";
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 /**
@@ -41,10 +41,10 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  */
 export const getOceanObservations = (
   params?: GetOceanObservationsParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<OceanObservationResponse>(
+  return dmiMutator<OceanObservationResponse>(
     {
       url: `/oceanObs/collections/observation/items`,
       method: "GET",
@@ -77,7 +77,7 @@ export const getGetOceanObservationsQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -122,7 +122,7 @@ export function useGetOceanObservations<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -149,7 +149,7 @@ export function useGetOceanObservations<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -168,7 +168,7 @@ export function useGetOceanObservations<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -191,7 +191,7 @@ export function useGetOceanObservations<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -215,10 +215,10 @@ export function useGetOceanObservations<
  */
 export const getMetObservations = (
   params?: GetMetObservationsParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<MetObservationResponse>(
+  return dmiMutator<MetObservationResponse>(
     {
       url: `/metObs/collections/observation/items`,
       method: "GET",
@@ -251,7 +251,7 @@ export const getGetMetObservationsQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -296,7 +296,7 @@ export function useGetMetObservations<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -323,7 +323,7 @@ export function useGetMetObservations<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -342,7 +342,7 @@ export function useGetMetObservations<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -365,7 +365,7 @@ export function useGetMetObservations<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -389,10 +389,10 @@ export function useGetMetObservations<
  */
 export const getLightningData = (
   params?: GetLightningDataParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<LightningDataResponse>(
+  return dmiMutator<LightningDataResponse>(
     {
       url: `/lightningdata/collections/observation/items`,
       method: "GET",
@@ -425,7 +425,7 @@ export const getGetLightningDataQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -470,7 +470,7 @@ export function useGetLightningData<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -497,7 +497,7 @@ export function useGetLightningData<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -516,7 +516,7 @@ export function useGetLightningData<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -539,7 +539,7 @@ export function useGetLightningData<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -563,10 +563,10 @@ export function useGetLightningData<
  */
 export const getClimateData = (
   params?: GetClimateDataParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<ClimateDataResponse>(
+  return dmiMutator<ClimateDataResponse>(
     {
       url: `/climateData/collections/observation/items`,
       method: "GET",
@@ -593,7 +593,7 @@ export const getGetClimateDataQueryOptions = <
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getClimateData>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -633,7 +633,7 @@ export function useGetClimateData<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -656,7 +656,7 @@ export function useGetClimateData<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -671,7 +671,7 @@ export function useGetClimateData<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getClimateData>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -690,7 +690,7 @@ export function useGetClimateData<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getClimateData>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -715,10 +715,10 @@ export function useGetClimateData<
 export const getForecastByPosition = (
   collection: "dkss_nsbs" | "dkss_idw",
   params: GetForecastByPositionParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<ForecastResponse>(
+  return dmiMutator<ForecastResponse>(
     {
       url: `/forecastedr/collections/${collection}/position`,
       method: "GET",
@@ -753,7 +753,7 @@ export const getGetForecastByPositionQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -806,7 +806,7 @@ export function useGetForecastByPosition<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -834,7 +834,7 @@ export function useGetForecastByPosition<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -854,7 +854,7 @@ export function useGetForecastByPosition<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -878,7 +878,7 @@ export function useGetForecastByPosition<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {

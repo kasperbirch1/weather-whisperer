@@ -30,8 +30,8 @@ import type {
   LandingPage
 } from "./dmi-radar-schemas";
 
-import { customInstance } from "../mutator/mutator";
-import type { ErrorType } from "../mutator/mutator";
+import { dmiMutator } from "../mutator/dmi-mutator";
+import type { ErrorType } from "../mutator/dmi-mutator";
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 /**
@@ -39,10 +39,10 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  */
 export const getFile = (
   fileName: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Blob>(
+  return dmiMutator<Blob>(
     {
       url: `/v1/radardata/download/${fileName}`,
       method: "GET",
@@ -66,7 +66,7 @@ export const getGetFileQueryOptions = <
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getFile>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -109,7 +109,7 @@ export function useGetFile<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -132,7 +132,7 @@ export function useGetFile<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -147,7 +147,7 @@ export function useGetFile<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getFile>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -166,7 +166,7 @@ export function useGetFile<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getFile>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -188,10 +188,10 @@ export function useGetFile<
  * @summary Get the list of conformance classes that this service implements
  */
 export const getTheConformance = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Conformance>(
+  return dmiMutator<Conformance>(
     { url: `/v1/radardata/conformance`, method: "GET", signal },
     options
   );
@@ -212,7 +212,7 @@ export const getGetTheConformanceQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -254,7 +254,7 @@ export function useGetTheConformance<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -280,7 +280,7 @@ export function useGetTheConformance<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -298,7 +298,7 @@ export function useGetTheConformance<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -320,7 +320,7 @@ export function useGetTheConformance<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -339,10 +339,10 @@ export function useGetTheConformance<
 }
 
 export const getCollections = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collections>(
+  return dmiMutator<Collections>(
     { url: `/v1/radardata/collections`, method: "GET", signal },
     options
   );
@@ -359,7 +359,7 @@ export const getGetCollectionsQueryOptions = <
   query?: Partial<
     UseQueryOptions<Awaited<ReturnType<typeof getCollections>>, TError, TData>
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -397,7 +397,7 @@ export function useGetCollections<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -419,7 +419,7 @@ export function useGetCollections<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -433,7 +433,7 @@ export function useGetCollections<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getCollections>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -448,7 +448,7 @@ export function useGetCollections<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getCollections>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -470,10 +470,10 @@ export function useGetCollections<
  * @summary Get information about volume radar files feature collection
  */
 export const getVolumeCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     { url: `/v1/radardata/collections/volume`, method: "GET", signal },
     options
   );
@@ -494,7 +494,7 @@ export const getGetVolumeCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -536,7 +536,7 @@ export function useGetVolumeCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -562,7 +562,7 @@ export function useGetVolumeCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -580,7 +580,7 @@ export function useGetVolumeCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -602,7 +602,7 @@ export function useGetVolumeCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -625,10 +625,10 @@ export function useGetVolumeCollection<
  */
 export const getVolumeFeatures = (
   params?: GetVolumeFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/radardata/collections/volume/items`,
       method: "GET",
@@ -661,7 +661,7 @@ export const getGetVolumeFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -706,7 +706,7 @@ export function useGetVolumeFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -733,7 +733,7 @@ export function useGetVolumeFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -752,7 +752,7 @@ export function useGetVolumeFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -775,7 +775,7 @@ export function useGetVolumeFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -798,10 +798,10 @@ export function useGetVolumeFeatures<
  */
 export const getVolumeFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/radardata/collections/volume/items/${id}`,
       method: "GET",
@@ -828,7 +828,7 @@ export const getGetVolumeFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -878,7 +878,7 @@ export function useGetVolumeFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -905,7 +905,7 @@ export function useGetVolumeFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -924,7 +924,7 @@ export function useGetVolumeFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -947,7 +947,7 @@ export function useGetVolumeFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -969,10 +969,10 @@ export function useGetVolumeFeatureById<
  * @summary Get information about pseudo CAPPI radar files feature collection
  */
 export const getPseudoCappiCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     { url: `/v1/radardata/collections/pseudoCappi`, method: "GET", signal },
     options
   );
@@ -993,7 +993,7 @@ export const getGetPseudoCappiCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -1036,7 +1036,7 @@ export function useGetPseudoCappiCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -1062,7 +1062,7 @@ export function useGetPseudoCappiCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1080,7 +1080,7 @@ export function useGetPseudoCappiCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1102,7 +1102,7 @@ export function useGetPseudoCappiCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1125,10 +1125,10 @@ export function useGetPseudoCappiCollection<
  */
 export const getPseudoCappiFeatures = (
   params?: GetPseudoCappiFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/radardata/collections/pseudoCappi/items`,
       method: "GET",
@@ -1161,7 +1161,7 @@ export const getGetPseudoCappiFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -1206,7 +1206,7 @@ export function useGetPseudoCappiFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -1233,7 +1233,7 @@ export function useGetPseudoCappiFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1252,7 +1252,7 @@ export function useGetPseudoCappiFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1275,7 +1275,7 @@ export function useGetPseudoCappiFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1298,10 +1298,10 @@ export function useGetPseudoCappiFeatures<
  */
 export const getPseudoCappiFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/radardata/collections/pseudoCappi/items/${id}`,
       method: "GET",
@@ -1328,7 +1328,7 @@ export const getGetPseudoCappiFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -1378,7 +1378,7 @@ export function useGetPseudoCappiFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -1405,7 +1405,7 @@ export function useGetPseudoCappiFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1424,7 +1424,7 @@ export function useGetPseudoCappiFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1447,7 +1447,7 @@ export function useGetPseudoCappiFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1469,10 +1469,10 @@ export function useGetPseudoCappiFeatureById<
  * @summary Get information about composite radar files feature collection
  */
 export const getCompositeCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     { url: `/v1/radardata/collections/composite`, method: "GET", signal },
     options
   );
@@ -1493,7 +1493,7 @@ export const getGetCompositeCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -1536,7 +1536,7 @@ export function useGetCompositeCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -1562,7 +1562,7 @@ export function useGetCompositeCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1580,7 +1580,7 @@ export function useGetCompositeCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1602,7 +1602,7 @@ export function useGetCompositeCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1625,10 +1625,10 @@ export function useGetCompositeCollection<
  */
 export const getCompositeFeatures = (
   params?: GetCompositeFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/radardata/collections/composite/items`,
       method: "GET",
@@ -1661,7 +1661,7 @@ export const getGetCompositeFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -1706,7 +1706,7 @@ export function useGetCompositeFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -1733,7 +1733,7 @@ export function useGetCompositeFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1752,7 +1752,7 @@ export function useGetCompositeFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1775,7 +1775,7 @@ export function useGetCompositeFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1798,10 +1798,10 @@ export function useGetCompositeFeatures<
  */
 export const getCompositeFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/radardata/collections/composite/items/${id}`,
       method: "GET",
@@ -1828,7 +1828,7 @@ export const getGetCompositeFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -1878,7 +1878,7 @@ export function useGetCompositeFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -1905,7 +1905,7 @@ export function useGetCompositeFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1924,7 +1924,7 @@ export function useGetCompositeFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1947,7 +1947,7 @@ export function useGetCompositeFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1969,10 +1969,10 @@ export function useGetCompositeFeatureById<
  * @summary Landing page for service
  */
 export const getLandingPage = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<LandingPage>(
+  return dmiMutator<LandingPage>(
     { url: `/v1/radardata/`, method: "GET", signal },
     options
   );
@@ -1989,7 +1989,7 @@ export const getGetLandingPageQueryOptions = <
   query?: Partial<
     UseQueryOptions<Awaited<ReturnType<typeof getLandingPage>>, TError, TData>
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -2027,7 +2027,7 @@ export function useGetLandingPage<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -2049,7 +2049,7 @@ export function useGetLandingPage<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2063,7 +2063,7 @@ export function useGetLandingPage<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getLandingPage>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2081,7 +2081,7 @@ export function useGetLandingPage<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getLandingPage>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {

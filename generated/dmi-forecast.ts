@@ -45,8 +45,8 @@ import type {
   LandingPage
 } from "./dmi-forecast-schemas";
 
-import { customInstance } from "../mutator/mutator";
-import type { ErrorType } from "../mutator/mutator";
+import { dmiMutator } from "../mutator/dmi-mutator";
+import type { ErrorType } from "../mutator/dmi-mutator";
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 /**
@@ -54,10 +54,10 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  */
 export const getFile = (
   fileName: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Blob>(
+  return dmiMutator<Blob>(
     {
       url: `/v1/forecastdata/download/${fileName}`,
       method: "GET",
@@ -81,7 +81,7 @@ export const getGetFileQueryOptions = <
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getFile>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -124,7 +124,7 @@ export function useGetFile<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -147,7 +147,7 @@ export function useGetFile<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -162,7 +162,7 @@ export function useGetFile<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getFile>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -181,7 +181,7 @@ export function useGetFile<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getFile>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -203,10 +203,10 @@ export function useGetFile<
  * @summary Get the list of conformance classes that this service implements
  */
 export const getTheConformance = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Conformance>(
+  return dmiMutator<Conformance>(
     { url: `/v1/forecastdata/conformance`, method: "GET", signal },
     options
   );
@@ -227,7 +227,7 @@ export const getGetTheConformanceQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -269,7 +269,7 @@ export function useGetTheConformance<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -295,7 +295,7 @@ export function useGetTheConformance<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -313,7 +313,7 @@ export function useGetTheConformance<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -335,7 +335,7 @@ export function useGetTheConformance<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -357,10 +357,10 @@ export function useGetTheConformance<
  * @summary Get the list of feature collections (data sets) in this service
  */
 export const getCollections = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collections>(
+  return dmiMutator<Collections>(
     { url: `/v1/forecastdata/collections`, method: "GET", signal },
     options
   );
@@ -377,7 +377,7 @@ export const getGetCollectionsQueryOptions = <
   query?: Partial<
     UseQueryOptions<Awaited<ReturnType<typeof getCollections>>, TError, TData>
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -415,7 +415,7 @@ export function useGetCollections<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -437,7 +437,7 @@ export function useGetCollections<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -451,7 +451,7 @@ export function useGetCollections<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getCollections>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -469,7 +469,7 @@ export function useGetCollections<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getCollections>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -491,10 +491,10 @@ export function useGetCollections<
  * @summary Get information about WAM NSB ("North Sea and Baltic Waters") files feature collection
  */
 export const getWamNsbCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     { url: `/v1/forecastdata/collections/wam_nsb`, method: "GET", signal },
     options
   );
@@ -515,7 +515,7 @@ export const getGetWamNsbCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -557,7 +557,7 @@ export function useGetWamNsbCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -583,7 +583,7 @@ export function useGetWamNsbCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -601,7 +601,7 @@ export function useGetWamNsbCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -623,7 +623,7 @@ export function useGetWamNsbCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -646,10 +646,10 @@ export function useGetWamNsbCollection<
  */
 export const getWAMNSBFeatures = (
   params?: GetWAMNSBFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/wam_nsb/items`,
       method: "GET",
@@ -682,7 +682,7 @@ export const getGetWAMNSBFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -727,7 +727,7 @@ export function useGetWAMNSBFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -754,7 +754,7 @@ export function useGetWAMNSBFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -773,7 +773,7 @@ export function useGetWAMNSBFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -796,7 +796,7 @@ export function useGetWAMNSBFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -819,10 +819,10 @@ export function useGetWAMNSBFeatures<
  */
 export const getWAMNSBFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/wam_nsb/items/${id}`,
       method: "GET",
@@ -849,7 +849,7 @@ export const getGetWAMNSBFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -899,7 +899,7 @@ export function useGetWAMNSBFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -926,7 +926,7 @@ export function useGetWAMNSBFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -945,7 +945,7 @@ export function useGetWAMNSBFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -968,7 +968,7 @@ export function useGetWAMNSBFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -990,10 +990,10 @@ export function useGetWAMNSBFeatureById<
  * @summary Get information about WAM NATLANT ("North Atlantic") files feature collection
  */
 export const getWamNatlantCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     { url: `/v1/forecastdata/collections/wam_natlant`, method: "GET", signal },
     options
   );
@@ -1014,7 +1014,7 @@ export const getGetWamNatlantCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -1057,7 +1057,7 @@ export function useGetWamNatlantCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -1083,7 +1083,7 @@ export function useGetWamNatlantCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1101,7 +1101,7 @@ export function useGetWamNatlantCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1123,7 +1123,7 @@ export function useGetWamNatlantCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1146,10 +1146,10 @@ export function useGetWamNatlantCollection<
  */
 export const getWAMNATLANTFeatures = (
   params?: GetWAMNATLANTFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/wam_natlant/items`,
       method: "GET",
@@ -1182,7 +1182,7 @@ export const getGetWAMNATLANTFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -1227,7 +1227,7 @@ export function useGetWAMNATLANTFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -1254,7 +1254,7 @@ export function useGetWAMNATLANTFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1273,7 +1273,7 @@ export function useGetWAMNATLANTFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1296,7 +1296,7 @@ export function useGetWAMNATLANTFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1319,10 +1319,10 @@ export function useGetWAMNATLANTFeatures<
  */
 export const getWAMNSBFeatureById1 = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/wam_natlant/items/${id}`,
       method: "GET",
@@ -1349,7 +1349,7 @@ export const getGetWAMNSBFeatureById1QueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -1399,7 +1399,7 @@ export function useGetWAMNSBFeatureById1<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -1426,7 +1426,7 @@ export function useGetWAMNSBFeatureById1<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1445,7 +1445,7 @@ export function useGetWAMNSBFeatureById1<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1468,7 +1468,7 @@ export function useGetWAMNSBFeatureById1<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1490,10 +1490,10 @@ export function useGetWAMNSBFeatureById1<
  * @summary Get information about WAM DW ("Danish Waters") files feature collection
  */
 export const getWamDwCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     { url: `/v1/forecastdata/collections/wam_dw`, method: "GET", signal },
     options
   );
@@ -1514,7 +1514,7 @@ export const getGetWamDwCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -1556,7 +1556,7 @@ export function useGetWamDwCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -1582,7 +1582,7 @@ export function useGetWamDwCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1600,7 +1600,7 @@ export function useGetWamDwCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1622,7 +1622,7 @@ export function useGetWamDwCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1645,10 +1645,10 @@ export function useGetWamDwCollection<
  */
 export const getWAMDWFeatures = (
   params?: GetWAMDWFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/wam_dw/items`,
       method: "GET",
@@ -1681,7 +1681,7 @@ export const getGetWAMDWFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -1726,7 +1726,7 @@ export function useGetWAMDWFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -1753,7 +1753,7 @@ export function useGetWAMDWFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1772,7 +1772,7 @@ export function useGetWAMDWFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1795,7 +1795,7 @@ export function useGetWAMDWFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1818,10 +1818,10 @@ export function useGetWAMDWFeatures<
  */
 export const getWAMDWFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/wam_dw/items/${id}`,
       method: "GET",
@@ -1848,7 +1848,7 @@ export const getGetWAMDWFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -1897,7 +1897,7 @@ export function useGetWAMDWFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -1924,7 +1924,7 @@ export function useGetWAMDWFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1943,7 +1943,7 @@ export function useGetWAMDWFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1966,7 +1966,7 @@ export function useGetWAMDWFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -1988,10 +1988,10 @@ export function useGetWAMDWFeatureById<
  * @summary Get information about Harmonie IG ("Iceland and Greenland") SF ("surface area") files feature collection
  */
 export const getHarmonieIgSfCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     {
       url: `/v1/forecastdata/collections/harmonie_ig_sf`,
       method: "GET",
@@ -2016,7 +2016,7 @@ export const getGetHarmonieIgSfCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -2059,7 +2059,7 @@ export function useGetHarmonieIgSfCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -2085,7 +2085,7 @@ export function useGetHarmonieIgSfCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2103,7 +2103,7 @@ export function useGetHarmonieIgSfCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2125,7 +2125,7 @@ export function useGetHarmonieIgSfCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2148,10 +2148,10 @@ export function useGetHarmonieIgSfCollection<
  */
 export const getHarmonieIgSfFeatures = (
   params?: GetHarmonieIgSfFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/harmonie_ig_sf/items`,
       method: "GET",
@@ -2184,7 +2184,7 @@ export const getGetHarmonieIgSfFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -2229,7 +2229,7 @@ export function useGetHarmonieIgSfFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -2256,7 +2256,7 @@ export function useGetHarmonieIgSfFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2275,7 +2275,7 @@ export function useGetHarmonieIgSfFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2298,7 +2298,7 @@ export function useGetHarmonieIgSfFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2321,10 +2321,10 @@ export function useGetHarmonieIgSfFeatures<
  */
 export const getHarmonieIgSfFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/harmonie_ig_sf/items/${id}`,
       method: "GET",
@@ -2351,7 +2351,7 @@ export const getGetHarmonieIgSfFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -2401,7 +2401,7 @@ export function useGetHarmonieIgSfFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -2428,7 +2428,7 @@ export function useGetHarmonieIgSfFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2447,7 +2447,7 @@ export function useGetHarmonieIgSfFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2470,7 +2470,7 @@ export function useGetHarmonieIgSfFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2492,10 +2492,10 @@ export function useGetHarmonieIgSfFeatureById<
  * @summary Get information about Harmonie IG ("Iceland and Greenland") PL ("pressure level") files feature collection
  */
 export const getHarmonieIgPlCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     {
       url: `/v1/forecastdata/collections/harmonie_ig_pl`,
       method: "GET",
@@ -2520,7 +2520,7 @@ export const getGetHarmonieIgPlCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -2563,7 +2563,7 @@ export function useGetHarmonieIgPlCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -2589,7 +2589,7 @@ export function useGetHarmonieIgPlCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2607,7 +2607,7 @@ export function useGetHarmonieIgPlCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2629,7 +2629,7 @@ export function useGetHarmonieIgPlCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2652,10 +2652,10 @@ export function useGetHarmonieIgPlCollection<
  */
 export const getHarmonieIgPlFeatures = (
   params?: GetHarmonieIgPlFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/harmonie_ig_pl/items`,
       method: "GET",
@@ -2688,7 +2688,7 @@ export const getGetHarmonieIgPlFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -2733,7 +2733,7 @@ export function useGetHarmonieIgPlFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -2760,7 +2760,7 @@ export function useGetHarmonieIgPlFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2779,7 +2779,7 @@ export function useGetHarmonieIgPlFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2802,7 +2802,7 @@ export function useGetHarmonieIgPlFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2825,10 +2825,10 @@ export function useGetHarmonieIgPlFeatures<
  */
 export const getHarmonieIgPlFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/harmonie_ig_pl/items/${id}`,
       method: "GET",
@@ -2855,7 +2855,7 @@ export const getGetHarmonieIgPlFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -2905,7 +2905,7 @@ export function useGetHarmonieIgPlFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -2932,7 +2932,7 @@ export function useGetHarmonieIgPlFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2951,7 +2951,7 @@ export function useGetHarmonieIgPlFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2974,7 +2974,7 @@ export function useGetHarmonieIgPlFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -2996,10 +2996,10 @@ export function useGetHarmonieIgPlFeatureById<
  * @summary Get information about Harmonie IG ("Iceland and Greenland") ML ("model level") files feature collection
  */
 export const getHarmonieIgMlCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     {
       url: `/v1/forecastdata/collections/harmonie_ig_ml`,
       method: "GET",
@@ -3024,7 +3024,7 @@ export const getGetHarmonieIgMlCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -3067,7 +3067,7 @@ export function useGetHarmonieIgMlCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -3093,7 +3093,7 @@ export function useGetHarmonieIgMlCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3111,7 +3111,7 @@ export function useGetHarmonieIgMlCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3133,7 +3133,7 @@ export function useGetHarmonieIgMlCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3156,10 +3156,10 @@ export function useGetHarmonieIgMlCollection<
  */
 export const getHarmonieIgMlFeatures = (
   params?: GetHarmonieIgMlFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/harmonie_ig_ml/items`,
       method: "GET",
@@ -3192,7 +3192,7 @@ export const getGetHarmonieIgMlFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -3237,7 +3237,7 @@ export function useGetHarmonieIgMlFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -3264,7 +3264,7 @@ export function useGetHarmonieIgMlFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3283,7 +3283,7 @@ export function useGetHarmonieIgMlFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3306,7 +3306,7 @@ export function useGetHarmonieIgMlFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3329,10 +3329,10 @@ export function useGetHarmonieIgMlFeatures<
  */
 export const getHarmonieIgMlFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/harmonie_ig_ml/items/${id}`,
       method: "GET",
@@ -3359,7 +3359,7 @@ export const getGetHarmonieIgMlFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -3409,7 +3409,7 @@ export function useGetHarmonieIgMlFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -3436,7 +3436,7 @@ export function useGetHarmonieIgMlFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3455,7 +3455,7 @@ export function useGetHarmonieIgMlFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3478,7 +3478,7 @@ export function useGetHarmonieIgMlFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3500,10 +3500,10 @@ export function useGetHarmonieIgMlFeatureById<
  * @summary Get information about Harmonie DINI ("Denmark Iceland Netherlands Ireland") SF ("surface area") files feature collection
  */
 export const getHarmonieDiniSfCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_sf`,
       method: "GET",
@@ -3528,7 +3528,7 @@ export const getGetHarmonieDiniSfCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -3571,7 +3571,7 @@ export function useGetHarmonieDiniSfCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -3597,7 +3597,7 @@ export function useGetHarmonieDiniSfCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3615,7 +3615,7 @@ export function useGetHarmonieDiniSfCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3637,7 +3637,7 @@ export function useGetHarmonieDiniSfCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3660,10 +3660,10 @@ export function useGetHarmonieDiniSfCollection<
  */
 export const getHarmonieDiniSfFeatures = (
   params?: GetHarmonieDiniSfFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_sf/items`,
       method: "GET",
@@ -3696,7 +3696,7 @@ export const getGetHarmonieDiniSfFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -3741,7 +3741,7 @@ export function useGetHarmonieDiniSfFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -3768,7 +3768,7 @@ export function useGetHarmonieDiniSfFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3787,7 +3787,7 @@ export function useGetHarmonieDiniSfFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3810,7 +3810,7 @@ export function useGetHarmonieDiniSfFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3836,10 +3836,10 @@ export function useGetHarmonieDiniSfFeatures<
  */
 export const getHarmonieDiniSfFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_sf/items/${id}`,
       method: "GET",
@@ -3866,7 +3866,7 @@ export const getGetHarmonieDiniSfFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -3916,7 +3916,7 @@ export function useGetHarmonieDiniSfFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -3943,7 +3943,7 @@ export function useGetHarmonieDiniSfFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3962,7 +3962,7 @@ export function useGetHarmonieDiniSfFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -3985,7 +3985,7 @@ export function useGetHarmonieDiniSfFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4007,10 +4007,10 @@ export function useGetHarmonieDiniSfFeatureById<
  * @summary Get information about Harmonie DINI ("Denmark Iceland Netherlands Ireland") PL ("pressure level") files feature collection
  */
 export const getHarmonieDiniPlCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_pl`,
       method: "GET",
@@ -4035,7 +4035,7 @@ export const getGetHarmonieDiniPlCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -4078,7 +4078,7 @@ export function useGetHarmonieDiniPlCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -4104,7 +4104,7 @@ export function useGetHarmonieDiniPlCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4122,7 +4122,7 @@ export function useGetHarmonieDiniPlCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4144,7 +4144,7 @@ export function useGetHarmonieDiniPlCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4167,10 +4167,10 @@ export function useGetHarmonieDiniPlCollection<
  */
 export const getHarmonieDiniPlFeatures = (
   params?: GetHarmonieDiniPlFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_pl/items`,
       method: "GET",
@@ -4203,7 +4203,7 @@ export const getGetHarmonieDiniPlFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -4248,7 +4248,7 @@ export function useGetHarmonieDiniPlFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -4275,7 +4275,7 @@ export function useGetHarmonieDiniPlFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4294,7 +4294,7 @@ export function useGetHarmonieDiniPlFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4317,7 +4317,7 @@ export function useGetHarmonieDiniPlFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4343,10 +4343,10 @@ export function useGetHarmonieDiniPlFeatures<
  */
 export const getHarmonieDiniPlFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_pl/items/${id}`,
       method: "GET",
@@ -4373,7 +4373,7 @@ export const getGetHarmonieDiniPlFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -4423,7 +4423,7 @@ export function useGetHarmonieDiniPlFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -4450,7 +4450,7 @@ export function useGetHarmonieDiniPlFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4469,7 +4469,7 @@ export function useGetHarmonieDiniPlFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4492,7 +4492,7 @@ export function useGetHarmonieDiniPlFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4514,10 +4514,10 @@ export function useGetHarmonieDiniPlFeatureById<
  * @summary Get information about Harmonie DINI ("Denmark Iceland Netherlands Ireland") ML ("model level") files feature collection
  */
 export const getHarmonieDiniMlCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_ml`,
       method: "GET",
@@ -4542,7 +4542,7 @@ export const getGetHarmonieDiniMlCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -4585,7 +4585,7 @@ export function useGetHarmonieDiniMlCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -4611,7 +4611,7 @@ export function useGetHarmonieDiniMlCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4629,7 +4629,7 @@ export function useGetHarmonieDiniMlCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4651,7 +4651,7 @@ export function useGetHarmonieDiniMlCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4674,10 +4674,10 @@ export function useGetHarmonieDiniMlCollection<
  */
 export const getHarmonieDiniMlFeatures = (
   params?: GetHarmonieDiniMlFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_ml/items`,
       method: "GET",
@@ -4710,7 +4710,7 @@ export const getGetHarmonieDiniMlFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -4755,7 +4755,7 @@ export function useGetHarmonieDiniMlFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -4782,7 +4782,7 @@ export function useGetHarmonieDiniMlFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4801,7 +4801,7 @@ export function useGetHarmonieDiniMlFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4824,7 +4824,7 @@ export function useGetHarmonieDiniMlFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4850,10 +4850,10 @@ export function useGetHarmonieDiniMlFeatures<
  */
 export const getHarmonieDiniMlFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_ml/items/${id}`,
       method: "GET",
@@ -4880,7 +4880,7 @@ export const getGetHarmonieDiniMlFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -4930,7 +4930,7 @@ export function useGetHarmonieDiniMlFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -4957,7 +4957,7 @@ export function useGetHarmonieDiniMlFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4976,7 +4976,7 @@ export function useGetHarmonieDiniMlFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -4999,7 +4999,7 @@ export function useGetHarmonieDiniMlFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5021,10 +5021,10 @@ export function useGetHarmonieDiniMlFeatureById<
  * @summary Get information about Harmonie DINI ("Denmark Iceland Netherlands Ireland") EPS ("Ensemble Prediction System") Probabilities files feature collection
  */
 export const getHarmonieDiniEpsProbabilitiesCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_eps_probabilities`,
       method: "GET",
@@ -5051,7 +5051,7 @@ export const getGetHarmonieDiniEpsProbabilitiesCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -5097,7 +5097,7 @@ export function useGetHarmonieDiniEpsProbabilitiesCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -5123,7 +5123,7 @@ export function useGetHarmonieDiniEpsProbabilitiesCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5141,7 +5141,7 @@ export function useGetHarmonieDiniEpsProbabilitiesCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5163,7 +5163,7 @@ export function useGetHarmonieDiniEpsProbabilitiesCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5187,10 +5187,10 @@ export function useGetHarmonieDiniEpsProbabilitiesCollection<
  */
 export const getHarmonieDiniEpsProbabilitiesFeatures = (
   params?: GetHarmonieDiniEpsProbabilitiesFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_eps_probabilities/items`,
       method: "GET",
@@ -5223,7 +5223,7 @@ export const getGetHarmonieDiniEpsProbabilitiesFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -5271,7 +5271,7 @@ export function useGetHarmonieDiniEpsProbabilitiesFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -5298,7 +5298,7 @@ export function useGetHarmonieDiniEpsProbabilitiesFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5317,7 +5317,7 @@ export function useGetHarmonieDiniEpsProbabilitiesFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5340,7 +5340,7 @@ export function useGetHarmonieDiniEpsProbabilitiesFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5366,10 +5366,10 @@ export function useGetHarmonieDiniEpsProbabilitiesFeatures<
  */
 export const getHarmonieDiniEpsProbabilitiesFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_eps_probabilities/items/${id}`,
       method: "GET",
@@ -5402,7 +5402,7 @@ export const getGetHarmonieDiniEpsProbabilitiesFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -5459,7 +5459,7 @@ export function useGetHarmonieDiniEpsProbabilitiesFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -5490,7 +5490,7 @@ export function useGetHarmonieDiniEpsProbabilitiesFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5511,7 +5511,7 @@ export function useGetHarmonieDiniEpsProbabilitiesFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5536,7 +5536,7 @@ export function useGetHarmonieDiniEpsProbabilitiesFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5559,10 +5559,10 @@ export function useGetHarmonieDiniEpsProbabilitiesFeatureById<
  * @summary Get information about Harmonie DINI ("Denmark Iceland Netherlands Ireland") EPS ("Ensemble Prediction System") Percentiles files feature collection
  */
 export const getHarmonieDiniEpsPercentilesCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_eps_percentiles`,
       method: "GET",
@@ -5589,7 +5589,7 @@ export const getGetHarmonieDiniEpsPercentilesCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -5635,7 +5635,7 @@ export function useGetHarmonieDiniEpsPercentilesCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -5661,7 +5661,7 @@ export function useGetHarmonieDiniEpsPercentilesCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5679,7 +5679,7 @@ export function useGetHarmonieDiniEpsPercentilesCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5701,7 +5701,7 @@ export function useGetHarmonieDiniEpsPercentilesCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5725,10 +5725,10 @@ export function useGetHarmonieDiniEpsPercentilesCollection<
  */
 export const getHarmonieDiniEpsPercentilesFeatures = (
   params?: GetHarmonieDiniEpsPercentilesFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_eps_percentiles/items`,
       method: "GET",
@@ -5761,7 +5761,7 @@ export const getGetHarmonieDiniEpsPercentilesFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -5809,7 +5809,7 @@ export function useGetHarmonieDiniEpsPercentilesFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -5836,7 +5836,7 @@ export function useGetHarmonieDiniEpsPercentilesFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5855,7 +5855,7 @@ export function useGetHarmonieDiniEpsPercentilesFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5878,7 +5878,7 @@ export function useGetHarmonieDiniEpsPercentilesFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -5904,10 +5904,10 @@ export function useGetHarmonieDiniEpsPercentilesFeatures<
  */
 export const getHarmonieDiniEpsPercentilesFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_eps_percentiles/items/${id}`,
       method: "GET",
@@ -5938,7 +5938,7 @@ export const getGetHarmonieDiniEpsPercentilesFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -5991,7 +5991,7 @@ export function useGetHarmonieDiniEpsPercentilesFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -6018,7 +6018,7 @@ export function useGetHarmonieDiniEpsPercentilesFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6037,7 +6037,7 @@ export function useGetHarmonieDiniEpsPercentilesFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6060,7 +6060,7 @@ export function useGetHarmonieDiniEpsPercentilesFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6085,10 +6085,10 @@ export function useGetHarmonieDiniEpsPercentilesFeatureById<
  * @summary Get information about Harmonie DINI ("Denmark Iceland Netherlands Ireland") EPS ("Ensemble Prediction System") Means files feature collection
  */
 export const getHarmonieDiniEpsMeansCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_eps_means`,
       method: "GET",
@@ -6113,7 +6113,7 @@ export const getGetHarmonieDiniEpsMeansCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -6156,7 +6156,7 @@ export function useGetHarmonieDiniEpsMeansCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -6182,7 +6182,7 @@ export function useGetHarmonieDiniEpsMeansCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6200,7 +6200,7 @@ export function useGetHarmonieDiniEpsMeansCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6222,7 +6222,7 @@ export function useGetHarmonieDiniEpsMeansCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6246,10 +6246,10 @@ export function useGetHarmonieDiniEpsMeansCollection<
  */
 export const getHarmonieDiniEpsMeansFeatures = (
   params?: GetHarmonieDiniEpsMeansFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_eps_means/items`,
       method: "GET",
@@ -6282,7 +6282,7 @@ export const getGetHarmonieDiniEpsMeansFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -6329,7 +6329,7 @@ export function useGetHarmonieDiniEpsMeansFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -6356,7 +6356,7 @@ export function useGetHarmonieDiniEpsMeansFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6375,7 +6375,7 @@ export function useGetHarmonieDiniEpsMeansFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6398,7 +6398,7 @@ export function useGetHarmonieDiniEpsMeansFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6424,10 +6424,10 @@ export function useGetHarmonieDiniEpsMeansFeatures<
  */
 export const getHarmonieDiniEpsMeansFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/harmonie_dini_eps_means/items/${id}`,
       method: "GET",
@@ -6456,7 +6456,7 @@ export const getGetHarmonieDiniEpsMeansFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -6507,7 +6507,7 @@ export function useGetHarmonieDiniEpsMeansFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -6534,7 +6534,7 @@ export function useGetHarmonieDiniEpsMeansFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6553,7 +6553,7 @@ export function useGetHarmonieDiniEpsMeansFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6576,7 +6576,7 @@ export function useGetHarmonieDiniEpsMeansFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6601,10 +6601,10 @@ export function useGetHarmonieDiniEpsMeansFeatureById<
  * @summary Get information about DKSS WS ("Wadden Sea") files feature collection
  */
 export const getDkssWsCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     { url: `/v1/forecastdata/collections/dkss_ws`, method: "GET", signal },
     options
   );
@@ -6625,7 +6625,7 @@ export const getGetDkssWsCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -6667,7 +6667,7 @@ export function useGetDkssWsCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -6693,7 +6693,7 @@ export function useGetDkssWsCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6711,7 +6711,7 @@ export function useGetDkssWsCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6733,7 +6733,7 @@ export function useGetDkssWsCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6756,10 +6756,10 @@ export function useGetDkssWsCollection<
  */
 export const getDKSSWSFeatures = (
   params?: GetDKSSWSFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/dkss_ws/items`,
       method: "GET",
@@ -6792,7 +6792,7 @@ export const getGetDKSSWSFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -6837,7 +6837,7 @@ export function useGetDKSSWSFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -6864,7 +6864,7 @@ export function useGetDKSSWSFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6883,7 +6883,7 @@ export function useGetDKSSWSFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6906,7 +6906,7 @@ export function useGetDKSSWSFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -6929,10 +6929,10 @@ export function useGetDKSSWSFeatures<
  */
 export const getDKSSNSBFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/dkss_ws/items/${id}`,
       method: "GET",
@@ -6959,7 +6959,7 @@ export const getGetDKSSNSBFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -7009,7 +7009,7 @@ export function useGetDKSSNSBFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -7036,7 +7036,7 @@ export function useGetDKSSNSBFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7055,7 +7055,7 @@ export function useGetDKSSNSBFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7078,7 +7078,7 @@ export function useGetDKSSNSBFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7100,10 +7100,10 @@ export function useGetDKSSNSBFeatureById<
  * @summary Get information about DKSS NSBS ("North Sea Baltic Sea") files feature collection
  */
 export const getDkssNsbsCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     { url: `/v1/forecastdata/collections/dkss_nsbs`, method: "GET", signal },
     options
   );
@@ -7124,7 +7124,7 @@ export const getGetDkssNsbsCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -7166,7 +7166,7 @@ export function useGetDkssNsbsCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -7192,7 +7192,7 @@ export function useGetDkssNsbsCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7210,7 +7210,7 @@ export function useGetDkssNsbsCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7232,7 +7232,7 @@ export function useGetDkssNsbsCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7255,10 +7255,10 @@ export function useGetDkssNsbsCollection<
  */
 export const getDKSSNSBSFeatures = (
   params?: GetDKSSNSBSFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/dkss_nsbs/items`,
       method: "GET",
@@ -7291,7 +7291,7 @@ export const getGetDKSSNSBSFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -7336,7 +7336,7 @@ export function useGetDKSSNSBSFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -7363,7 +7363,7 @@ export function useGetDKSSNSBSFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7382,7 +7382,7 @@ export function useGetDKSSNSBSFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7405,7 +7405,7 @@ export function useGetDKSSNSBSFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7428,10 +7428,10 @@ export function useGetDKSSNSBSFeatures<
  */
 export const getDKSSNSBFeatureById1 = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/dkss_nsbs/items/${id}`,
       method: "GET",
@@ -7458,7 +7458,7 @@ export const getGetDKSSNSBFeatureById1QueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -7508,7 +7508,7 @@ export function useGetDKSSNSBFeatureById1<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -7535,7 +7535,7 @@ export function useGetDKSSNSBFeatureById1<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7554,7 +7554,7 @@ export function useGetDKSSNSBFeatureById1<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7577,7 +7577,7 @@ export function useGetDKSSNSBFeatureById1<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7599,10 +7599,10 @@ export function useGetDKSSNSBFeatureById1<
  * @summary Get information about DKSS LF ("Limfjord") files feature collection
  */
 export const getDkssLfCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     { url: `/v1/forecastdata/collections/dkss_lf`, method: "GET", signal },
     options
   );
@@ -7623,7 +7623,7 @@ export const getGetDkssLfCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -7665,7 +7665,7 @@ export function useGetDkssLfCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -7691,7 +7691,7 @@ export function useGetDkssLfCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7709,7 +7709,7 @@ export function useGetDkssLfCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7731,7 +7731,7 @@ export function useGetDkssLfCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7754,10 +7754,10 @@ export function useGetDkssLfCollection<
  */
 export const getDKSSLFFeatures = (
   params?: GetDKSSLFFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/dkss_lf/items`,
       method: "GET",
@@ -7790,7 +7790,7 @@ export const getGetDKSSLFFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -7835,7 +7835,7 @@ export function useGetDKSSLFFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -7862,7 +7862,7 @@ export function useGetDKSSLFFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7881,7 +7881,7 @@ export function useGetDKSSLFFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7904,7 +7904,7 @@ export function useGetDKSSLFFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -7927,10 +7927,10 @@ export function useGetDKSSLFFeatures<
  */
 export const getDKSSNSBFeatureById2 = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/dkss_lf/items/${id}`,
       method: "GET",
@@ -7957,7 +7957,7 @@ export const getGetDKSSNSBFeatureById2QueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -8007,7 +8007,7 @@ export function useGetDKSSNSBFeatureById2<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -8034,7 +8034,7 @@ export function useGetDKSSNSBFeatureById2<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8053,7 +8053,7 @@ export function useGetDKSSNSBFeatureById2<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8076,7 +8076,7 @@ export function useGetDKSSNSBFeatureById2<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8098,10 +8098,10 @@ export function useGetDKSSNSBFeatureById2<
  * @summary Get information about DKSS LB ("Little Belt") files feature collection
  */
 export const getDkssLbCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     { url: `/v1/forecastdata/collections/dkss_lb`, method: "GET", signal },
     options
   );
@@ -8122,7 +8122,7 @@ export const getGetDkssLbCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -8164,7 +8164,7 @@ export function useGetDkssLbCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -8190,7 +8190,7 @@ export function useGetDkssLbCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8208,7 +8208,7 @@ export function useGetDkssLbCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8230,7 +8230,7 @@ export function useGetDkssLbCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8253,10 +8253,10 @@ export function useGetDkssLbCollection<
  */
 export const getDKSSLBFeatures = (
   params?: GetDKSSLBFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/dkss_lb/items`,
       method: "GET",
@@ -8289,7 +8289,7 @@ export const getGetDKSSLBFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -8334,7 +8334,7 @@ export function useGetDKSSLBFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -8361,7 +8361,7 @@ export function useGetDKSSLBFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8380,7 +8380,7 @@ export function useGetDKSSLBFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8403,7 +8403,7 @@ export function useGetDKSSLBFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8426,10 +8426,10 @@ export function useGetDKSSLBFeatures<
  */
 export const getDKSSLBFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/dkss_lb/items/${id}`,
       method: "GET",
@@ -8456,7 +8456,7 @@ export const getGetDKSSLBFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -8506,7 +8506,7 @@ export function useGetDKSSLBFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -8533,7 +8533,7 @@ export function useGetDKSSLBFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8552,7 +8552,7 @@ export function useGetDKSSLBFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8575,7 +8575,7 @@ export function useGetDKSSLBFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8597,10 +8597,10 @@ export function useGetDKSSLBFeatureById<
  * @summary Get information about DKSS IF ("Roskilde/Isefjord") files feature collection
  */
 export const getDkssIfCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     { url: `/v1/forecastdata/collections/dkss_if`, method: "GET", signal },
     options
   );
@@ -8621,7 +8621,7 @@ export const getGetDkssIfCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -8663,7 +8663,7 @@ export function useGetDkssIfCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -8689,7 +8689,7 @@ export function useGetDkssIfCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8707,7 +8707,7 @@ export function useGetDkssIfCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8729,7 +8729,7 @@ export function useGetDkssIfCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8752,10 +8752,10 @@ export function useGetDkssIfCollection<
  */
 export const getDKSSIFFeatures = (
   params?: GetDKSSIFFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/dkss_if/items`,
       method: "GET",
@@ -8788,7 +8788,7 @@ export const getGetDKSSIFFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -8833,7 +8833,7 @@ export function useGetDKSSIFFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -8860,7 +8860,7 @@ export function useGetDKSSIFFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8879,7 +8879,7 @@ export function useGetDKSSIFFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8902,7 +8902,7 @@ export function useGetDKSSIFFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -8925,10 +8925,10 @@ export function useGetDKSSIFFeatures<
  */
 export const getDKSSIFFeatureById = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/dkss_if/items/${id}`,
       method: "GET",
@@ -8955,7 +8955,7 @@ export const getGetDKSSIFFeatureByIdQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -9005,7 +9005,7 @@ export function useGetDKSSIFFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -9032,7 +9032,7 @@ export function useGetDKSSIFFeatureById<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -9051,7 +9051,7 @@ export function useGetDKSSIFFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -9074,7 +9074,7 @@ export function useGetDKSSIFFeatureById<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -9096,10 +9096,10 @@ export function useGetDKSSIFFeatureById<
  * @summary Get information about DKSS IDW ("Inner Danish Waters") files feature collection
  */
 export const getDkssIdwCollection = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Collection>(
+  return dmiMutator<Collection>(
     { url: `/v1/forecastdata/collections/dkss_idw`, method: "GET", signal },
     options
   );
@@ -9120,7 +9120,7 @@ export const getGetDkssIdwCollectionQueryOptions = <
       TData
     >
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -9162,7 +9162,7 @@ export function useGetDkssIdwCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -9188,7 +9188,7 @@ export function useGetDkssIdwCollection<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -9206,7 +9206,7 @@ export function useGetDkssIdwCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -9228,7 +9228,7 @@ export function useGetDkssIdwCollection<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -9251,10 +9251,10 @@ export function useGetDkssIdwCollection<
  */
 export const getDKSSIDWFeatures = (
   params?: GetDKSSIDWFeaturesParams,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<FeatureCollection>(
+  return dmiMutator<FeatureCollection>(
     {
       url: `/v1/forecastdata/collections/dkss_idw/items`,
       method: "GET",
@@ -9287,7 +9287,7 @@ export const getGetDKSSIDWFeaturesQueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -9332,7 +9332,7 @@ export function useGetDKSSIDWFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -9359,7 +9359,7 @@ export function useGetDKSSIDWFeatures<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -9378,7 +9378,7 @@ export function useGetDKSSIDWFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -9401,7 +9401,7 @@ export function useGetDKSSIDWFeatures<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -9424,10 +9424,10 @@ export function useGetDKSSIDWFeatures<
  */
 export const getDKSSNSBFeatureById3 = (
   id: string,
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<Feature>(
+  return dmiMutator<Feature>(
     {
       url: `/v1/forecastdata/collections/dkss_idw/items/${id}`,
       method: "GET",
@@ -9454,7 +9454,7 @@ export const getGetDKSSNSBFeatureById3QueryOptions = <
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   }
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
@@ -9504,7 +9504,7 @@ export function useGetDKSSNSBFeatureById3<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -9531,7 +9531,7 @@ export function useGetDKSSNSBFeatureById3<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -9550,7 +9550,7 @@ export function useGetDKSSNSBFeatureById3<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -9573,7 +9573,7 @@ export function useGetDKSSNSBFeatureById3<
         TData
       >
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -9595,10 +9595,10 @@ export function useGetDKSSNSBFeatureById3<
  * @summary Landing page for service
  */
 export const getLandingPage = (
-  options?: SecondParameter<typeof customInstance>,
+  options?: SecondParameter<typeof dmiMutator>,
   signal?: AbortSignal
 ) => {
-  return customInstance<LandingPage>(
+  return dmiMutator<LandingPage>(
     { url: `/v1/forecastdata/`, method: "GET", signal },
     options
   );
@@ -9615,7 +9615,7 @@ export const getGetLandingPageQueryOptions = <
   query?: Partial<
     UseQueryOptions<Awaited<ReturnType<typeof getLandingPage>>, TError, TData>
   >;
-  request?: SecondParameter<typeof customInstance>;
+  request?: SecondParameter<typeof dmiMutator>;
 }) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -9653,7 +9653,7 @@ export function useGetLandingPage<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & {
@@ -9675,7 +9675,7 @@ export function useGetLandingPage<
         >,
         "initialData"
       >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -9689,7 +9689,7 @@ export function useGetLandingPage<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getLandingPage>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
@@ -9707,7 +9707,7 @@ export function useGetLandingPage<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getLandingPage>>, TError, TData>
     >;
-    request?: SecondParameter<typeof customInstance>;
+    request?: SecondParameter<typeof dmiMutator>;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & {
