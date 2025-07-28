@@ -22,7 +22,7 @@ export default function WindCard({
   pressure,
   pressureTrend,
   location,
-  timestamp,
+  timestamp
 }: WindCardProps) {
   const getWindDirectionName = (degrees: number): string => {
     const directions = [
@@ -41,7 +41,7 @@ export default function WindCard({
       "W",
       "WNW",
       "NW",
-      "NNW",
+      "NNW"
     ];
     const index = Math.round(degrees / 22.5) % 16;
     return directions[index];
@@ -78,7 +78,7 @@ export default function WindCard({
       "Strong gale",
       "Storm",
       "Violent storm",
-      "Hurricane",
+      "Hurricane"
     ];
     return descriptions[Math.min(scale, 12)] || "Extreme";
   };

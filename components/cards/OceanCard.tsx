@@ -23,13 +23,13 @@ export default function OceanCard({
   currentSpeed,
   currentDirection,
   tideHeight,
-  visibility,
+  visibility
 }: OceanCardProps) {
   const formatTime = (isoString?: string) => {
     if (!isoString) return "N/A";
     return new Date(isoString).toLocaleTimeString("en-US", {
       hour: "2-digit",
-      minute: "2-digit",
+      minute: "2-digit"
     });
   };
 

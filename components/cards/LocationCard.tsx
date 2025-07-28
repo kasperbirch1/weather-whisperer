@@ -12,7 +12,7 @@ interface LocationCardProps {
 
 export default function LocationCard({
   locationName,
-  coords,
+  coords
 }: LocationCardProps) {
   return (
     <article className="p-8 bg-white rounded-xl shadow-lg border border-gray-200">

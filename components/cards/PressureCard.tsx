@@ -19,13 +19,13 @@ export default function PressureCard({
   station,
   altitude,
   location,
-  timestamp,
+  timestamp
 }: PressureCardProps) {
   const formatTime = (isoString?: string) => {
     if (!isoString) return "N/A";
     return new Date(isoString).toLocaleTimeString("en-US", {
       hour: "2-digit",
-      minute: "2-digit",
+      minute: "2-digit"
     });
   };
 

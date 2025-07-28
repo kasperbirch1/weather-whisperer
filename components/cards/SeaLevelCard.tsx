@@ -26,13 +26,13 @@ export default function SeaLevelCard({
   residual,
   trend,
   highTide,
-  lowTide,
+  lowTide
 }: SeaLevelCardProps) {
   const formatTime = (isoString?: string) => {
     if (!isoString) return "N/A";
     return new Date(isoString).toLocaleTimeString("en-US", {
       hour: "2-digit",
-      minute: "2-digit",
+      minute: "2-digit"
     });
   };
 

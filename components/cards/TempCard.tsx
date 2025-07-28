@@ -27,7 +27,7 @@ export default function TempCard({
   uvIndex,
   cloudCover,
   location,
-  timestamp,
+  timestamp
 }: TempCardProps) {
   const formatValue = (
     value: number | undefined,

@@ -29,13 +29,13 @@ export default function LightningCard({
   areaStrikeCount,
   riskLevel,
   electricFieldStrength,
-  stormMovement,
+  stormMovement
 }: LightningCardProps) {
   const formatTime = (isoString?: string) => {
     if (!isoString) return "N/A";
     return new Date(isoString).toLocaleTimeString("en-US", {
       hour: "2-digit",
-      minute: "2-digit",
+      minute: "2-digit"
     });
   };
 
