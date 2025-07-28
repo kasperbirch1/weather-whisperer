@@ -1,4 +1,4 @@
-interface OceanCardProps {
+export interface OceanCardProps {
   apiName: string;
   location?: string;
   timestamp?: string;

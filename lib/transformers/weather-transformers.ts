@@ -13,16 +13,13 @@ import type { ForecastResponse as DMIForecastResponse } from "@/generated/dmi-sc
 import type { TempCardProps } from "@/components/cards/TempCard";
 import type { WindCardProps } from "@/components/cards/WindCard";
 import type { ForecastCardProps } from "@/components/cards/ForecastCard";
-
-// Type aliases for better naming consistency
-export type NormalizedTemperatureData = TempCardProps;
-export type NormalizedWindData = WindCardProps;
-export type NormalizedForecastData = ForecastCardProps;
+import type { OceanCardProps } from "@/components/cards/OceanCard";
+import type { SeaLevelCardProps } from "@/components/cards/SeaLevelCard";
 
 // OpenWeather transformers
 export function transformOpenWeatherTemperature(
   data: CurrentWeatherResponse
-): NormalizedTemperatureData {
+): TempCardProps {
   const fallbackLocation =
     data.coord?.lat && data.coord?.lon
       ? `${data.coord.lat.toFixed(3)}°N, ${data.coord.lon.toFixed(3)}°E`
@@ -45,7 +42,7 @@ export function transformOpenWeatherTemperature(
 
 export function transformOpenWeatherWind(
   data: CurrentWeatherResponse
-): NormalizedWindData {
+): WindCardProps {
   const fallbackLocation =
     data.coord?.lat && data.coord?.lon
       ? `${data.coord.lat.toFixed(3)}°N, ${data.coord.lon.toFixed(3)}°E`
@@ -66,7 +63,7 @@ export function transformOpenWeatherWind(
 
 export function transformOpenWeatherForecast(
   data: ForecastResponse
-): NormalizedForecastData {
+): ForecastCardProps {
   const today = data.list?.[0];
   const tomorrow =
     data.list?.find(
@@ -102,7 +99,7 @@ export function transformOpenWeatherForecast(
 // WeatherAPI transformers
 export function transformWeatherAPITemperature(
   data: RealtimeWeather200One
-): NormalizedTemperatureData {
+): TempCardProps {
   const fallbackLocation =
     data.location?.lat && data.location?.lon
       ? `${data.location.lat.toFixed(3)}°N, ${data.location.lon.toFixed(3)}°E`
@@ -125,7 +122,7 @@ export function transformWeatherAPITemperature(
 
 export function transformWeatherAPIWind(
   data: RealtimeWeather200One
-): NormalizedWindData {
+): WindCardProps {
   const fallbackLocation =
     data.location?.lat && data.location?.lon
       ? `${data.location.lat.toFixed(3)}°N, ${data.location.lon.toFixed(3)}°E`
@@ -146,7 +143,7 @@ export function transformWeatherAPIWind(
 
 export function transformWeatherAPIForecast(
   data: ForecastWeather200One
-): NormalizedForecastData {
+): ForecastCardProps {
   const today = data.forecast?.forecastday?.[0];
   const tomorrow = data.forecast?.forecastday?.[1];
   const fallbackLocation =
@@ -179,8 +176,8 @@ export function transformWeatherAPIForecast(
 export function transformDMITemperature(
   data: MetObservationResponse,
   coords: Coordinates
-): NormalizedTemperatureData {
-  const feature = data.features?.[0];
+): TempCardProps {
+  const feature = data?.features?.[0];
   return {
     apiName: "DMI",
     temperature: feature?.properties?.value || 0,
@@ -195,7 +192,7 @@ export function transformDMIWind(
   windSpeedData: MetObservationResponse,
   windDirData: MetObservationResponse | undefined,
   coords: Coordinates
-): NormalizedWindData {
+): WindCardProps {
   const windSpeedFeature = windSpeedData.features?.[0];
   const windDirFeature = windDirData?.features?.[0];
 
@@ -214,14 +211,14 @@ export function transformDMIWind(
 export function transformDMIForecast(
   data: DMIForecastResponse,
   coords: Coordinates
-): NormalizedForecastData {
+): ForecastCardProps {
   // DMI marine forecast doesn't provide traditional daily forecasts,
   // so we'll create a simplified forecast based on current marine conditions
-  const waterTemp = data.ranges?.["water-temperature"]?.values?.[0];
-  const windU = data.ranges?.["wind-u"]?.values?.[0];
-  const windV = data.ranges?.["wind-v"]?.values?.[0];
-  const windSpeed =
-    windU && windV ? Math.sqrt(windU * windU + windV * windV) : undefined;
+  // Provide fallback values if data or ranges are missing
+  const waterTemp = data?.ranges?.["water-temperature"]?.values?.[0];
+  const windU = data?.ranges?.["wind-u"]?.values?.[0];
+  const windV = data?.ranges?.["wind-v"]?.values?.[0];
+  const windSpeed = windU && windV ? Math.sqrt(windU * windU + windV * windV) : undefined;
 
   return {
     apiName: "DMI (Danish Meteorological Institute)",
@@ -235,6 +232,40 @@ export function transformDMIForecast(
     tomorrowDescription: `Marine forecast - ${windSpeed ? `Wind ${Math.round(windSpeed * 10) / 10} m/s` : "Calm"}`,
     tomorrowPrecipChance: 0,
     location: `Marine Station (${coords.lat.toFixed(3)}°N, ${coords.lon.toFixed(3)}°E)`,
-    timestamp: data.domain?.axes?.t?.values?.[0] || new Date().toISOString()
+    timestamp: data?.domain?.axes?.t?.values?.[0] || new Date().toISOString()
+  };
+}
+
+// DMI Ocean transformer
+export function transformDMIOcean(
+  data: MetObservationResponse,
+  coords: Coordinates
+): OceanCardProps {
+  const feature = data?.features?.[0];
+  const props = feature?.properties;
+
+  return {
+    apiName: "DMI Ocean",
+    waveHeight: typeof props?.value === 'number' ? props.value : undefined,
+    waterTemperature: typeof props?.temp === 'number' ? props.temp : undefined,
+    salinity: typeof props?.salinity === 'number' ? props.salinity : undefined,
+    location: props?.stationId || `DMI Ocean Station (${coords.lat.toFixed(3)}°N, ${coords.lon.toFixed(3)}°E)`,
+    timestamp: props?.observed || new Date().toISOString()
+  };
+}
+
+// DMI Sea Level transformer
+export function transformDMISeaLevel(
+  data: MetObservationResponse,
+  coords: Coordinates
+): SeaLevelCardProps {
+  const feature = data?.features?.[0];
+  const props = feature?.properties;
+
+  return {
+    apiName: "DMI Sea Level",
+    seaLevel: typeof props?.value === 'number' ? props.value : 0,
+    location: props?.stationId || `DMI Station (${coords.lat.toFixed(3)}°N, ${coords.lon.toFixed(3)}°E)`,
+    timestamp: props?.observed || new Date().toISOString()
   };
 }

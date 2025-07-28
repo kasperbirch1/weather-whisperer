@@ -1,4 +1,4 @@
-interface SeaLevelCardProps {
+export interface SeaLevelCardProps {
   apiName: string;
   seaLevel: number; // in cm
   location?: string;
