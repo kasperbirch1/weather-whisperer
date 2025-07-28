@@ -1,0 +1,427 @@
+openapi: 3.0.0
+info:
+  title: DMI (Danish Meteorological Institute) API
+  description: Weather, ocean, lightning, climate and forecast data from DMI
+  version: 2.0.0
+  contact:
+    url: https://www.dmi.dk/
+servers:
+  - url: https://dmigw.govcloud.dk/v2
+    description: DMI API Gateway v2
+  - url: https://dmigw.govcloud.dk/v1
+    description: DMI API Gateway v1
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  # Ocean Observations
+  /oceanObs/collections/observation/items:
+    get:
+      summary: Get ocean observations
+      description: Access ocean observation data including water temperature, wave height, and salinity
+      operationId: getOceanObservations
+      tags:
+        - Ocean
+      parameters:
+        - name: bbox
+          in: query
+          schema:
+            type: string
+          description: Bounding box (lon1,lat1,lon2,lat2)
+          example: "12.4,55.6,12.6,55.8"
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+          description: Maximum number of results
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OceanObservationResponse"
+
+  # Meteorological Observations
+  /metObs/collections/observation/items:
+    get:
+      summary: Get meteorological observations
+      description: Access weather observation data including temperature, wind, pressure, humidity
+      operationId: getMetObservations
+      tags:
+        - Meteorology
+      parameters:
+        - name: parameterId
+          in: query
+          schema:
+            type: string
+            enum: [temp_dry, wind_speed, wind_dir, pressure, humidity, sea_reg]
+          description: Parameter to observe
+        - name: bbox
+          in: query
+          schema:
+            type: string
+          description: Bounding box (lon1,lat1,lon2,lat2)
+          example: "12.4,55.6,12.6,55.8"
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+          description: Maximum number of results
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MetObservationResponse"
+
+  # Lightning Data
+  /lightningdata/collections/observation/items:
+    get:
+      summary: Get lightning strike data
+      description: Access lightning strike observations with location and intensity
+      operationId: getLightningData
+      tags:
+        - Lightning
+      parameters:
+        - name: bbox
+          in: query
+          schema:
+            type: string
+          description: Bounding box (lon1,lat1,lon2,lat2)
+          example: "12.0,55.0,13.0,56.0"
+        - name: datetime
+          in: query
+          schema:
+            type: string
+          description: Time range in ISO format
+          example: "2024-01-01T00:00:00Z/.."
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+          description: Maximum number of results
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LightningDataResponse"
+
+  # Climate Data
+  /climateData/collections/observation/items:
+    get:
+      summary: Get climate data
+      description: Access historical climate data
+      operationId: getClimateData
+      tags:
+        - Climate
+      parameters:
+        - name: parameterId
+          in: query
+          schema:
+            type: string
+          description: Climate parameter identifier
+        - name: stationId
+          in: query
+          schema:
+            type: string
+          description: Weather station identifier
+        - name: datetime
+          in: query
+          schema:
+            type: string
+          description: Time range in ISO format
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClimateDataResponse"
+
+  # Forecast Data (v1 endpoint)
+  /forecastedr/collections/{collection}/position:
+    servers:
+      - url: https://dmigw.govcloud.dk/v1
+    get:
+      summary: Get forecast data by position
+      description: Access weather forecast data for specific coordinates
+      operationId: getForecastByPosition
+      tags:
+        - Forecast
+      parameters:
+        - name: collection
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [dkss_nsbs, dkss_idw]
+          description: Forecast collection identifier
+        - name: coords
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Point coordinates in WKT format
+          example: "POINT(12.5683%2055.6761)"
+        - name: parameter-name
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Comma-separated list of parameters
+          example: "wind-u,wind-v,water-temperature,sea-mean-deviation"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForecastResponse"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Gravitee-Api-Key
+
+  schemas:
+    # Base GeoJSON Feature Collection
+    FeatureCollection:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [FeatureCollection]
+        features:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+
+    Feature:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [Feature]
+        geometry:
+          $ref: "#/components/schemas/Geometry"
+        properties:
+          type: object
+
+    Geometry:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [Point]
+        coordinates:
+          type: array
+          items:
+            type: number
+          minItems: 2
+          maxItems: 2
+
+    # Ocean Observations
+    OceanObservationResponse:
+      allOf:
+        - $ref: "#/components/schemas/FeatureCollection"
+        - type: object
+          properties:
+            features:
+              type: array
+              items:
+                $ref: "#/components/schemas/OceanFeature"
+
+    OceanFeature:
+      allOf:
+        - $ref: "#/components/schemas/Feature"
+        - type: object
+          properties:
+            properties:
+              $ref: "#/components/schemas/OceanProperties"
+
+    OceanProperties:
+      type: object
+      properties:
+        stationId:
+          type: string
+          description: Station identifier
+        observed:
+          type: string
+          format: date-time
+          description: Observation timestamp
+        value:
+          type: number
+          description: Wave height in meters
+        temp:
+          type: number
+          description: Water temperature in Celsius
+        salinity:
+          type: number
+          description: Water salinity
+
+    # Meteorological Observations
+    MetObservationResponse:
+      allOf:
+        - $ref: "#/components/schemas/FeatureCollection"
+        - type: object
+          properties:
+            features:
+              type: array
+              items:
+                $ref: "#/components/schemas/MetFeature"
+
+    MetFeature:
+      allOf:
+        - $ref: "#/components/schemas/Feature"
+        - type: object
+          properties:
+            properties:
+              $ref: "#/components/schemas/MetProperties"
+
+    MetProperties:
+      type: object
+      properties:
+        stationId:
+          type: string
+          description: Station identifier
+        observed:
+          type: string
+          format: date-time
+          description: Observation timestamp
+        value:
+          type: number
+          description: Observed value (units depend on parameter)
+        parameterId:
+          type: string
+          description: Parameter identifier
+
+    # Lightning Data
+    LightningDataResponse:
+      allOf:
+        - $ref: "#/components/schemas/FeatureCollection"
+        - type: object
+          properties:
+            features:
+              type: array
+              items:
+                $ref: "#/components/schemas/LightningFeature"
+
+    LightningFeature:
+      allOf:
+        - $ref: "#/components/schemas/Feature"
+        - type: object
+          properties:
+            properties:
+              $ref: "#/components/schemas/LightningProperties"
+
+    LightningProperties:
+      type: object
+      properties:
+        observed:
+          type: string
+          format: date-time
+          description: Lightning strike timestamp
+        value:
+          type: number
+          description: Lightning intensity
+        distance:
+          type: number
+          description: Distance from observation point
+
+    # Climate Data
+    ClimateDataResponse:
+      allOf:
+        - $ref: "#/components/schemas/FeatureCollection"
+        - type: object
+          properties:
+            features:
+              type: array
+              items:
+                $ref: "#/components/schemas/ClimateFeature"
+
+    ClimateFeature:
+      allOf:
+        - $ref: "#/components/schemas/Feature"
+        - type: object
+          properties:
+            properties:
+              $ref: "#/components/schemas/ClimateProperties"
+
+    ClimateProperties:
+      type: object
+      properties:
+        stationId:
+          type: string
+          description: Station identifier
+        observed:
+          type: string
+          format: date-time
+          description: Observation timestamp
+        value:
+          type: number
+          description: Observed value
+        parameterId:
+          type: string
+          description: Parameter identifier
+
+    # Forecast Data
+    ForecastResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [Coverage]
+        domain:
+          $ref: "#/components/schemas/ForecastDomain"
+        ranges:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/ForecastRange"
+
+    ForecastDomain:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [Domain]
+        axes:
+          type: object
+          properties:
+            t:
+              type: object
+              properties:
+                values:
+                  type: array
+                  items:
+                    type: string
+                    format: date-time
+                  description: Time values for forecast
+
+    ForecastRange:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [NdArray]
+        dataType:
+          type: string
+        shape:
+          type: array
+          items:
+            type: integer
+        values:
+          type: array
+          items:
+            type: number
+            nullable: true
+          description: Forecast values (null for missing data)

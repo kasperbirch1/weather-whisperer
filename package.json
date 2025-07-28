@@ -6,9 +6,19 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate:api": "orval",
+    "generate:openweather": "orval --config orval.config.js openweather",
+    "generate:weatherapi": "orval --config orval.config.js weatherapi",
+    "generate:dmi": "orval --config orval.config.js dmi",
+    "generate:dmi-forecast": "curl -s -H 'Accept: application/vnd.oai.openapi+json;version=3.0' https://dmigw.govcloud.dk/v1/forecastdata/api -o /tmp/dmi-forecast.json && orval --config orval.config.js dmi-forecast && rm -f /tmp/dmi-forecast.json",
+    "generate:dmi-radar": "curl -s -H 'Accept: application/vnd.oai.openapi+json;version=3.0' https://dmigw.govcloud.dk/v1/radardata/api -o /tmp/dmi-radar.json && orval --config orval.config.js dmi-radar && rm -f /tmp/dmi-radar.json",
+    "generate:dmi-all": "yarn generate:dmi && yarn generate:dmi-forecast && yarn generate:dmi-radar",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.83.0",
     "next": "15.4.4",
     "react": "19.1.0",
     "react-dom": "19.1.0"
@@ -21,7 +31,20 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.4.4",
+    "orval": "^7.10.0",
+    "prettier": "^3.6.2",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "prettier": {
+    "semi": true,
+    "trailingComma": "none",
+    "singleQuote": false,
+    "printWidth": 80,
+    "tabWidth": 2,
+    "useTabs": false,
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "always"
   }
 }

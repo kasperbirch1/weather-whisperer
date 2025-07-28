@@ -1,0 +1,277 @@
+openapi: 3.0.0
+info:
+  title: OpenWeatherMap API
+  description: Weather data API
+  version: 2.5.0
+  contact:
+    url: https://openweathermap.org/api
+servers:
+  - url: https://api.openweathermap.org/data/2.5
+    description: OpenWeatherMap API server
+
+paths:
+  /weather:
+    get:
+      summary: Get current weather data
+      description: Access current weather data for any location
+      operationId: getCurrentWeather
+      parameters:
+        - name: lat
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+          description: Latitude
+        - name: lon
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+          description: Longitude
+        - name: appid
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Your unique API key
+        - name: units
+          in: query
+          schema:
+            type: string
+            enum: [standard, metric, imperial]
+            default: standard
+          description: Units of measurement
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurrentWeatherResponse"
+        "401":
+          description: Invalid API key
+        "404":
+          description: Location not found
+
+  /forecast:
+    get:
+      summary: Get 5 day weather forecast
+      description: 5 day forecast with 3 hour step
+      operationId: getForecast
+      parameters:
+        - name: lat
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+          description: Latitude
+        - name: lon
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+          description: Longitude
+        - name: appid
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Your unique API key
+        - name: units
+          in: query
+          schema:
+            type: string
+            enum: [standard, metric, imperial]
+            default: standard
+          description: Units of measurement
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForecastResponse"
+
+components:
+  schemas:
+    CurrentWeatherResponse:
+      type: object
+      properties:
+        coord:
+          $ref: "#/components/schemas/Coord"
+        weather:
+          type: array
+          items:
+            $ref: "#/components/schemas/Weather"
+        base:
+          type: string
+        main:
+          $ref: "#/components/schemas/Main"
+        visibility:
+          type: integer
+        wind:
+          $ref: "#/components/schemas/Wind"
+        clouds:
+          $ref: "#/components/schemas/Clouds"
+        dt:
+          type: integer
+          description: Time of data calculation, unix, UTC
+        sys:
+          $ref: "#/components/schemas/Sys"
+        timezone:
+          type: integer
+        id:
+          type: integer
+        name:
+          type: string
+        cod:
+          type: integer
+
+    ForecastResponse:
+      type: object
+      properties:
+        cod:
+          type: string
+        message:
+          type: integer
+        cnt:
+          type: integer
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/ForecastItem"
+        city:
+          $ref: "#/components/schemas/City"
+
+    ForecastItem:
+      type: object
+      properties:
+        dt:
+          type: integer
+        main:
+          $ref: "#/components/schemas/Main"
+        weather:
+          type: array
+          items:
+            $ref: "#/components/schemas/Weather"
+        clouds:
+          $ref: "#/components/schemas/Clouds"
+        wind:
+          $ref: "#/components/schemas/Wind"
+        visibility:
+          type: integer
+        pop:
+          type: number
+          description: Probability of precipitation
+        sys:
+          type: object
+          properties:
+            pod:
+              type: string
+              description: Part of the day (n - night, d - day)
+        dt_txt:
+          type: string
+          description: Time of data forecasted, ISO, UTC
+
+    Coord:
+      type: object
+      properties:
+        lon:
+          type: number
+          format: float
+        lat:
+          type: number
+          format: float
+
+    Weather:
+      type: object
+      properties:
+        id:
+          type: integer
+        main:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+
+    Main:
+      type: object
+      properties:
+        temp:
+          type: number
+          format: float
+        feels_like:
+          type: number
+          format: float
+        temp_min:
+          type: number
+          format: float
+        temp_max:
+          type: number
+          format: float
+        pressure:
+          type: integer
+        humidity:
+          type: integer
+        sea_level:
+          type: integer
+        grnd_level:
+          type: integer
+
+    Wind:
+      type: object
+      properties:
+        speed:
+          type: number
+          format: float
+        deg:
+          type: integer
+        gust:
+          type: number
+          format: float
+
+    Clouds:
+      type: object
+      properties:
+        all:
+          type: integer
+          description: Cloudiness percentage
+
+    Sys:
+      type: object
+      properties:
+        type:
+          type: integer
+        id:
+          type: integer
+        country:
+          type: string
+        sunrise:
+          type: integer
+        sunset:
+          type: integer
+
+    City:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        coord:
+          $ref: "#/components/schemas/Coord"
+        country:
+          type: string
+        population:
+          type: integer
+        timezone:
+          type: integer
+        sunrise:
+          type: integer
+        sunset:
+          type: integer
