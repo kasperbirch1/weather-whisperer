@@ -31,7 +31,7 @@ async function DMIWindContent({ coords }: DMIWindCardProps) {
     ]);
 
     // Transform data to normalized format
-    const normalizedData = transformDMIWind(windSpeedData, windDirData, coords);
+    const normalizedData = transformDMIWind(windSpeedData, windDirData);
 
     return (
       <WindCard

@@ -25,7 +25,7 @@ async function DMISeaLevelContent({ coords }: DMISeaLevelCardProps) {
     });
 
     // Transform data to normalized format
-    const normalizedData = transformDMISeaLevel(response, coords);
+    const normalizedData = transformDMISeaLevel(response);
 
     return (
       <SeaLevelCard

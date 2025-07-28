@@ -23,7 +23,7 @@ async function DMIOceanContent({ coords }: DMIOceanCardProps) {
     });
 
     // Transform data to normalized format
-    const normalizedData = transformDMIOcean(data, coords);
+    const normalizedData = transformDMIOcean(data);
 
     return (
       <OceanCard

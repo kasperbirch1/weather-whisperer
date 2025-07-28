@@ -3,7 +3,10 @@ import TempCard from "@/components/cards/TempCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getMetObservations } from "@/generated/dmi";
 import { Coordinates } from "@/lib/types";
-import { transformDMITemperature, transformWeatherError } from "@/lib/transformers";
+import {
+  transformDMITemperature,
+  transformWeatherError
+} from "@/lib/transformers";
 
 interface DMITempCardProps {
   coords: Coordinates;
@@ -24,7 +27,7 @@ async function DMITempContent({ coords }: DMITempCardProps) {
     });
 
     // Transform data to normalized format
-    const normalizedData = transformDMITemperature(data, coords);
+    const normalizedData = transformDMITemperature(data);
 
     return (
       <TempCard

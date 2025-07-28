@@ -19,7 +19,7 @@ async function DMIForecastContent({ coords }: DMIForecastCardProps) {
     });
 
     // Transform data to normalized format
-    const normalizedData = transformDMIForecast(data, coords);
+    const normalizedData = transformDMIForecast(data);
 
     return (
       <ForecastCard
