@@ -3,6 +3,7 @@ import SeaLevelCard from "@/components/cards/SeaLevelCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { Coordinates } from "@/lib/types";
 import { getMetObservations } from "@/generated/dmi";
+import { transformDMISeaLevel, transformWeatherError } from "@/lib/transformers";
 
 interface DMISeaLevelCardProps {
   coords: Coordinates;
@@ -23,38 +24,21 @@ async function DMISeaLevelContent({ coords }: DMISeaLevelCardProps) {
       limit: 20 // Get multiple stations to find the best match
     });
 
-    // Look for sea level measurements in the response
-    // Sea level data might be mixed with other meteorological data
-    const feature =
-      response.features && response.features.length > 0
-        ? response.features[0]
-        : null;
+    // Transform data to normalized format
+    const normalizedData = transformDMISeaLevel(response, coords);
 
-    if (feature && feature.properties) {
-      const dmiSeaLevelData = {
-        seaLevel: feature.properties.value || 0,
-        location: feature.properties.stationId || "DMI Station",
-        timestamp: feature.properties.observed || new Date().toISOString()
-      };
-
-      return (
-        <SeaLevelCard
-          apiName="DMI Sea Level"
-          seaLevel={dmiSeaLevelData.seaLevel}
-          location={dmiSeaLevelData.location}
-          timestamp={dmiSeaLevelData.timestamp}
-        />
-      );
-    }
-  } catch {}
-
-  return (
-    <NoDataCard
-      icon="📏"
-      title="No Sea Level Data"
-      description="No sea level measurements available from DMI"
-    />
-  );
+    return (
+      <SeaLevelCard
+        apiName={normalizedData.apiName}
+        seaLevel={normalizedData.seaLevel}
+        location={normalizedData.location}
+        timestamp={normalizedData.timestamp}
+      />
+    );
+  } catch (error) {
+    const errorProps = transformWeatherError(error, "sea-level", "DMI");
+    return <NoDataCard {...errorProps} />;
+  }
 }
 
 function DMISeaLevelSkeleton() {

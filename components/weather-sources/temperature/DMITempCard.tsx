@@ -3,7 +3,7 @@ import TempCard from "@/components/cards/TempCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getMetObservations } from "@/generated/dmi";
 import { Coordinates } from "@/lib/types";
-import { transformDMITemperature } from "@/lib/transformers";
+import { transformDMITemperature, transformWeatherError } from "@/lib/transformers";
 
 interface DMITempCardProps {
   coords: Coordinates;
@@ -23,16 +23,6 @@ async function DMITempContent({ coords }: DMITempCardProps) {
       limit: 10
     });
 
-    if (!data || !data.features || data.features.length === 0) {
-      return (
-        <NoDataCard
-          icon="🌡️"
-          title="No DMI Temperature Data"
-          description="No temperature measurements available from DMI"
-        />
-      );
-    }
-
     // Transform data to normalized format
     const normalizedData = transformDMITemperature(data, coords);
 
@@ -50,28 +40,8 @@ async function DMITempContent({ coords }: DMITempCardProps) {
       />
     );
   } catch (error) {
-    console.error("DMI Temperature Error:", error);
-
-    // Handle specific error types
-    if (error instanceof Error && error.message.includes("429")) {
-      return (
-        <NoDataCard
-          icon="🌡️"
-          title="DMI API Rate Limited"
-          description="DMI API is currently rate limited. Please try again later."
-          badge={{ text: "Rate Limited", color: "yellow" }}
-        />
-      );
-    }
-
-    return (
-      <NoDataCard
-        icon="🌡️"
-        title="No DMI Temperature Data"
-        description="Unable to fetch data from DMI API"
-        badge={{ text: "API Error", color: "red" }}
-      />
-    );
+    const errorProps = transformWeatherError(error, "temperature", "DMI");
+    return <NoDataCard {...errorProps} />;
   }
 }
 

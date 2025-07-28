@@ -3,7 +3,7 @@ import WindCard from "@/components/cards/WindCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getMetObservations } from "@/generated/dmi";
 import { Coordinates } from "@/lib/types";
-import { transformDMIWind } from "@/lib/transformers";
+import { transformDMIWind, transformWeatherError } from "@/lib/transformers";
 
 interface DMIWindCardProps {
   coords: Coordinates;
@@ -30,17 +30,6 @@ async function DMIWindContent({ coords }: DMIWindCardProps) {
       })
     ]);
 
-    // Check if we have any wind data
-    if (!windSpeedData?.features?.length && !windDirData?.features?.length) {
-      return (
-        <NoDataCard
-          icon="💨"
-          title="No DMI Wind Data"
-          description="No wind measurements available from DMI"
-        />
-      );
-    }
-
     // Transform data to normalized format
     const normalizedData = transformDMIWind(windSpeedData, windDirData, coords);
 
@@ -56,28 +45,8 @@ async function DMIWindContent({ coords }: DMIWindCardProps) {
       />
     );
   } catch (error) {
-    console.error("DMI Wind Error:", error);
-
-    // Handle specific error types
-    if (error instanceof Error && error.message.includes("429")) {
-      return (
-        <NoDataCard
-          icon="💨"
-          title="DMI API Rate Limited"
-          description="DMI API is currently rate limited. Please try again later."
-          badge={{ text: "Rate Limited", color: "yellow" }}
-        />
-      );
-    }
-
-    return (
-      <NoDataCard
-        icon="💨"
-        title="No DMI Wind Data"
-        description="Unable to fetch wind data from DMI API"
-        badge={{ text: "API Error", color: "red" }}
-      />
-    );
+    const errorProps = transformWeatherError(error, "wind", "DMI");
+    return <NoDataCard {...errorProps} />;
   }
 }
 

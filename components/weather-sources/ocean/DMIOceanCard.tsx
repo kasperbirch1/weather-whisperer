@@ -3,6 +3,7 @@ import OceanCard from "@/components/cards/OceanCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getOceanObservations } from "@/generated/dmi";
 import { Coordinates } from "@/lib/types";
+import { transformDMIOcean, transformWeatherError } from "@/lib/transformers";
 
 interface DMIOceanCardProps {
   coords: Coordinates;
@@ -21,70 +22,22 @@ async function DMIOceanContent({ coords }: DMIOceanCardProps) {
       limit: 10
     });
 
-    if (!data || !data.features || data.features.length === 0) {
-      return (
-        <NoDataCard
-          icon="🌊"
-          title="No Ocean Data Available"
-          description="No ocean measurements found for this location"
-        />
-      );
-    }
-
-    // Extract data from the first feature
-    const feature = data.features[0];
-    const props = feature.properties;
-
-    // Only return data if we have at least one valid measurement
-    if (!props || (!props.value && !props.temp && !props.salinity)) {
-      return (
-        <NoDataCard
-          icon="🌊"
-          title="No Ocean Data Available"
-          description="No ocean measurements found for this location"
-        />
-      );
-    }
-
-    const waveHeight = props.value;
-    const waterTemperature = props.temp;
-    const salinity = props.salinity;
-    const location = props.stationId || "DMI Ocean Station";
-    const timestamp = props.observed || new Date().toISOString();
+    // Transform data to normalized format
+    const normalizedData = transformDMIOcean(data, coords);
 
     return (
       <OceanCard
-        apiName="DMI Ocean"
-        waveHeight={waveHeight}
-        waterTemperature={waterTemperature}
-        salinity={salinity}
-        location={location}
-        timestamp={timestamp}
+        apiName={normalizedData.apiName}
+        waveHeight={normalizedData.waveHeight}
+        waterTemperature={normalizedData.waterTemperature}
+        salinity={normalizedData.salinity}
+        location={normalizedData.location}
+        timestamp={normalizedData.timestamp}
       />
     );
   } catch (error) {
-    console.error("DMI Ocean Error:", error);
-
-    // Handle specific error types
-    if (error instanceof Error && error.message.includes("429")) {
-      return (
-        <NoDataCard
-          icon="🌊"
-          title="DMI API Rate Limited"
-          description="DMI API is currently rate limited. Please try again later."
-          badge={{ text: "Rate Limited", color: "yellow" }}
-        />
-      );
-    }
-
-    return (
-      <NoDataCard
-        icon="🌊"
-        title="No Ocean Data Available"
-        description="Unable to fetch ocean data from DMI API"
-        badge={{ text: "API Error", color: "red" }}
-      />
-    );
+    const errorProps = transformWeatherError(error, "ocean", "DMI");
+    return <NoDataCard {...errorProps} />;
   }
 }
 

@@ -3,7 +3,7 @@ import WindCard from "@/components/cards/WindCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getCurrentWeather } from "@/generated/openweather";
 import { Coordinates } from "@/lib/types";
-import { transformOpenWeatherWind } from "@/lib/transformers";
+import { transformOpenWeatherWind, transformWeatherError } from "@/lib/transformers";
 
 interface OpenWeatherWindCardProps {
   coords: Coordinates;
@@ -20,17 +20,6 @@ async function OpenWeatherWindContent({ coords }: OpenWeatherWindCardProps) {
       units: "metric"
     });
 
-    if (!data || !data.wind) {
-      return (
-        <NoDataCard
-          icon="💨"
-          title="No OpenWeatherMap Wind Data"
-          description="No wind data available from OpenWeatherMap"
-          badge={{ text: "API Offline", color: "red" }}
-        />
-      );
-    }
-
     // Transform data to normalized format
     const normalizedData = transformOpenWeatherWind(data);
 
@@ -46,15 +35,8 @@ async function OpenWeatherWindContent({ coords }: OpenWeatherWindCardProps) {
       />
     );
   } catch (error) {
-    console.error("OpenWeatherMap Wind Error:", error);
-    return (
-      <NoDataCard
-        icon="💨"
-        title="No OpenWeatherMap Wind Data"
-        description="Unable to fetch wind data from OpenWeatherMap API"
-        badge={{ text: "API Offline", color: "red" }}
-      />
-    );
+    const errorProps = transformWeatherError(error, "wind", "OpenWeatherMap");
+    return <NoDataCard {...errorProps} />;
   }
 }
 

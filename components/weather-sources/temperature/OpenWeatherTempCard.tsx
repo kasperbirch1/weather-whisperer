@@ -3,7 +3,7 @@ import TempCard from "@/components/cards/TempCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getCurrentWeather } from "@/generated/openweather";
 import { Coordinates } from "@/lib/types";
-import { transformOpenWeatherTemperature } from "@/lib/transformers";
+import { transformOpenWeatherTemperature, transformWeatherError } from "@/lib/transformers";
 
 interface OpenWeatherTempCardProps {
   coords: Coordinates;
@@ -19,17 +19,6 @@ async function OpenWeatherTempContent({ coords }: OpenWeatherTempCardProps) {
       appid: "placeholder",
       units: "metric"
     });
-
-    if (!data || !data.main) {
-      return (
-        <NoDataCard
-          icon="🌡️"
-          title="No OpenWeatherMap Data"
-          description="No temperature data available from OpenWeatherMap"
-          badge={{ text: "API Offline", color: "red" }}
-        />
-      );
-    }
 
     // Transform data to normalized format
     const normalizedData = transformOpenWeatherTemperature(data);
@@ -47,15 +36,9 @@ async function OpenWeatherTempContent({ coords }: OpenWeatherTempCardProps) {
         timestamp={normalizedData.timestamp}
       />
     );
-  } catch {
-    return (
-      <NoDataCard
-        icon="🌡️"
-        title="No OpenWeatherMap Data"
-        description="Unable to fetch data from OpenWeatherMap API"
-        badge={{ text: "API Offline", color: "red" }}
-      />
-    );
+  } catch (error) {
+    const errorProps = transformWeatherError(error, "temperature", "OpenWeatherMap");
+    return <NoDataCard {...errorProps} />;
   }
 }
 

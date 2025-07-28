@@ -3,7 +3,7 @@ import TempCard from "@/components/cards/TempCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { realtimeWeather } from "@/generated/weatherapi";
 import { Coordinates } from "@/lib/types";
-import { transformWeatherAPITemperature } from "@/lib/transformers";
+import { transformWeatherAPITemperature, transformWeatherError } from "@/lib/transformers";
 
 interface WeatherAPITempCardProps {
   coords: Coordinates;
@@ -16,17 +16,6 @@ async function WeatherAPITempContent({ coords }: WeatherAPITempCardProps) {
     const weatherAPIData = await realtimeWeather({
       q: `${lat},${lon}`
     });
-
-    if (!weatherAPIData || !weatherAPIData.current) {
-      return (
-        <NoDataCard
-          icon="🌡️"
-          title="No WeatherAPI Data"
-          description="No temperature data available from WeatherAPI.com"
-          badge={{ text: "API Offline", color: "red" }}
-        />
-      );
-    }
 
     // Transform data to normalized format
     const normalizedData = transformWeatherAPITemperature(weatherAPIData);
@@ -45,15 +34,8 @@ async function WeatherAPITempContent({ coords }: WeatherAPITempCardProps) {
       />
     );
   } catch (error) {
-    console.error("WeatherAPI Temperature Error:", error);
-    return (
-      <NoDataCard
-        icon="🌡️"
-        title="No WeatherAPI Data"
-        description="Unable to fetch data from WeatherAPI.com"
-        badge={{ text: "API Offline", color: "red" }}
-      />
-    );
+    const errorProps = transformWeatherError(error, "temperature", "WeatherAPI");
+    return <NoDataCard {...errorProps} />;
   }
 }
 

@@ -3,7 +3,7 @@ import ForecastCard from "@/components/cards/ForecastCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { Coordinates } from "@/lib/types";
 import { forecastWeather } from "@/generated/weatherapi";
-import { transformWeatherAPIForecast } from "@/lib/transformers";
+import { transformWeatherAPIForecast, transformWeatherError } from "@/lib/transformers";
 
 interface WeatherAPIForecastCardProps {
   coords: Coordinates;
@@ -21,22 +21,6 @@ async function WeatherAPIForecastContent({
       aqi: "yes",
       alerts: "yes"
     });
-
-    // Process forecast data
-    if (
-      !data.forecast ||
-      !data.forecast.forecastday ||
-      data.forecast.forecastday.length === 0
-    ) {
-      return (
-        <NoDataCard
-          icon="🔮"
-          title="No WeatherAPI Forecast"
-          description="No forecast data available from WeatherAPI.com"
-          badge={{ text: "API Offline", color: "red" }}
-        />
-      );
-    }
 
     // Transform data to normalized format
     const normalizedData = transformWeatherAPIForecast(data);
@@ -59,17 +43,9 @@ async function WeatherAPIForecastContent({
       />
     );
   } catch (error) {
-    console.error("WeatherAPI Forecast Error:", error);
+    const errorProps = transformWeatherError(error, "forecast", "WeatherAPI");
+    return <NoDataCard {...errorProps} />;
   }
-
-  return (
-    <NoDataCard
-      icon="🔮"
-      title="No WeatherAPI Forecast"
-      description="Unable to fetch forecast from WeatherAPI.com"
-      badge={{ text: "API Offline", color: "red" }}
-    />
-  );
 }
 
 function WeatherAPIForecastSkeleton() {

@@ -3,7 +3,10 @@ import ForecastCard from "@/components/cards/ForecastCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getForecast } from "@/generated/openweather";
 import { Coordinates } from "@/lib/types";
-import { transformOpenWeatherForecast } from "@/lib/transformers";
+import {
+  transformOpenWeatherForecast,
+  transformWeatherError
+} from "@/lib/transformers";
 
 interface OpenWeatherForecastCardProps {
   coords: Coordinates;
@@ -21,17 +24,6 @@ async function OpenWeatherForecastContent({
       appid: "placeholder",
       units: "metric"
     });
-
-    if (!data || !data.list || data.list.length === 0) {
-      return (
-        <NoDataCard
-          icon="🔮"
-          title="No OpenWeatherMap Forecast"
-          description="No forecast data available from OpenWeatherMap"
-          badge={{ text: "API Offline", color: "red" }}
-        />
-      );
-    }
 
     // Transform data to normalized format
     const normalizedData = transformOpenWeatherForecast(data);
@@ -53,15 +45,9 @@ async function OpenWeatherForecastContent({
         timestamp={normalizedData.timestamp}
       />
     );
-  } catch {
-    return (
-      <NoDataCard
-        icon="🔮"
-        title="No OpenWeatherMap Forecast"
-        description="Unable to fetch forecast from OpenWeatherMap API"
-        badge={{ text: "API Offline", color: "red" }}
-      />
-    );
+  } catch (error) {
+    const errorProps = transformWeatherError(error, "forecast", "OpenWeatherMap");
+    return <NoDataCard {...errorProps} />;
   }
 }
 
