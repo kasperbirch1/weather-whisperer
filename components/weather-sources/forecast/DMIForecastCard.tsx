@@ -58,6 +58,16 @@ async function DMIForecastContent({ coords }: DMIForecastCardProps) {
     const forecastTime =
       data.domain?.axes?.t?.values?.[0] || new Date().toISOString();
 
+    // Process and extract all data first
+    const temperature = waterTemp !== null && waterTemp !== undefined
+      ? Math.round(waterTemp * 10) / 10
+      : undefined;
+    const highTemp = temperature; // Use water temp as current high
+    const lowTemp = temperature !== undefined
+      ? Math.round((waterTemp - 1) * 10) / 10
+      : undefined;
+    const location = `Danish Waters (${lat.toFixed(3)}°N, ${lon.toFixed(3)}°E)`;
+    
     // Format description with available data
     const windInfo = windSpeed
       ? ` - Wind: ${Math.round(windSpeed * 10) / 10} m/s`
@@ -71,28 +81,16 @@ async function DMIForecastContent({ coords }: DMIForecastCardProps) {
     return (
       <ForecastCard
         apiName="DMI Forecast EDR"
-        temperature={
-          waterTemp !== null && waterTemp !== undefined
-            ? Math.round(waterTemp * 10) / 10
-            : undefined
-        }
+        temperature={temperature}
         description={description}
-        highTemp={
-          waterTemp !== null && waterTemp !== undefined
-            ? Math.round(waterTemp * 10) / 10
-            : undefined
-        }
-        lowTemp={
-          waterTemp !== null && waterTemp !== undefined
-            ? Math.round((waterTemp - 1) * 10) / 10
-            : undefined
-        }
+        highTemp={highTemp}
+        lowTemp={lowTemp}
         precipitationChance={undefined} // Not available in marine forecast
         tomorrowHighTemp={undefined} // Would need separate API call
         tomorrowLowTemp={undefined}
         tomorrowDescription="Extended marine forecast available"
         tomorrowPrecipChance={undefined}
-        location={`Danish Waters (${lat.toFixed(3)}°N, ${lon.toFixed(3)}°E)`}
+        location={location}
         timestamp={forecastTime}
       />
     );
