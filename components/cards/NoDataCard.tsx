@@ -1,4 +1,4 @@
-interface NoDataCardProps {
+export interface NoDataCardProps {
   icon: string;
   title: string;
   description: string;
