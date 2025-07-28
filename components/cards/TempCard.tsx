@@ -1,4 +1,4 @@
-interface TempCardProps {
+export interface TempCardProps {
   apiName: string;
   temperature: number;
   feelsLike?: number;

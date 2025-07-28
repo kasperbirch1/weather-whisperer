@@ -1,4 +1,4 @@
-interface WindCardProps {
+export interface WindCardProps {
   apiName: string;
   windSpeed: number;
   windDirection: number;

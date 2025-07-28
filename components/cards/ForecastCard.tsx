@@ -1,4 +1,6 @@
-interface ForecastCardProps {
+import Image from "next/image";
+
+export interface ForecastCardProps {
   apiName: string;
   location?: string;
   timestamp?: string;
@@ -82,8 +84,14 @@ export default function ForecastCard({
             </div>
             {icon && (
               <div className="text-3xl" title={description}>
-                {icon.startsWith("http") ? (
-                  <img src={icon} alt={description} className="w-12 h-12" />
+                {icon.startsWith("http") || icon.startsWith("//") ? (
+                  <Image
+                    src={icon}
+                    alt={description || "Weather icon"}
+                    width={48}
+                    height={48}
+                    className="w-12 h-12"
+                  />
                 ) : (
                   <span>{icon}</span>
                 )}
