@@ -1,7 +1,7 @@
 import WeatherDataSection from "@/components/WeatherDataSection";
-import DMITempCard from "@/components/weather-sources/temp/DMITempCard";
-import OpenWeatherTempCard from "@/components/weather-sources/temp/OpenWeatherTempCard";
-import WeatherAPITempCard from "@/components/weather-sources/temp/WeatherAPITempCard";
+import DMITempCard from "@/components/weather-sources/temperature/DMITempCard";
+import OpenWeatherTempCard from "@/components/weather-sources/temperature/OpenWeatherTempCard";
+import WeatherAPITempCard from "@/components/weather-sources/temperature/WeatherAPITempCard";
 import { Coordinates } from "@/lib/types";
 
 interface TemperatureSectionProps {

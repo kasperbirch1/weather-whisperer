@@ -1,4 +1,4 @@
-import { wetherApis } from "./wether-apis";
+import { weatherApis } from "./weather-apis";
 
 // Type definitions for API responses
 interface MeteoResult {
@@ -26,10 +26,10 @@ interface ForecastRanges {
 // Helper function to fetch from OpenWeatherMap using existing API config
 export async function fetchOpenWeatherData(lat: number, lon: number) {
   try {
-    if (!wetherApis.openweather.apiKey) return null;
+    if (!weatherApis.openweather.apiKey) return null;
 
-    const url = wetherApis.openweather.getCurrentWeatherUrl(lat, lon);
-    const headers = wetherApis.openweather.getHeaders();
+    const url = weatherApis.openweather.getCurrentWeatherUrl(lat, lon);
+    const headers = weatherApis.openweather.getHeaders();
 
     const response = await fetch(url, {
       headers,
@@ -47,10 +47,10 @@ export async function fetchOpenWeatherData(lat: number, lon: number) {
 // Helper function to fetch from WeatherAPI using existing API config
 export async function fetchWeatherAPIData(lat: number, lon: number) {
   try {
-    if (!wetherApis.weatherapi.apiKey) return null;
+    if (!weatherApis.weatherapi.apiKey) return null;
 
-    const url = wetherApis.weatherapi.getCurrentWeatherUrl(lat, lon);
-    const headers = wetherApis.weatherapi.getHeaders();
+    const url = weatherApis.weatherapi.getCurrentWeatherUrl(lat, lon);
+    const headers = weatherApis.weatherapi.getHeaders();
 
     const response = await fetch(url, {
       headers,
@@ -68,11 +68,11 @@ export async function fetchWeatherAPIData(lat: number, lon: number) {
 // Helper function to fetch DMI wind data using existing API config
 export async function fetchDMIWindData(lat: number, lon: number) {
   try {
-    if (!wetherApis.dmi.meteo.apiKey) return null;
+    if (!weatherApis.dmi.meteo.apiKey) return null;
 
     // Single attempt with moderate radius
     const bbox = `${lon - 0.5},${lat - 0.5},${lon + 0.5},${lat + 0.5}`;
-    const headers = wetherApis.dmi.meteo.getHeaders();
+    const headers = weatherApis.dmi.meteo.getHeaders();
 
     let windSpeed = 0;
     let windDirection = 0;
@@ -82,7 +82,7 @@ export async function fetchDMIWindData(lat: number, lon: number) {
 
     try {
       // Fetch wind speed
-      const windSpeedUrl = wetherApis.dmi.meteo.getObservationsUrl(
+      const windSpeedUrl = weatherApis.dmi.meteo.getObservationsUrl(
         "wind_speed",
         bbox,
         10
@@ -106,7 +106,7 @@ export async function fetchDMIWindData(lat: number, lon: number) {
       // If we got wind speed, also try wind direction
       if (foundData) {
         try {
-          const windDirUrl = wetherApis.dmi.meteo.getObservationsUrl(
+          const windDirUrl = weatherApis.dmi.meteo.getObservationsUrl(
             "wind_dir",
             bbox,
             10
@@ -148,14 +148,14 @@ export async function fetchDMIWindData(lat: number, lon: number) {
 // Helper function to fetch DMI temperature data using existing API config
 export async function fetchDMITempData(lat: number, lon: number) {
   try {
-    if (!wetherApis.dmi.meteo.apiKey) return null;
+    if (!weatherApis.dmi.meteo.apiKey) return null;
 
     // Single attempt with one parameter
     const bbox = `${lon - 0.5},${lat - 0.5},${lon + 0.5},${lat + 0.5}`;
 
     try {
-      const url = wetherApis.dmi.meteo.getObservationsUrl("temp_dry", bbox, 10);
-      const headers = wetherApis.dmi.meteo.getHeaders();
+      const url = weatherApis.dmi.meteo.getObservationsUrl("temp_dry", bbox, 10);
+      const headers = weatherApis.dmi.meteo.getHeaders();
 
       const response = await fetch(url, {
         headers,
@@ -187,14 +187,14 @@ export async function fetchDMITempData(lat: number, lon: number) {
 // Helper function to fetch DMI sea level (nivå) data using existing API config
 export async function fetchDMISeaLevelData(lat: number, lon: number) {
   try {
-    if (!wetherApis.dmi.meteo.apiKey) return null;
+    if (!weatherApis.dmi.meteo.apiKey) return null;
 
     // Single attempt for sea level
     const bbox = `${lon - 1.0},${lat - 1.0},${lon + 1.0},${lat + 1.0}`;
 
     try {
-      const url = wetherApis.dmi.meteo.getObservationsUrl("sea_reg", bbox, 10);
-      const headers = wetherApis.dmi.meteo.getHeaders();
+      const url = weatherApis.dmi.meteo.getObservationsUrl("sea_reg", bbox, 10);
+      const headers = weatherApis.dmi.meteo.getHeaders();
 
       const response = await fetch(url, {
         headers,
@@ -226,7 +226,7 @@ export async function fetchDMISeaLevelData(lat: number, lon: number) {
 // Helper function to fetch comprehensive DMI meteo data
 export async function fetchDMIMeteoData(lat: number, lon: number) {
   try {
-    if (!wetherApis.dmi.meteo.apiKey) return null;
+    if (!weatherApis.dmi.meteo.apiKey) return null;
 
     const bbox = `${lon - 0.2},${lat - 0.2},${lon + 0.2},${lat + 0.2}`;
     const meteoParams = ["pressure", "humidity", "wind_dir"];
@@ -234,8 +234,8 @@ export async function fetchDMIMeteoData(lat: number, lon: number) {
 
     for (const param of meteoParams) {
       try {
-        const url = wetherApis.dmi.meteo.getObservationsUrl(param, bbox, 20);
-        const headers = wetherApis.dmi.meteo.getHeaders();
+        const url = weatherApis.dmi.meteo.getObservationsUrl(param, bbox, 20);
+        const headers = weatherApis.dmi.meteo.getHeaders();
 
         const response = await fetch(url, {
           headers,
@@ -284,12 +284,12 @@ export async function fetchDMIMeteoData(lat: number, lon: number) {
 // Helper function to fetch DMI ocean data using existing API config
 export async function fetchDMIOceanData(lat: number, lon: number) {
   try {
-    if (!wetherApis.dmi.ocean.apiKey) return null;
+    if (!weatherApis.dmi.ocean.apiKey) return null;
 
     // Single attempt for ocean data
     try {
-      const url = wetherApis.dmi.ocean.getObservationsUrl(lat, lon);
-      const headers = wetherApis.dmi.ocean.getHeaders();
+      const url = weatherApis.dmi.ocean.getObservationsUrl(lat, lon);
+      const headers = weatherApis.dmi.ocean.getHeaders();
 
       const response = await fetch(url, {
         headers,
@@ -339,7 +339,7 @@ async function tryForecastCollection(
 ): Promise<Record<string, unknown> | null> {
   const coords = `POINT(${lon}%20${lat})`;
   const parameterNames = parameters.join(",");
-  const url = `${wetherApis.dmi.forecast.url}/collections/${collection}/position?coords=${coords}&parameter-name=${parameterNames}`;
+  const url = `${weatherApis.dmi.forecast.url}/collections/${collection}/position?coords=${coords}&parameter-name=${parameterNames}`;
 
   const response = await fetch(url, {
     method: "GET",
@@ -376,7 +376,7 @@ async function tryForecastCollection(
 // Helper function to fetch DMI forecast data using existing API config (restored original)
 export async function fetchDMIForecast(lat: number, lon: number) {
   try {
-    if (!wetherApis.dmi.forecast.apiKey) return null;
+    if (!weatherApis.dmi.forecast.apiKey) return null;
 
     // Fetch wind and ocean forecast parameters most relevant to windsurfers (original parameters)
     const parameters = [
@@ -385,7 +385,7 @@ export async function fetchDMIForecast(lat: number, lon: number) {
       "sea-mean-deviation",
       "water-temperature",
     ];
-    const headers = wetherApis.dmi.forecast.getHeaders();
+    const headers = weatherApis.dmi.forecast.getHeaders();
 
     // Try both collections - NSBS (North Sea Baltic Sea) and IDW (Inner Danish Waters)
     // IDW is better for coastal/near-shore locations
@@ -455,7 +455,7 @@ export async function fetchDMIForecast(lat: number, lon: number) {
 // Helper function to fetch DMI lightning data using existing API config
 export async function fetchDMILightningData(lat: number, lon: number) {
   try {
-    if (!wetherApis.dmi.lightning.apiKey) return null;
+    if (!weatherApis.dmi.lightning.apiKey) return null;
 
     // Create a larger bounding box around the coordinates for lightning data
     const margin = 0.5; // Larger area for lightning detection
@@ -467,12 +467,12 @@ export async function fetchDMILightningData(lat: number, lon: number) {
     const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
     const datetime = `${twoHoursAgo}/..`; // From 2 hours ago to now
 
-    const url = wetherApis.dmi.lightning.getObservationsUrl(
+    const url = weatherApis.dmi.lightning.getObservationsUrl(
       bbox,
       datetime,
       100
     );
-    const headers = wetherApis.dmi.lightning.getHeaders();
+    const headers = weatherApis.dmi.lightning.getHeaders();
 
     const response = await fetch(url, {
       headers,
@@ -515,10 +515,10 @@ export async function fetchDMILightningData(lat: number, lon: number) {
 // Helper function to fetch OpenWeatherMap forecast data
 export async function fetchOpenWeatherForecast(lat: number, lon: number) {
   try {
-    if (!wetherApis.openweather.apiKey) return null;
+    if (!weatherApis.openweather.apiKey) return null;
 
-    const url = wetherApis.openweather.getForecastUrl(lat, lon);
-    const headers = wetherApis.openweather.getHeaders();
+    const url = weatherApis.openweather.getForecastUrl(lat, lon);
+    const headers = weatherApis.openweather.getHeaders();
 
     const response = await fetch(url, {
       headers,
@@ -566,10 +566,10 @@ export async function fetchOpenWeatherForecast(lat: number, lon: number) {
 // Helper function to fetch WeatherAPI forecast data
 export async function fetchWeatherAPIForecast(lat: number, lon: number) {
   try {
-    if (!wetherApis.weatherapi.apiKey) return null;
+    if (!weatherApis.weatherapi.apiKey) return null;
 
-    const url = wetherApis.weatherapi.getForecastUrl(lat, lon, 3);
-    const headers = wetherApis.weatherapi.getHeaders();
+    const url = weatherApis.weatherapi.getForecastUrl(lat, lon, 3);
+    const headers = weatherApis.weatherapi.getHeaders();
 
     const response = await fetch(url, {
       headers,

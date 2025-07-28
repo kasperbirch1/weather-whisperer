@@ -1,4 +1,4 @@
-export const wetherApis = {
+export const weatherApis = {
   dmi: {
     ocean: {
       name: "DMI Ocean",
@@ -7,11 +7,11 @@ export const wetherApis = {
       getObservationsUrl: (lat: number, lon: number) => {
         // Create a small bounding box around the coordinates (±0.1 degrees)
         const bbox = `${lon - 0.1},${lat - 0.1},${lon + 0.1},${lat + 0.1}`;
-        return `${wetherApis.dmi.ocean.url}/collections/observation/items?bbox=${bbox}&limit=50`;
+        return `${weatherApis.dmi.ocean.url}/collections/observation/items?bbox=${bbox}&limit=50`;
       },
       getHeaders: () => {
         return {
-          "X-Gravitee-Api-Key": wetherApis.dmi.ocean.apiKey || "",
+          "X-Gravitee-Api-Key": weatherApis.dmi.ocean.apiKey || "",
           "Content-Type": "application/json",
         };
       },
@@ -25,7 +25,7 @@ export const wetherApis = {
         bbox?: string,
         limit?: number
       ) => {
-        const url = `${wetherApis.dmi.meteo.url}/collections/observation/items`;
+        const url = `${weatherApis.dmi.meteo.url}/collections/observation/items`;
         const params = [];
         if (parameterId) params.push(`parameterId=${parameterId}`);
         if (bbox) params.push(`bbox=${bbox}`);
@@ -34,7 +34,7 @@ export const wetherApis = {
       },
       getHeaders: () => {
         return {
-          "X-Gravitee-Api-Key": wetherApis.dmi.meteo.apiKey || "",
+          "X-Gravitee-Api-Key": weatherApis.dmi.meteo.apiKey || "",
           "Content-Type": "application/json",
         };
       },
@@ -48,7 +48,7 @@ export const wetherApis = {
         datetime?: string,
         limit?: number
       ) => {
-        const url = `${wetherApis.dmi.lightning.url}/collections/observation/items`;
+        const url = `${weatherApis.dmi.lightning.url}/collections/observation/items`;
         const params = [];
         if (bbox) params.push(`bbox=${bbox}`);
         if (datetime) params.push(`datetime=${datetime}`);
@@ -57,7 +57,7 @@ export const wetherApis = {
       },
       getHeaders: () => {
         return {
-          "X-Gravitee-Api-Key": wetherApis.dmi.lightning.apiKey || "",
+          "X-Gravitee-Api-Key": weatherApis.dmi.lightning.apiKey || "",
           "Content-Type": "application/json",
         };
       },
@@ -71,7 +71,7 @@ export const wetherApis = {
         stationId?: string,
         datetime?: string
       ) => {
-        const url = `${wetherApis.dmi.climate.url}/collections/observation/items`;
+        const url = `${weatherApis.dmi.climate.url}/collections/observation/items`;
         const params = [];
         if (parameterId) params.push(`parameterId=${parameterId}`);
         if (stationId) params.push(`stationId=${stationId}`);
@@ -80,7 +80,7 @@ export const wetherApis = {
       },
       getHeaders: () => {
         return {
-          "X-Gravitee-Api-Key": wetherApis.dmi.climate.apiKey || "",
+          "X-Gravitee-Api-Key": weatherApis.dmi.climate.apiKey || "",
           "Content-Type": "application/json",
         };
       },
@@ -91,7 +91,7 @@ export const wetherApis = {
     //   apiKey: process.env.NEXT_PUBLIC_RADAR_API_KEY,
     //   getHeaders: () => {
     //     return {
-    //       "X-Gravitee-Api-Key": wetherApis.dmi.radar.apiKey || "",
+    //       "X-Gravitee-Api-Key": weatherApis.dmi.radar.apiKey || "",
     //       "Content-Type": "application/json",
     //     };
     //   },
@@ -103,11 +103,11 @@ export const wetherApis = {
       getPositionUrl: (lat: number, lon: number, parameters: string[]) => {
         const coords = `POINT(${lon}%20${lat})`;
         const parameterNames = parameters.join(",");
-        return `${wetherApis.dmi.forecast.url}/collections/dkss_nsbs/position?coords=${coords}&parameter-name=${parameterNames}`;
+        return `${weatherApis.dmi.forecast.url}/collections/dkss_nsbs/position?coords=${coords}&parameter-name=${parameterNames}`;
       },
       getHeaders: () => {
         return {
-          "X-Gravitee-Api-Key": wetherApis.dmi.forecast.apiKey || "",
+          "X-Gravitee-Api-Key": weatherApis.dmi.forecast.apiKey || "",
           "Content-Type": "application/json",
         };
       },
@@ -118,13 +118,13 @@ export const wetherApis = {
     url: "https://api.openweathermap.org/data/2.5",
     apiKey: process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY,
     getCurrentWeatherUrl: (lat: number, lon: number) => {
-      return `${wetherApis.openweather.url}/weather?lat=${lat}&lon=${lon}&appid=${wetherApis.openweather.apiKey}&units=metric`;
+      return `${weatherApis.openweather.url}/weather?lat=${lat}&lon=${lon}&appid=${weatherApis.openweather.apiKey}&units=metric`;
     },
     getForecastUrl: (lat: number, lon: number) => {
-      return `${wetherApis.openweather.url}/forecast?lat=${lat}&lon=${lon}&appid=${wetherApis.openweather.apiKey}&units=metric`;
+      return `${weatherApis.openweather.url}/forecast?lat=${lat}&lon=${lon}&appid=${weatherApis.openweather.apiKey}&units=metric`;
     },
     getOneCallUrl: (lat: number, lon: number) => {
-      return `${wetherApis.openweather.url}/onecall?lat=${lat}&lon=${lon}&appid=${wetherApis.openweather.apiKey}&units=metric&exclude=minutely,alerts`;
+      return `${weatherApis.openweather.url}/onecall?lat=${lat}&lon=${lon}&appid=${weatherApis.openweather.apiKey}&units=metric&exclude=minutely,alerts`;
     },
     getHeaders: () => {
       return {
@@ -138,10 +138,10 @@ export const wetherApis = {
     url: "https://api.weatherapi.com/v1",
     apiKey: process.env.NEXT_PUBLIC_WEATHERAPI_KEY,
     getCurrentWeatherUrl: (lat: number, lon: number) => {
-      return `${wetherApis.weatherapi.url}/current.json?key=${wetherApis.weatherapi.apiKey}&q=${lat},${lon}&aqi=yes`;
+      return `${weatherApis.weatherapi.url}/current.json?key=${weatherApis.weatherapi.apiKey}&q=${lat},${lon}&aqi=yes`;
     },
     getForecastUrl: (lat: number, lon: number, days: number = 3) => {
-      return `${wetherApis.weatherapi.url}/forecast.json?key=${wetherApis.weatherapi.apiKey}&q=${lat},${lon}&days=${days}&aqi=yes&alerts=yes`;
+      return `${weatherApis.weatherapi.url}/forecast.json?key=${weatherApis.weatherapi.apiKey}&q=${lat},${lon}&days=${days}&aqi=yes&alerts=yes`;
     },
     getHeaders: () => {
       return {

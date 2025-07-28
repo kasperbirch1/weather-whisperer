@@ -62,7 +62,7 @@ weather-whisperer/
 │           └── DMISeaLevelCard.tsx  # DMI sea level data
 ├── lib/                             # Core business logic
 │   ├── weather-service.ts           # API fetching functions
-│   ├── wether-apis.ts               # API endpoint configurations
+│   ├── weather-apis.ts              # API endpoint configurations
 │   ├── weather-utils.ts             # Data processing utilities
 │   └── types.ts                     # TypeScript type definitions
 ├── data/
@@ -94,7 +94,7 @@ const bbox = `${lon - 0.5},${lat - 0.5},${lon + 0.5},${lat + 0.5}`;
 // Reduces from ~34 calls per location to ~8 calls per location
 ```
 
-#### API Configuration (`wether-apis.ts`)
+#### API Configuration (`weather-apis.ts`)
 
 **Responsibility**: Centralized API endpoint and authentication management
 
@@ -442,10 +442,10 @@ DMIWindCard
 ### 4. API Call Pattern
 
 ```
-weather-service.ts functions → wether-apis.ts configurations → External APIs
-fetchDMIWindData() → wetherApis.dmi.meteo → DMI API
-fetchOpenWeatherData() → wetherApis.openweather → OpenWeatherMap API
-fetchWeatherAPIData() → wetherApis.weatherapi → WeatherAPI.com
+weather-service.ts functions → weather-apis.ts configurations → External APIs
+fetchDMIWindData() → weatherApis.dmi.meteo → DMI API
+fetchOpenWeatherData() → weatherApis.openweather → OpenWeatherMap API
+fetchWeatherAPIData() → weatherApis.weatherapi → WeatherAPI.com
 ```
 
 ## Performance Optimizations
