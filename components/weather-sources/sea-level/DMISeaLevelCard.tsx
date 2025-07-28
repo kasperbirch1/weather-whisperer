@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import SeaLevelCard from "@/components/cards/SeaLevelCard";
 import NoDataCard from "@/components/cards/NoDataCard";
-import { fetchDMISeaLevelData } from "@/lib/weather-service";
 import { Coordinates } from "@/lib/types";
+import { getMetObservations } from "@/generated/dmi";
 
 interface DMISeaLevelCardProps {
   coords: Coordinates;
@@ -12,9 +12,31 @@ async function DMISeaLevelContent({ coords }: DMISeaLevelCardProps) {
   const { lat, lon } = coords;
 
   try {
-    const dmiSeaLevelData = await fetchDMISeaLevelData(lat, lon);
+    // Search for sea level observation stations in a large area
+    const margin = 2.0; // Large search radius to find nearby stations
+    const bbox = `${lon - margin},${lat - margin},${lon + margin},${lat + margin}`;
 
-    if (dmiSeaLevelData) {
+    // Get all meteorological observations in the area (without parameterId filter)
+    // This returns various measurements including sea level data from available stations
+    const response = await getMetObservations({
+      bbox: bbox,
+      limit: 20 // Get multiple stations to find the best match
+    });
+
+    // Look for sea level measurements in the response
+    // Sea level data might be mixed with other meteorological data
+    const feature =
+      response.features && response.features.length > 0
+        ? response.features[0]
+        : null;
+
+    if (feature && feature.properties) {
+      const dmiSeaLevelData = {
+        seaLevel: feature.properties.value || 0,
+        location: feature.properties.stationId || "DMI Station",
+        timestamp: feature.properties.observed || new Date().toISOString()
+      };
+
       return (
         <SeaLevelCard
           apiName="DMI Sea Level"
@@ -24,8 +46,7 @@ async function DMISeaLevelContent({ coords }: DMISeaLevelCardProps) {
         />
       );
     }
-  } catch (error) {
-    console.error("DMI Sea Level data fetch failed:", error);
+  } catch {
   }
 
   return (

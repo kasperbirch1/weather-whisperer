@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import OceanCard from "@/components/cards/OceanCard";
 import NoDataCard from "@/components/cards/NoDataCard";
-import { fetchDMIOceanData } from "@/lib/weather-service";
+import { getOceanObservations } from "@/generated/dmi";
 import { Coordinates } from "@/lib/types";
 
 interface DMIOceanCardProps {
@@ -11,32 +11,66 @@ interface DMIOceanCardProps {
 async function DMIOceanContent({ coords }: DMIOceanCardProps) {
   const { lat, lon } = coords;
 
-  try {
-    const dmiOceanData = await fetchDMIOceanData(lat, lon);
+  // Create bounding box around the coordinates
+  const margin = 1.0; // Larger area for ocean data
+  const bbox = `${lon - margin},${lat - margin},${lon + margin},${lat + margin}`;
 
-    if (dmiOceanData) {
+  try {
+    const data = await getOceanObservations({
+      bbox,
+      limit: 10
+    });
+
+    if (!data || !data.features || data.features.length === 0) {
       return (
-        <OceanCard
-          apiName="DMI Ocean"
-          waveHeight={dmiOceanData.waveHeight}
-          waterTemperature={dmiOceanData.waterTemperature}
-          salinity={dmiOceanData.salinity}
-          location={dmiOceanData.location}
-          timestamp={dmiOceanData.timestamp}
+        <NoDataCard
+          icon="🌊"
+          title="No Ocean Data Available"
+          description="No ocean measurements found for this location"
         />
       );
     }
-  } catch (error) {
-    console.error("DMI Ocean data fetch failed:", error);
-  }
 
-  return (
-    <NoDataCard
-      icon="🌊"
-      title="No Ocean Data Available"
-      description="No ocean measurements found for this location"
-    />
-  );
+    // Extract data from the first feature
+    const feature = data.features[0];
+    const props = feature.properties;
+
+    // Only return data if we have at least one valid measurement
+    if (!props || (!props.value && !props.temp && !props.salinity)) {
+      return (
+        <NoDataCard
+          icon="🌊"
+          title="No Ocean Data Available"
+          description="No ocean measurements found for this location"
+        />
+      );
+    }
+
+    const waveHeight = props.value;
+    const waterTemperature = props.temp;
+    const salinity = props.salinity;
+    const location = props.stationId || "DMI Ocean Station";
+    const timestamp = props.observed || new Date().toISOString();
+
+    return (
+      <OceanCard
+        apiName="DMI Ocean"
+        waveHeight={waveHeight}
+        waterTemperature={waterTemperature}
+        salinity={salinity}
+        location={location}
+        timestamp={timestamp}
+      />
+    );
+  } catch {
+    return (
+      <NoDataCard
+        icon="🌊"
+        title="No Ocean Data Available"
+        description="Unable to fetch ocean data from DMI API"
+      />
+    );
+  }
 }
 
 function DMIOceanSkeleton() {
