@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import WindCard from "@/components/cards/WindCard";
 import NoDataCard from "@/components/cards/NoDataCard";
-import { fetchOpenWeatherData } from "@/lib/weather-service";
+import { getCurrentWeather } from "@/generated/openweather";
 import { Coordinates } from "@/lib/types";
 
 interface OpenWeatherWindCardProps {
@@ -12,31 +12,68 @@ async function OpenWeatherWindContent({ coords }: OpenWeatherWindCardProps) {
   const { lat, lon } = coords;
 
   try {
-    const openWeatherData = await fetchOpenWeatherData(lat, lon);
-
-    if (openWeatherData) {
+    // Get API key from environment
+    const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
+    if (!apiKey) {
       return (
-        <WindCard
-          apiName="OpenWeatherMap"
-          windSpeed={openWeatherData.wind?.speed || 0}
-          windDirection={openWeatherData.wind?.deg || 0}
-          location={openWeatherData.name}
-          timestamp={new Date(openWeatherData.dt * 1000).toISOString()}
+        <NoDataCard
+          icon="💨"
+          title="No OpenWeatherMap Data"
+          description="Missing API key"
+          badge={{ text: "Config Error", color: "red" }}
         />
       );
     }
-  } catch (error) {
-    console.error("OpenWeather Wind data fetch failed:", error);
-  }
 
-  return (
-    <NoDataCard
-      icon="💨"
-      title="No OpenWeatherMap Data"
-      description="Unable to fetch data from OpenWeatherMap API"
-      badge={{ text: "API Offline", color: "red" }}
-    />
-  );
+    const data = await getCurrentWeather({
+      lat,
+      lon,
+      appid: apiKey,
+      units: "metric"
+    });
+
+    if (!data || !data.wind) {
+      return (
+        <NoDataCard
+          icon="💨"
+          title="No OpenWeatherMap Data"
+          description="No wind data available from OpenWeatherMap"
+          badge={{ text: "API Offline", color: "red" }}
+        />
+      );
+    }
+
+    // Extract wind data from the response
+    const windSpeed = data.wind?.speed || 0;
+    const windDirection = data.wind?.deg || 0;
+    const windGust = data.wind?.gust;
+    const pressure = data.main?.pressure;
+    const location = data.name;
+    const timestamp = data.dt
+      ? new Date(data.dt * 1000).toISOString()
+      : new Date().toISOString();
+
+    return (
+      <WindCard
+        apiName="OpenWeatherMap"
+        windSpeed={windSpeed}
+        windDirection={windDirection}
+        windGust={windGust}
+        pressure={pressure}
+        location={location}
+        timestamp={timestamp}
+      />
+    );
+  } catch {
+    return (
+      <NoDataCard
+        icon="💨"
+        title="No OpenWeatherMap Data"
+        description="Unable to fetch data from OpenWeatherMap API"
+        badge={{ text: "API Offline", color: "red" }}
+      />
+    );
+  }
 }
 
 function OpenWeatherWindSkeleton() {
@@ -44,7 +81,7 @@ function OpenWeatherWindSkeleton() {
 }
 
 export default function OpenWeatherWindCard({
-  coords,
+  coords
 }: OpenWeatherWindCardProps) {
   return (
     <Suspense fallback={<OpenWeatherWindSkeleton />}>

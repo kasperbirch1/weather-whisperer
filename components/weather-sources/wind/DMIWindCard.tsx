@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import WindCard from "@/components/cards/WindCard";
 import NoDataCard from "@/components/cards/NoDataCard";
-import { fetchDMIWindData } from "@/lib/weather-service";
+import { getMetObservations } from "@/generated/dmi";
 import { Coordinates } from "@/lib/types";
 
 interface DMIWindCardProps {
@@ -11,31 +11,67 @@ interface DMIWindCardProps {
 async function DMIWindContent({ coords }: DMIWindCardProps) {
   const { lat, lon } = coords;
 
-  try {
-    const dmiWindData = await fetchDMIWindData(lat, lon);
+  // Create bounding box around the coordinates
+  const margin = 0.5;
+  const bbox = `${lon - margin},${lat - margin},${lon + margin},${lat + margin}`;
 
-    if (dmiWindData) {
+  try {
+    // Get wind speed and direction data from DMI meteorological observations
+    const [windSpeedData, windDirData] = await Promise.all([
+      getMetObservations({
+        bbox,
+        parameterId: "wind_speed",
+        limit: 10
+      }),
+      getMetObservations({
+        bbox,
+        parameterId: "wind_dir",
+        limit: 10
+      })
+    ]);
+
+    if (
+      !windSpeedData ||
+      !windSpeedData.features ||
+      windSpeedData.features.length === 0
+    ) {
       return (
-        <WindCard
-          apiName="DMI"
-          windSpeed={dmiWindData.windSpeed}
-          windDirection={dmiWindData.windDirection}
-          location={dmiWindData.location}
-          timestamp={dmiWindData.timestamp}
+        <NoDataCard
+          icon="💨"
+          title="No DMI Wind Data"
+          description="No wind measurements available from DMI"
         />
       );
     }
-  } catch (error) {
-    console.error("DMI Wind data fetch failed:", error);
-  }
 
-  return (
-    <NoDataCard
-      icon="💨"
-      title="No DMI Wind Data"
-      description="No wind measurements available from DMI"
-    />
-  );
+    // Extract wind data from the first feature
+    const windSpeedFeature = windSpeedData.features[0];
+    const windDirFeature = windDirData?.features?.[0];
+
+    const windSpeed = windSpeedFeature.properties?.value || 0;
+    const windDirection = windDirFeature?.properties?.value || 0;
+    const location = windSpeedFeature.properties?.stationId || "DMI Station";
+    const timestamp =
+      windSpeedFeature.properties?.observed || new Date().toISOString();
+
+    return (
+      <WindCard
+        apiName="DMI"
+        windSpeed={windSpeed}
+        windDirection={windDirection}
+        location={location}
+        timestamp={timestamp}
+      />
+    );
+  } catch {
+    return (
+      <NoDataCard
+        icon="💨"
+        title="No DMI Wind Data"
+        description="Unable to fetch data from DMI API"
+      />
+    );
+  }
 }
 
 function DMIWindSkeleton() {
