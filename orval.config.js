@@ -9,16 +9,16 @@ module.exports = {
       mode: "single",
       override: {
         mutator: {
-          path: "./mutator/mutator.ts",
-          name: "customInstance",
+          path: "./mutator/openweather-mutator.ts",
+          name: "openWeatherMutator",
         },
       },
     },
   },
 
-  // WeatherAPI configuration
+  // WeatherAPI configuration (using SwaggerHub spec directly)
   weatherapi: {
-    input: "./specs/weatherapi.yaml",
+    input: "https://api.swaggerhub.com/apis/WeatherAPI.com/WeatherAPI/1.0.2",
     output: {
       target: "./generated/weatherapi.ts",
       schemas: "./generated/weatherapi-schemas",
@@ -26,8 +26,8 @@ module.exports = {
       mode: "single",
       override: {
         mutator: {
-          path: "./mutator/mutator.ts",
-          name: "customInstance",
+          path: "./mutator/weatherapi-mutator.ts",
+          name: "weatherApiMutator",
         },
       },
     },
@@ -43,8 +43,8 @@ module.exports = {
       mode: "single",
       override: {
         mutator: {
-          path: "./mutator/mutator.ts",
-          name: "customInstance",
+          path: "./mutator/dmi-mutator.ts",
+          name: "dmiMutator",
         },
       },
     },
@@ -60,8 +60,8 @@ module.exports = {
       mode: "single",
       override: {
         mutator: {
-          path: "./mutator/mutator.ts",
-          name: "customInstance",
+          path: "./mutator/dmi-mutator.ts",
+          name: "dmiMutator",
         },
       },
     },
@@ -77,8 +77,8 @@ module.exports = {
       mode: "single",
       override: {
         mutator: {
-          path: "./mutator/mutator.ts",
-          name: "customInstance",
+          path: "./mutator/dmi-mutator.ts",
+          name: "dmiMutator",
         },
       },
     },
