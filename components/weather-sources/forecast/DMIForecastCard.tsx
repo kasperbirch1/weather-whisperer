@@ -3,7 +3,8 @@ import ForecastCard from "@/components/cards/ForecastCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getForecastByPosition } from "@/generated/dmi";
 import { Coordinates } from "@/lib/types";
-import { transformDMIForecast, transformWeatherError } from "@/lib/transformers";
+import { transformDMIForecast } from "./transformers";
+import { transformWeatherError } from "@/lib/transformers/error-transformers";
 
 interface DMIForecastCardProps {
   coords: Coordinates;

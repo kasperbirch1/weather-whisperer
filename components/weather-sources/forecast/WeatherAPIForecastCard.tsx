@@ -3,7 +3,8 @@ import ForecastCard from "@/components/cards/ForecastCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { Coordinates } from "@/lib/types";
 import { forecastWeather } from "@/generated/weatherapi";
-import { transformWeatherAPIForecast, transformWeatherError } from "@/lib/transformers";
+import { transformWeatherAPIForecast } from "./transformers";
+import { transformWeatherError } from "@/lib/transformers/error-transformers";
 
 interface WeatherAPIForecastCardProps {
   coords: Coordinates;

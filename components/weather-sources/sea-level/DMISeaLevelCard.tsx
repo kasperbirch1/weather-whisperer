@@ -3,7 +3,8 @@ import SeaLevelCard from "@/components/cards/SeaLevelCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { Coordinates } from "@/lib/types";
 import { getMetObservations } from "@/generated/dmi";
-import { transformDMISeaLevel, transformWeatherError } from "@/lib/transformers";
+import { transformDMISeaLevel } from "./transformers";
+import { transformWeatherError } from "@/lib/transformers/error-transformers";
 
 interface DMISeaLevelCardProps {
   coords: Coordinates;

@@ -3,7 +3,8 @@ import OceanCard from "@/components/cards/OceanCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getOceanObservations } from "@/generated/dmi";
 import { Coordinates } from "@/lib/types";
-import { transformDMIOcean, transformWeatherError } from "@/lib/transformers";
+import { transformDMIOcean } from "./transformers";
+import { transformWeatherError } from "@/lib/transformers/error-transformers";
 
 interface DMIOceanCardProps {
   coords: Coordinates;

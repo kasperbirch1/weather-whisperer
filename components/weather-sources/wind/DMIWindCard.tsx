@@ -3,7 +3,8 @@ import WindCard from "@/components/cards/WindCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getMetObservations } from "@/generated/dmi";
 import { Coordinates } from "@/lib/types";
-import { transformDMIWind, transformWeatherError } from "@/lib/transformers";
+import { transformDMIWind } from "./transformers";
+import { transformWeatherError } from "@/lib/transformers/error-transformers";
 
 interface DMIWindCardProps {
   coords: Coordinates;

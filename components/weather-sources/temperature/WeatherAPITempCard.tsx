@@ -3,7 +3,8 @@ import TempCard from "@/components/cards/TempCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { realtimeWeather } from "@/generated/weatherapi";
 import { Coordinates } from "@/lib/types";
-import { transformWeatherAPITemperature, transformWeatherError } from "@/lib/transformers";
+import { transformWeatherAPITemperature } from "./transformers";
+import { transformWeatherError } from "@/lib/transformers/error-transformers";
 
 interface WeatherAPITempCardProps {
   coords: Coordinates;

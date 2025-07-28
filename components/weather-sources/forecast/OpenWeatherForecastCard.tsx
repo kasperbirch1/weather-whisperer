@@ -3,10 +3,8 @@ import ForecastCard from "@/components/cards/ForecastCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getForecast } from "@/generated/openweather";
 import { Coordinates } from "@/lib/types";
-import {
-  transformOpenWeatherForecast,
-  transformWeatherError
-} from "@/lib/transformers";
+import { transformOpenWeatherForecast } from "./transformers";
+import { transformWeatherError } from "@/lib/transformers/error-transformers";
 
 interface OpenWeatherForecastCardProps {
   coords: Coordinates;

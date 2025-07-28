@@ -3,10 +3,8 @@ import TempCard from "@/components/cards/TempCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getMetObservations } from "@/generated/dmi";
 import { Coordinates } from "@/lib/types";
-import {
-  transformDMITemperature,
-  transformWeatherError
-} from "@/lib/transformers";
+import { transformDMITemperature } from "./transformers";
+import { transformWeatherError } from "@/lib/transformers/error-transformers";
 
 interface DMITempCardProps {
   coords: Coordinates;
