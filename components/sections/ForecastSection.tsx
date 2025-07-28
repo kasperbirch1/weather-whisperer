@@ -8,9 +8,7 @@ interface ForecastSectionProps {
   coords: Coordinates;
 }
 
-export default function ForecastSection({
-  coords,
-}: ForecastSectionProps) {
+export default function ForecastSection({ coords }: ForecastSectionProps) {
   return (
     <WeatherDataSection title="Forecast Data" icon="🔮" columns="responsive">
       {/* Each component fetches and renders independently */}

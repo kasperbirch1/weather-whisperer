@@ -13,7 +13,7 @@ export default function WeatherDataSection({
   icon,
   children,
   columns = "responsive",
-  className = "mb-12",
+  className = "mb-12"
 }: WeatherDataSectionProps) {
   const getGridClasses = () => {
     switch (columns) {

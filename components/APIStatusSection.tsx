@@ -18,7 +18,7 @@ interface APIStatusSectionProps {
 }
 
 export default function APIStatusSection({
-  locationData,
+  locationData
 }: APIStatusSectionProps) {
   // Check if any DMI APIs have data
   const isDMIOnline = locationData.some(

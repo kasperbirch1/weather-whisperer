@@ -6,9 +6,7 @@ interface SeaLevelSectionProps {
   coords: Coordinates;
 }
 
-export default function SeaLevelSection({
-  coords,
-}: SeaLevelSectionProps) {
+export default function SeaLevelSection({ coords }: SeaLevelSectionProps) {
   return (
     <WeatherDataSection title="Sea Level Data" icon="📏" columns="single">
       {/* Each component fetches and renders independently */}

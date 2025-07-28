@@ -9,7 +9,7 @@ interface TemperatureSectionProps {
 }
 
 export default function TemperatureSection({
-  coords,
+  coords
 }: TemperatureSectionProps) {
   return (
     <WeatherDataSection title="Temperature Data" icon="🌡️" columns="responsive">

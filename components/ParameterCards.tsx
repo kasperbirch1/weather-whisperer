@@ -10,7 +10,7 @@ interface ParameterCardsProps {
 export default function ParameterCards({
   title,
   parameters,
-  colorScheme,
+  colorScheme
 }: ParameterCardsProps) {
   if (Object.keys(parameters).length === 0) return null;
 
@@ -19,14 +19,14 @@ export default function ParameterCards({
       bg: "bg-blue-50",
       border: "border-blue-200",
       text: "text-blue-800",
-      value: "text-blue-600",
+      value: "text-blue-600"
     },
     yellow: {
       bg: "bg-yellow-50",
       border: "border-yellow-200",
       text: "text-yellow-800",
-      value: "text-yellow-600",
-    },
+      value: "text-yellow-600"
+    }
   };
 
   const colors = colorClasses[colorScheme];
