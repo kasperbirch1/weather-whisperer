@@ -1,10 +1,6 @@
-# Weather Whisperer Architecture
+# 🌊 Weather Whisperer Architecture
 
-A comprehensive Next.js 15 application providing multi-API weather data visualization with optimized data fetching and responsive UI components.
-
-## Overview
-
-Weather Whisperer is a modern weather application that aggregates data from multiple weather APIs to provide comprehensive meteorological information for predefined locations. The application emphasizes performance, data accuracy, and user experience through sophisticated API integration and optimized data fetching strategies.
+A Next.js 15 application that displays weather data from multiple APIs organized by location, using a component-based architecture with independent data fetching.
 
 ## Technology Stack
 
@@ -14,56 +10,63 @@ Weather Whisperer is a modern weather application that aggregates data from mult
 - **Build Tool**: Turbopack
 - **Data Sources**: DMI APIs, OpenWeatherMap, WeatherAPI.com
 
-## Project Structure
+## Actual Project Structure
 
 ```
 weather-whisperer/
-├── app/                    # Next.js App Router
-│   ├── layout.tsx         # Global layout and metadata
-│   └── page.tsx           # Main application page
-├── components/            # Reusable UI components
-│   ├── HeroSection.tsx    # Application header and title
-│   ├── LocationCard.tsx   # Location-specific weather data container
-│   ├── WindCard.tsx       # Wind data visualization
-│   ├── TempCard.tsx       # Temperature data visualization
-│   ├── ForecastCard.tsx   # Weather forecast display
-│   ├── LightningCard.tsx  # Lightning activity display
-│   ├── OceanCard.tsx      # Ocean data visualization
-│   ├── SeaLevelCard.tsx   # Sea level data display
-│   ├── ParameterCards.tsx # Generic parameter display
-│   ├── PrecipitationCard.tsx # Precipitation data
-│   ├── PressureCard.tsx   # Atmospheric pressure
-│   ├── SunCard.tsx        # Sunrise/sunset information
-│   ├── wrappers/          # Data coordination wrapper components
-│   │   ├── WindDataWrapper.tsx        # Wind data coordination
-│   │   ├── TemperatureDataWrapper.tsx # Temperature data coordination
-│   │   ├── ForecastDataWrapper.tsx    # Forecast data coordination
-│   │   ├── SeaLevelDataWrapper.tsx    # Sea level data coordination
-│   │   └── OceanDataWrapper.tsx       # Ocean data coordination
-│   └── weather-sources/   # Independent API source components
+├── app/                              # Next.js App Router
+│   ├── layout.tsx                   # Root layout with fonts and metadata
+│   └── page.tsx                     # Home page - renders LocationCards
+├── components/                       # All React components
+│   ├── HeroSection.tsx              # App title and location count
+│   ├── LocationCard.tsx             # Container for one location's weather data
+│   ├── WeatherDataSection.tsx       # Generic section wrapper with grid layout
+│   ├── NoDataCard.tsx               # Fallback UI for missing data
+│   │
+│   ├── WindCard.tsx                 # Displays wind data with Beaufort scale
+│   ├── TempCard.tsx                 # Displays temperature data
+│   ├── ForecastCard.tsx             # Displays forecast data
+│   ├── OceanCard.tsx                # Displays ocean data
+│   ├── SeaLevelCard.tsx             # Displays sea level data
+│   ├── LightningCard.tsx            # Displays lightning activity
+│   ├── ParameterCards.tsx           # Generic parameter display
+│   ├── PrecipitationCard.tsx        # Displays precipitation data
+│   ├── PressureCard.tsx             # Displays atmospheric pressure
+│   ├── SunCard.tsx                  # Displays sunrise/sunset times
+│   ├── APIStatusSection.tsx         # API health monitoring
+│   │
+│   ├── wrappers/                    # Simple wrapper components
+│   │   ├── WindDataWrapper.tsx      # Groups wind API sources
+│   │   ├── TemperatureDataWrapper.tsx # Groups temperature API sources
+│   │   ├── ForecastDataWrapper.tsx  # Groups forecast API sources
+│   │   ├── SeaLevelDataWrapper.tsx  # Groups sea level API sources
+│   │   └── OceanDataWrapper.tsx     # Groups ocean API sources
+│   │
+│   └── weather-sources/             # Individual API source components
 │       ├── wind/
-│       │   ├── DMIWindCard.tsx
-│       │   ├── OpenWeatherWindCard.tsx
-│       │   └── WeatherAPIWindCard.tsx
+│       │   ├── DMIWindCard.tsx      # DMI wind data with suspense
+│       │   ├── OpenWeatherWindCard.tsx # OpenWeather wind data
+│       │   └── WeatherAPIWindCard.tsx  # WeatherAPI wind data
 │       ├── temp/
-│       │   ├── DMITempCard.tsx
-│       │   ├── OpenWeatherTempCard.tsx
-│       │   └── WeatherAPITempCard.tsx
+│       │   ├── DMITempCard.tsx      # DMI temperature data
+│       │   ├── OpenWeatherTempCard.tsx # OpenWeather temperature data
+│       │   └── WeatherAPITempCard.tsx  # WeatherAPI temperature data
 │       ├── forecast/
-│       │   ├── DMIForecastCard.tsx
-│       │   ├── OpenWeatherForecastCard.tsx
-│       │   └── WeatherAPIForecastCard.tsx
+│       │   ├── DMIForecastCard.tsx  # DMI forecast data
+│       │   ├── OpenWeatherForecastCard.tsx # OpenWeather forecast data
+│       │   └── WeatherAPIForecastCard.tsx  # WeatherAPI forecast data
 │       ├── ocean/
-│       │   └── DMIOceanCard.tsx
+│       │   └── DMIOceanCard.tsx     # DMI ocean data
 │       └── sea-level/
-│           └── DMISeaLevelCard.tsx
-├── lib/                   # Core business logic
-│   ├── weather-service.ts # API integration layer
-│   ├── wether-apis.ts     # API configuration
-│   ├── weather-utils.ts   # Utility functions
-│   └── types.ts           # TypeScript definitions
-└── data/                  # Static configuration
-    └── locations.ts       # Monitored locations
+│           └── DMISeaLevelCard.tsx  # DMI sea level data
+├── lib/                             # Core business logic
+│   ├── weather-service.ts           # API fetching functions
+│   ├── wether-apis.ts               # API endpoint configurations
+│   ├── weather-utils.ts             # Data processing utilities
+│   └── types.ts                     # TypeScript type definitions
+├── data/
+│   └── locations.ts                 # Static location coordinates
+└── next.config.ts                   # Next.js configuration
 ```
 
 ## Core Architecture Components
@@ -244,65 +247,27 @@ export default function APISourceCard({ coords }: APISourceCardProps) {
 
 **Purpose**: Coordination components that organize related API source components into logical sections
 
-**New Simplified Pattern**:
+**Actual Implementation Pattern**:
 
 ```typescript
-export default function DataWrapper({ coords }: DataWrapperProps) {
+export default function WindDataWrapper({ coords }: WindDataWrapperProps) {
   return (
-    <WeatherDataSection title="Data Type" icon="🌊" columns="responsive">
+    <WeatherDataSection title="Wind Data" icon="💨" columns="responsive">
       {/* Each component fetches and renders independently */}
-      <APISource1Card coords={coords} />
-      <APISource2Card coords={coords} />
-      <APISource3Card coords={coords} />
+      <DMIWindCard coords={coords} />
+      <OpenWeatherWindCard coords={coords} />
+      <WeatherAPIWindCard coords={coords} />
     </WeatherDataSection>
   );
 }
 ```
 
-**Purpose**: Server-side data coordination components
+**Key Design Features**:
 
-**Design Pattern**:
-
-```typescript
-interface DataWrapperProps {
-  coords: Coordinates;
-}
-
-async function DataContent({ coords }: DataWrapperProps) {
-  const { lat, lon } = coords;
-
-  // Independent API calls with individual error handling
-  let apiData1 = null;
-  let apiData2 = null;
-
-  try {
-    apiData1 = await fetchAPI1(lat, lon);
-  } catch (error) {
-    console.error("API1 fetch failed:", error);
-  }
-
-  try {
-    apiData2 = await fetchAPI2(lat, lon);
-  } catch (error) {
-    console.error("API2 fetch failed:", error);
-  }
-
-  return (
-    <WeatherDataSection title="Data Type" icon="🌊">
-      {apiData1 ? <DataCard {...apiData1} /> : <NoDataCard />}
-      {apiData2 ? <DataCard {...apiData2} /> : <NoDataCard />}
-    </WeatherDataSection>
-  );
-}
-
-export default function DataWrapper({ coords }: DataWrapperProps) {
-  return (
-    <Suspense fallback={<DataSkeleton />}>
-      <DataContent coords={coords} />
-    </Suspense>
-  );
-}
-```
+- **Simple Composition**: Wrappers are simple containers that organize related API source components
+- **No Direct API Calls**: Wrappers don't fetch data themselves, they delegate to source components
+- **Client-Side Components**: Wrappers render immediately and let source components handle their own loading
+- **Type Organization**: Each wrapper groups components by data type (wind, temperature, forecast, etc.)
 
 **Key Wrapper Components**:
 
@@ -344,30 +309,60 @@ export default function DataWrapper({ coords }: DataWrapperProps) {
 
 #### Main Page (`page.tsx`)
 
-**Responsibility**: Application structure and wrapper component coordination
+**Responsibility**: Application structure and LocationCard coordination
 
-**Modern Architecture**:
+**Actual Architecture**:
 
 ```typescript
-// Simplified page structure using wrapper components
 export default function Home() {
   return (
     <main className="container mx-auto p-4 max-w-7xl">
+      {/* Hero Section */}
       <HeroSection locationCount={Object.keys(locations).length} />
 
+      {/* Locations Section */}
       <section className="mb-12">
-        {Object.entries(locations).map(([locationName, coords]) => (
-          <article key={locationName}>
-            {/* Independent data wrapper components */}
-            <WindDataWrapper coords={coords} />
-            <TemperatureDataWrapper coords={coords} />
-            <SeaLevelDataWrapper coords={coords} />
-            <OceanDataWrapper coords={coords} />
-            <ForecastDataWrapper coords={coords} />
-          </article>
-        ))}
+        <h2 className="text-3xl font-bold text-gray-800 mb-8">
+          📍 Weather Data by Location
+        </h2>
+        <ul className="grid grid-cols-1 xl:grid-cols-2 gap-12 list-none" role="list">
+          {Object.entries(locations).map(([locationName, coords]) => (
+            <li key={locationName}>
+              <LocationCard locationName={locationName} coords={coords} />
+            </li>
+          ))}
+        </ul>
       </section>
     </main>
+  );
+}
+```
+
+#### LocationCard Component (`LocationCard.tsx`)
+
+**Responsibility**: Container for all weather data for a specific location
+
+**Architecture**:
+
+```typescript
+export default function LocationCard({ locationName, coords }: LocationCardProps) {
+  return (
+    <article className="p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+      {/* Location Header */}
+      <header className="mb-10 text-center border-b border-gray-200 pb-6">
+        <h3 className="text-2xl font-bold text-gray-800 mb-2">
+          {locationName.replace(/([A-Z])/g, " $1").trim()}
+        </h3>
+        <p className="text-gray-600">📍 {coords.lat}°N, {coords.lon}°E</p>
+      </header>
+
+      {/* Data wrapper components organize API sources by data type */}
+      <WindDataWrapper coords={coords} />
+      <TemperatureDataWrapper coords={coords} />
+      <SeaLevelDataWrapper coords={coords} />
+      <OceanDataWrapper coords={coords} />
+      <ForecastDataWrapper coords={coords} />
+    </article>
   );
 }
 ```
@@ -399,30 +394,57 @@ export const locations = {
 };
 ```
 
-## Data Flow Architecture
+## Actual Data Flow
 
-### 1. Modern Wrapper-Based Flow
-
-```
-User Request → Page Load (Immediate) → Wrapper Components (Parallel) → Individual API Calls → Progressive Data Display
-```
-
-### 2. Independent Data Flow per Wrapper
+### 1. User Request Flow
 
 ```
-Coordinates → Wrapper Component → Try/Catch API Calls → Success/Fallback Rendering
+User visits / → Home component renders → HeroSection + LocationCard grid
 ```
 
-### 3. Resilient Error Handling
+### 2. Location-Based Component Tree
 
 ```
-API Failure → Individual Wrapper Error → NoDataCard Display → Other Wrappers Continue
+Home
+├── HeroSection (location count)
+└── LocationCard (for each location)
+    ├── Location header (name + coordinates)
+    ├── WindDataWrapper
+    │   ├── DMIWindCard (with Suspense)
+    │   ├── OpenWeatherWindCard (with Suspense)
+    │   └── WeatherAPIWindCard (with Suspense)
+    ├── TemperatureDataWrapper
+    │   ├── DMITempCard (with Suspense)
+    │   ├── OpenWeatherTempCard (with Suspense)
+    │   └── WeatherAPITempCard (with Suspense)
+    ├── SeaLevelDataWrapper
+    │   └── DMISeaLevelCard (with Suspense)
+    ├── OceanDataWrapper
+    │   └── DMIOceanCard (with Suspense)
+    └── ForecastDataWrapper
+        ├── DMIForecastCard (with Suspense)
+        ├── OpenWeatherForecastCard (with Suspense)
+        └── WeatherAPIForecastCard (with Suspense)
 ```
 
-### 4. Progressive Loading Pattern
+### 3. Individual API Source Component Pattern
 
 ```
-Page Structure (Instant) → Loading Skeletons → Data Population (As Available) → Complete UI
+DMIWindCard
+├── Suspense boundary with skeleton
+└── DMIWindContent (async server component)
+    ├── fetchDMIWindData(coords)
+    ├── Success: renders WindCard
+    └── Failure: renders NoDataCard
+```
+
+### 4. API Call Pattern
+
+```
+weather-service.ts functions → wether-apis.ts configurations → External APIs
+fetchDMIWindData() → wetherApis.dmi.meteo → DMI API
+fetchOpenWeatherData() → wetherApis.openweather → OpenWeatherMap API
+fetchWeatherAPIData() → wetherApis.weatherapi → WeatherAPI.com
 ```
 
 ## Performance Optimizations
