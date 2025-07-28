@@ -22,6 +22,7 @@ weather-whisperer/
 │   ├── WeatherDataSection.tsx       # Generic section wrapper with grid layout
 │   ├── APIStatusSection.tsx         # API health monitoring
 │   ├── ParameterCards.tsx           # Generic parameter display
+│   ├── QueryProvider.tsx            # React Query provider setup
 │   │
 │   ├── cards/                       # All card components
 │   │   ├── LocationCard.tsx         # Container for one location's weather data
@@ -48,7 +49,7 @@ weather-whisperer/
 │       │   ├── DMIWindCard.tsx      # DMI wind data with suspense
 │       │   ├── OpenWeatherWindCard.tsx # OpenWeather wind data
 │       │   └── WeatherAPIWindCard.tsx  # WeatherAPI wind data
-│       ├── temp/
+│       ├── temperature/
 │       │   ├── DMITempCard.tsx      # DMI temperature data
 │       │   ├── OpenWeatherTempCard.tsx # OpenWeather temperature data
 │       │   └── WeatherAPITempCard.tsx  # WeatherAPI temperature data
@@ -60,13 +61,21 @@ weather-whisperer/
 │       │   └── DMIOceanCard.tsx     # DMI ocean data
 │       └── sea-level/
 │           └── DMISeaLevelCard.tsx  # DMI sea level data
+├── generated/                        # Generated API clients from OpenAPI specs
+│   ├── dmi.ts                       # DMI API client and types
+│   └── openweather-schemas.ts/      # OpenWeatherMap API client and types
 ├── lib/                             # Core business logic
-│   ├── weather-service.ts           # API fetching functions
-│   ├── weather-apis.ts              # API endpoint configurations
 │   ├── weather-utils.ts             # Data processing utilities
-│   └── types.ts                     # TypeScript type definitions
+│   └── types.ts                     # Essential TypeScript type definitions
+├── mutator/
+│   └── custom-instance.ts           # Custom API request configuration
 ├── data/
 │   └── locations.ts                 # Static location coordinates
+├── specs/                           # OpenAPI specifications
+│   ├── dmi-openapi.json            # DMI API OpenAPI spec
+│   └── openweather-openapi.json    # OpenWeatherMap API OpenAPI spec
+├── hooks/                           # Custom React hooks
+├── orval.config.js                  # Orval configuration for API generation
 └── next.config.ts                   # Next.js configuration
 ```
 
@@ -74,36 +83,43 @@ weather-whisperer/
 
 ### 1. Data Layer (`lib/`)
 
-#### Weather Service (`weather-service.ts`)
+#### Generated API Clients (`lib/generated/`)
 
-**Responsibility**: Core API integration and data fetching orchestration
+**Responsibility**: Type-safe API clients generated from OpenAPI specifications
 
 **Key Features**:
 
-- **Multi-API Integration**: Handles DMI (Danish Meteorological Institute), OpenWeatherMap, and WeatherAPI.com
-- **Optimized API Calls**: Implements strategic bounding box searches with progressive fallback
-- **Error Handling**: Graceful degradation when APIs are unavailable
-- **Data Transformation**: Normalizes disparate API responses into consistent formats
-- **Performance Optimization**: Minimizes API calls through intelligent batching
+- **DMI API Client**: Generated from DMI's OpenAPI specification with full type safety
+- **OpenWeatherMap API Client**: Generated client with comprehensive TypeScript types
+- **Type Safety**: Compile-time validation of API requests and responses
+- **Auto-generated Documentation**: IntelliSense support for all API endpoints
+- **Consistent Interface**: Standardized API calling patterns across all services
 
-**API Call Strategy**:
+**Generated Client Benefits**:
 
 ```typescript
-// Optimized approach: Single bounding box calls instead of progressive radius searches
-const bbox = `${lon - 0.5},${lat - 0.5},${lon + 0.5},${lat + 0.5}`;
-// Reduces from ~34 calls per location to ~8 calls per location
+// Type-safe API calls with generated clients
+import { meteoObsApi } from "../lib/generated/dmi";
+import { currentWeatherApi } from "../lib/generated/openweathermap";
+
+// Full TypeScript support with auto-completion
+const dmiData = await meteoObsApi.getMeteoObs({
+  parameterId: "wind_speed",
+  bbox: `${lon - 0.1},${lat - 0.1},${lon + 0.1},${lat + 0.1}`,
+  limit: 1
+});
 ```
 
-#### API Configuration (`weather-apis.ts`)
+#### Manual API Integration (WeatherAPI.com)
 
-**Responsibility**: Centralized API endpoint and authentication management
+**Responsibility**: Direct fetch calls for APIs without OpenAPI specifications
 
 **Features**:
 
+- Direct fetch implementation for WeatherAPI.com
+- Manual type definitions and error handling
+- Consistent error handling patterns
 - Environment-based API key management
-- URL construction helpers for each API
-- Standardized header generation
-- Modular API service configuration
 
 #### Type Definitions (`types.ts`)
 
@@ -386,12 +402,12 @@ export default function LocationCard({ locationName, coords }: LocationCardProps
 export const locations = {
   nivå: {
     lat: 55.9378,
-    lon: 12.5281,
+    lon: 12.5281
   },
   copenhagenSurfSchool: {
     lat: 55.6546,
-    lon: 12.6492,
-  },
+    lon: 12.6492
+  }
 };
 ```
 
@@ -442,10 +458,20 @@ DMIWindCard
 ### 4. API Call Pattern
 
 ```
-weather-service.ts functions → weather-apis.ts configurations → External APIs
-fetchDMIWindData() → weatherApis.dmi.meteo → DMI API
-fetchOpenWeatherData() → weatherApis.openweather → OpenWeatherMap API
-fetchWeatherAPIData() → weatherApis.weatherapi → WeatherAPI.com
+Generated API Clients + Direct Fetch → External APIs
+
+// DMI API (Generated Client)
+DMIWindCard → meteoObsApi.getMeteoObs() → DMI API
+DMIOceanCard → oceanObsApi.getOceanObs() → DMI API
+DMIForecastCard → forecastApi.getForecast() → DMI API
+
+// OpenWeatherMap API (Generated Client)
+OpenWeatherWindCard → currentWeatherApi.getCurrentWeather() → OpenWeatherMap API
+OpenWeatherForecastCard → forecastApi.getForecast() → OpenWeatherMap API
+
+// WeatherAPI.com (Direct Fetch)
+WeatherAPIWindCard → fetch() → WeatherAPI.com
+WeatherAPIForecastCard → fetch() → WeatherAPI.com
 ```
 
 ## Performance Optimizations
@@ -578,7 +604,7 @@ fetchWeatherAPIData() → weatherApis.weatherapi → WeatherAPI.com
 ### 1. Local Development
 
 ```bash
-npm run dev --turbopack  # Fast development server
+yarn dev  # Fast development server with turbopack
 ```
 
 ### 2. Type Safety

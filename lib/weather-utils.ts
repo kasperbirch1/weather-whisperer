@@ -14,7 +14,7 @@ export function getParameterDisplayName(parameterId: string): string {
     visibility: "Visibility",
     precip: "Precipitation",
     cloud: "Cloud Cover",
-    uv: "UV Index",
+    uv: "UV Index"
   };
   return parameterNames[parameterId] || parameterId;
 }
@@ -33,7 +33,7 @@ export function getParameterUnit(parameterId: string): string {
     visibility: "km",
     precip: "mm",
     cloud: "%",
-    uv: "",
+    uv: ""
   };
   return parameterUnits[parameterId] || "";
 }
@@ -51,7 +51,7 @@ export function analyzeParameters(
       summary[paramId] = {
         count: 0,
         latestValue: feature.properties.value,
-        latestTime: feature.properties.observed,
+        latestTime: feature.properties.observed
       };
     }
     summary[paramId].count++;
