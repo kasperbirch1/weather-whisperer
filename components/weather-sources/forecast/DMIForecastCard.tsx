@@ -64,10 +64,10 @@ async function DMIForecastContent({ coords }: DMIForecastCardProps) {
       : undefined;
     const highTemp = temperature; // Use water temp as current high
     const lowTemp = temperature !== undefined
-      ? Math.round((waterTemp - 1) * 10) / 10
+      ? Math.round((temperature - 1) * 10) / 10
       : undefined;
     const location = `Danish Waters (${lat.toFixed(3)}°N, ${lon.toFixed(3)}°E)`;
-    
+
     // Format description with available data
     const windInfo = windSpeed
       ? ` - Wind: ${Math.round(windSpeed * 10) / 10} m/s`
