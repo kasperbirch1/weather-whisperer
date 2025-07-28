@@ -4,13 +4,13 @@ import OpenWeatherForecastCard from "@/components/weather-sources/forecast/OpenW
 import WeatherAPIForecastCard from "@/components/weather-sources/forecast/WeatherAPIForecastCard";
 import { Coordinates } from "@/lib/types";
 
-interface ForecastDataWrapperProps {
+interface ForecastSectionProps {
   coords: Coordinates;
 }
 
-export default function ForecastDataWrapper({
+export default function ForecastSection({
   coords,
-}: ForecastDataWrapperProps) {
+}: ForecastSectionProps) {
   return (
     <WeatherDataSection title="Forecast Data" icon="🔮" columns="responsive">
       {/* Each component fetches and renders independently */}

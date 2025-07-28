@@ -4,11 +4,11 @@ import OpenWeatherWindCard from "@/components/weather-sources/wind/OpenWeatherWi
 import WeatherAPIWindCard from "@/components/weather-sources/wind/WeatherAPIWindCard";
 import { Coordinates } from "@/lib/types";
 
-interface WindDataWrapperProps {
+interface WindSectionProps {
   coords: Coordinates;
 }
 
-export default function WindDataWrapper({ coords }: WindDataWrapperProps) {
+export default function WindSection({ coords }: WindSectionProps) {
   return (
     <WeatherDataSection title="Wind Data" icon="💨" columns="responsive">
       {/* Each component fetches and renders independently */}

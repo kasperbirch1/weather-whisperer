@@ -36,12 +36,12 @@ weather-whisperer/
 │   │   ├── PressureCard.tsx         # Displays atmospheric pressure
 │   │   └── SunCard.tsx              # Displays sunrise/sunset times
 │   │
-│   ├── wrappers/                    # Simple wrapper components
-│   │   ├── WindDataWrapper.tsx      # Groups wind API sources
-│   │   ├── TemperatureDataWrapper.tsx # Groups temperature API sources
-│   │   ├── ForecastDataWrapper.tsx  # Groups forecast API sources
-│   │   ├── SeaLevelDataWrapper.tsx  # Groups sea level API sources
-│   │   └── OceanDataWrapper.tsx     # Groups ocean API sources
+│   ├── sections/                    # Section components
+│   │   ├── WindSection.tsx          # Groups wind API sources
+│   │   ├── TemperatureSection.tsx   # Groups temperature API sources
+│   │   ├── ForecastSection.tsx      # Groups forecast API sources
+│   │   ├── SeaLevelSection.tsx      # Groups sea level API sources
+│   │   └── OceanSection.tsx         # Groups ocean API sources
 │   │
 │   └── weather-sources/             # Individual API source components
 │       ├── wind/
@@ -244,14 +244,14 @@ export default function APISourceCard({ coords }: APISourceCardProps) {
 
 - `DMISeaLevelCard.tsx` - DMI sea level measurements
 
-#### Wrapper Component Architecture (`components/wrappers/`)
+#### Section Component Architecture (`components/sections/`)
 
-**Purpose**: Coordination components that organize related API source components into logical sections
+**Purpose**: Section components that organize related API source components into logical visual sections
 
 **Actual Implementation Pattern**:
 
 ```typescript
-export default function WindDataWrapper({ coords }: WindDataWrapperProps) {
+export default function WindSection({ coords }: WindSectionProps) {
   return (
     <WeatherDataSection title="Wind Data" icon="💨" columns="responsive">
       {/* Each component fetches and renders independently */}
@@ -265,32 +265,32 @@ export default function WindDataWrapper({ coords }: WindDataWrapperProps) {
 
 **Key Design Features**:
 
-- **Simple Composition**: Wrappers are simple containers that organize related API source components
-- **No Direct API Calls**: Wrappers don't fetch data themselves, they delegate to source components
-- **Client-Side Components**: Wrappers render immediately and let source components handle their own loading
-- **Type Organization**: Each wrapper groups components by data type (wind, temperature, forecast, etc.)
+- **Simple Composition**: Sections are simple containers that organize related API source components
+- **No Direct API Calls**: Sections don't fetch data themselves, they delegate to source components
+- **Visual Organization**: Each section creates a titled section with appropriate icon and layout
+- **Type Organization**: Each section groups components by data type (wind, temperature, forecast, etc.)
 
-**Key Wrapper Components**:
+**Key Section Components**:
 
-**WindDataWrapper**
+**WindSection**
 
 - **APIs**: DMI Wind, OpenWeatherMap, WeatherAPI.com
 - **Features**: Independent error handling, loading states, fallback cards
 - **Resilience**: One API failure doesn't block others
 
-**TemperatureDataWrapper**
+**TemperatureSection**
 
 - **APIs**: DMI Temperature, OpenWeatherMap, WeatherAPI.com
 - **Features**: Parallel data fetching, graceful degradation
 - **Performance**: Uses React Suspense for optimal loading
 
-**ForecastDataWrapper**
+**ForecastSection**
 
 - **APIs**: DMI Forecast, OpenWeatherMap Forecast, WeatherAPI Forecast
 - **Features**: Multi-source forecast aggregation
 - **UX**: Shows loading skeletons while fetching
 
-**SeaLevelDataWrapper & OceanDataWrapper**
+**SeaLevelSection & OceanSection**
 
 - **APIs**: DMI-specific data sources
 - **Features**: Specialized error handling for marine data
@@ -357,12 +357,12 @@ export default function LocationCard({ locationName, coords }: LocationCardProps
         <p className="text-gray-600">📍 {coords.lat}°N, {coords.lon}°E</p>
       </header>
 
-      {/* Data wrapper components organize API sources by data type */}
-      <WindDataWrapper coords={coords} />
-      <TemperatureDataWrapper coords={coords} />
-      <SeaLevelDataWrapper coords={coords} />
-      <OceanDataWrapper coords={coords} />
-      <ForecastDataWrapper coords={coords} />
+      {/* Section components organize API sources by data type */}
+      <WindSection coords={coords} />
+      <TemperatureSection coords={coords} />
+      <SeaLevelSection coords={coords} />
+      <OceanSection coords={coords} />
+      <ForecastSection coords={coords} />
     </article>
   );
 }
@@ -410,19 +410,19 @@ Home
 ├── HeroSection (location count)
 └── LocationCard (for each location)
     ├── Location header (name + coordinates)
-    ├── WindDataWrapper
+    ├── WindSection
     │   ├── DMIWindCard (with Suspense)
     │   ├── OpenWeatherWindCard (with Suspense)
     │   └── WeatherAPIWindCard (with Suspense)
-    ├── TemperatureDataWrapper
+    ├── TemperatureSection
     │   ├── DMITempCard (with Suspense)
     │   ├── OpenWeatherTempCard (with Suspense)
     │   └── WeatherAPITempCard (with Suspense)
-    ├── SeaLevelDataWrapper
+    ├── SeaLevelSection
     │   └── DMISeaLevelCard (with Suspense)
-    ├── OceanDataWrapper
+    ├── OceanSection
     │   └── DMIOceanCard (with Suspense)
-    └── ForecastDataWrapper
+    └── ForecastSection
         ├── DMIForecastCard (with Suspense)
         ├── OpenWeatherForecastCard (with Suspense)
         └── WeatherAPIForecastCard (with Suspense)

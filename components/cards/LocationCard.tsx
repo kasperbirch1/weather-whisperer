@@ -1,8 +1,8 @@
-import WindDataWrapper from "@/components/wrappers/WindDataWrapper";
-import TemperatureDataWrapper from "@/components/wrappers/TemperatureDataWrapper";
-import SeaLevelDataWrapper from "@/components/wrappers/SeaLevelDataWrapper";
-import OceanDataWrapper from "@/components/wrappers/OceanDataWrapper";
-import ForecastDataWrapper from "@/components/wrappers/ForecastDataWrapper";
+import WindSection from "@/components/sections/WindSection";
+import TemperatureSection from "@/components/sections/TemperatureSection";
+import SeaLevelSection from "@/components/sections/SeaLevelSection";
+import OceanSection from "@/components/sections/OceanSection";
+import ForecastSection from "@/components/sections/ForecastSection";
 import { Coordinates } from "@/lib/types";
 
 interface LocationCardProps {
@@ -27,19 +27,19 @@ export default function LocationCard({
       </header>
 
       {/* Wind Data for this location */}
-      <WindDataWrapper coords={coords} />
+      <WindSection coords={coords} />
 
       {/* Temperature Data for this location */}
-      <TemperatureDataWrapper coords={coords} />
+      <TemperatureSection coords={coords} />
 
       {/* Sea Level Data for this location */}
-      <SeaLevelDataWrapper coords={coords} />
+      <SeaLevelSection coords={coords} />
 
       {/* Ocean Data for this location */}
-      <OceanDataWrapper coords={coords} />
+      <OceanSection coords={coords} />
 
       {/* Forecast Data for this location */}
-      <ForecastDataWrapper coords={coords} />
+      <ForecastSection coords={coords} />
     </article>
   );
 }

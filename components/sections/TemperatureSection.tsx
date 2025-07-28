@@ -4,13 +4,13 @@ import OpenWeatherTempCard from "@/components/weather-sources/temp/OpenWeatherTe
 import WeatherAPITempCard from "@/components/weather-sources/temp/WeatherAPITempCard";
 import { Coordinates } from "@/lib/types";
 
-interface TemperatureDataWrapperProps {
+interface TemperatureSectionProps {
   coords: Coordinates;
 }
 
-export default function TemperatureDataWrapper({
+export default function TemperatureSection({
   coords,
-}: TemperatureDataWrapperProps) {
+}: TemperatureSectionProps) {
   return (
     <WeatherDataSection title="Temperature Data" icon="🌡️" columns="responsive">
       {/* Each component fetches and renders independently */}
