@@ -59,13 +59,15 @@ async function DMIForecastContent({ coords }: DMIForecastCardProps) {
       data.domain?.axes?.t?.values?.[0] || new Date().toISOString();
 
     // Process and extract all data first
-    const temperature = waterTemp !== null && waterTemp !== undefined
-      ? Math.round(waterTemp * 10) / 10
-      : undefined;
+    const temperature =
+      waterTemp !== null && waterTemp !== undefined
+        ? Math.round(waterTemp * 10) / 10
+        : undefined;
     const highTemp = temperature; // Use water temp as current high
-    const lowTemp = temperature !== undefined
-      ? Math.round((temperature - 1) * 10) / 10
-      : undefined;
+    const lowTemp =
+      temperature !== undefined
+        ? Math.round((temperature - 1) * 10) / 10
+        : undefined;
     const location = `Danish Waters (${lat.toFixed(3)}°N, ${lon.toFixed(3)}°E)`;
 
     // Format description with available data
