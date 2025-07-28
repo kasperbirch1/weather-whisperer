@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import TempCard from "@/components/TempCard";
-import NoDataCard from "@/components/NoDataCard";
+import TempCard from "@/components/cards/TempCard";
+import NoDataCard from "@/components/cards/NoDataCard";
 import { fetchDMITempData } from "@/lib/weather-service";
 import { Coordinates } from "@/lib/types";
 

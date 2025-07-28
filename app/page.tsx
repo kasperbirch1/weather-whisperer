@@ -1,6 +1,6 @@
 import { locations } from "@/data/locations";
 import HeroSection from "@/components/HeroSection";
-import LocationCard from "@/components/LocationCard";
+import LocationCard from "@/components/cards/LocationCard";
 
 export default function Home() {
   return (

@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import OceanCard from "@/components/OceanCard";
-import NoDataCard from "@/components/NoDataCard";
+import OceanCard from "@/components/cards/OceanCard";
+import NoDataCard from "@/components/cards/NoDataCard";
 import { fetchDMIOceanData } from "@/lib/weather-service";
 import { Coordinates } from "@/lib/types";
 

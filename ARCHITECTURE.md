@@ -19,21 +19,22 @@ weather-whisperer/
 │   └── page.tsx                     # Home page - renders LocationCards
 ├── components/                       # All React components
 │   ├── HeroSection.tsx              # App title and location count
-│   ├── LocationCard.tsx             # Container for one location's weather data
 │   ├── WeatherDataSection.tsx       # Generic section wrapper with grid layout
-│   ├── NoDataCard.tsx               # Fallback UI for missing data
-│   │
-│   ├── WindCard.tsx                 # Displays wind data with Beaufort scale
-│   ├── TempCard.tsx                 # Displays temperature data
-│   ├── ForecastCard.tsx             # Displays forecast data
-│   ├── OceanCard.tsx                # Displays ocean data
-│   ├── SeaLevelCard.tsx             # Displays sea level data
-│   ├── LightningCard.tsx            # Displays lightning activity
-│   ├── ParameterCards.tsx           # Generic parameter display
-│   ├── PrecipitationCard.tsx        # Displays precipitation data
-│   ├── PressureCard.tsx             # Displays atmospheric pressure
-│   ├── SunCard.tsx                  # Displays sunrise/sunset times
 │   ├── APIStatusSection.tsx         # API health monitoring
+│   ├── ParameterCards.tsx           # Generic parameter display
+│   │
+│   ├── cards/                       # All card components
+│   │   ├── LocationCard.tsx         # Container for one location's weather data
+│   │   ├── NoDataCard.tsx           # Fallback UI for missing data
+│   │   ├── WindCard.tsx             # Displays wind data with Beaufort scale
+│   │   ├── TempCard.tsx             # Displays temperature data
+│   │   ├── ForecastCard.tsx         # Displays forecast data
+│   │   ├── OceanCard.tsx            # Displays ocean data
+│   │   ├── SeaLevelCard.tsx         # Displays sea level data
+│   │   ├── LightningCard.tsx        # Displays lightning activity
+│   │   ├── PrecipitationCard.tsx    # Displays precipitation data
+│   │   ├── PressureCard.tsx         # Displays atmospheric pressure
+│   │   └── SunCard.tsx              # Displays sunrise/sunset times
 │   │
 │   ├── wrappers/                    # Simple wrapper components
 │   │   ├── WindDataWrapper.tsx      # Groups wind API sources

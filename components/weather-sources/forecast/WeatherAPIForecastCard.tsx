@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import ForecastCard from "@/components/ForecastCard";
-import NoDataCard from "@/components/NoDataCard";
+import ForecastCard from "@/components/cards/ForecastCard";
+import NoDataCard from "@/components/cards/NoDataCard";
 import { fetchWeatherAPIForecast } from "@/lib/weather-service";
 import { Coordinates } from "@/lib/types";
 

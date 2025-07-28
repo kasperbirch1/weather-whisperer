@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import SeaLevelCard from "@/components/SeaLevelCard";
-import NoDataCard from "@/components/NoDataCard";
+import SeaLevelCard from "@/components/cards/SeaLevelCard";
+import NoDataCard from "@/components/cards/NoDataCard";
 import { fetchDMISeaLevelData } from "@/lib/weather-service";
 import { Coordinates } from "@/lib/types";
 

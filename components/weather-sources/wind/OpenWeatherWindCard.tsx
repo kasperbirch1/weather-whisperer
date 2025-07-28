@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import WindCard from "@/components/WindCard";
-import NoDataCard from "@/components/NoDataCard";
+import WindCard from "@/components/cards/WindCard";
+import NoDataCard from "@/components/cards/NoDataCard";
 import { fetchOpenWeatherData } from "@/lib/weather-service";
 import { Coordinates } from "@/lib/types";
 
