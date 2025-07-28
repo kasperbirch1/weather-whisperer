@@ -22,7 +22,7 @@ async function DMISeaLevelContent({ coords }: DMISeaLevelCardProps) {
     // This returns various measurements including sea level data from available stations
     const response = await getMetObservations({
       bbox: bbox,
-      limit: 20 // Get multiple stations to find the best match
+      limit: 1 // Get multiple stations to find the best match
     });
 
     // Transform data to normalized format

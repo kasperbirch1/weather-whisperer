@@ -15,7 +15,7 @@ export function transformDMISeaLevel(
 
   return {
     apiName: "DMI Sea Level",
-    seaLevel: typeof props?.value === 'number' ? props.value : 0,
+    seaLevel: typeof props?.value === "number" ? props.value : 0,
     location: props?.stationId || "Unknown DMI Station",
     timestamp: props?.observed || new Date().toISOString()
   };
