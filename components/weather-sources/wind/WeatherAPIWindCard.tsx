@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import WindCard from "@/components/cards/WindCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { Coordinates } from "@/lib/types";
+import { realtimeWeather } from "@/generated/weatherapi";
+import { transformWeatherAPIWind } from "@/lib/transformers";
 
 interface WeatherAPIWindCardProps {
   coords: Coordinates;
@@ -11,72 +13,46 @@ async function WeatherAPIWindContent({ coords }: WeatherAPIWindCardProps) {
   const { lat, lon } = coords;
 
   try {
-    const apiKey = process.env.NEXT_PUBLIC_WEATHERAPI_KEY;
-    if (!apiKey) {
-      return (
-        <NoDataCard
-          icon="💨"
-          title="No WeatherAPI Data"
-          description="Missing API key"
-          badge={{ text: "Config Error", color: "red" }}
-        />
-      );
-    }
-
-    const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}&aqi=yes`;
-
-    const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      next: { revalidate: 300 }
+    const data = await realtimeWeather({
+      q: `${lat},${lon}`
     });
 
-    if (!response.ok) {
+    if (!data?.current) {
       return (
         <NoDataCard
           icon="💨"
-          title="No WeatherAPI Data"
-          description="Unable to fetch data from WeatherAPI.com"
-          badge={{ text: "API Offline", color: "red" }}
-        />
-      );
-    }
-
-    const weatherAPIData = await response.json();
-
-    if (!weatherAPIData || !weatherAPIData.current) {
-      return (
-        <NoDataCard
-          icon="💨"
-          title="No WeatherAPI Data"
+          title="No WeatherAPI.com Data"
           description="No wind data available from WeatherAPI.com"
           badge={{ text: "API Offline", color: "red" }}
         />
       );
     }
 
+    // Transform data to normalized format
+    const normalizedData = transformWeatherAPIWind(data);
+
     return (
       <WindCard
-        apiName="WeatherAPI.com"
-        windSpeed={(weatherAPIData.current?.wind_kph || 0) / 3.6}
-        windDirection={weatherAPIData.current?.wind_degree || 0}
-        location={weatherAPIData.location?.name}
-        timestamp={new Date(
-          weatherAPIData.current?.last_updated_epoch * 1000
-        ).toISOString()}
+        apiName={normalizedData.apiName}
+        windSpeed={normalizedData.windSpeed}
+        windDirection={normalizedData.windDirection}
+        windGust={normalizedData.windGust}
+        pressure={normalizedData.pressure}
+        location={normalizedData.location}
+        timestamp={normalizedData.timestamp}
       />
     );
-  } catch {}
-
-  return (
-    <NoDataCard
-      icon="💨"
-      title="No WeatherAPI Data"
-      description="Unable to fetch data from WeatherAPI.com"
-      badge={{ text: "API Offline", color: "red" }}
-    />
-  );
+  } catch (error) {
+    console.error("WeatherAPI Wind Error:", error);
+    return (
+      <NoDataCard
+        icon="💨"
+        title="No WeatherAPI.com Data"
+        description="Unable to fetch data from WeatherAPI.com API"
+        badge={{ text: "API Offline", color: "red" }}
+      />
+    );
+  }
 }
 
 function WeatherAPIWindSkeleton() {

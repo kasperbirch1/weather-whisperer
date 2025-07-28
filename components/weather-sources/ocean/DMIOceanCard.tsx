@@ -11,11 +11,11 @@ interface DMIOceanCardProps {
 async function DMIOceanContent({ coords }: DMIOceanCardProps) {
   const { lat, lon } = coords;
 
-  // Create bounding box around the coordinates
-  const margin = 1.0; // Larger area for ocean data
-  const bbox = `${lon - margin},${lat - margin},${lon + margin},${lat + margin}`;
-
   try {
+    // Create bounding box around the coordinates
+    const margin = 1.0; // Larger area for ocean data
+    const bbox = `${lon - margin},${lat - margin},${lon + margin},${lat + margin}`;
+
     const data = await getOceanObservations({
       bbox,
       limit: 10
@@ -62,12 +62,27 @@ async function DMIOceanContent({ coords }: DMIOceanCardProps) {
         timestamp={timestamp}
       />
     );
-  } catch {
+  } catch (error) {
+    console.error("DMI Ocean Error:", error);
+
+    // Handle specific error types
+    if (error instanceof Error && error.message.includes("429")) {
+      return (
+        <NoDataCard
+          icon="🌊"
+          title="DMI API Rate Limited"
+          description="DMI API is currently rate limited. Please try again later."
+          badge={{ text: "Rate Limited", color: "yellow" }}
+        />
+      );
+    }
+
     return (
       <NoDataCard
         icon="🌊"
         title="No Ocean Data Available"
         description="Unable to fetch ocean data from DMI API"
+        badge={{ text: "API Error", color: "red" }}
       />
     );
   }

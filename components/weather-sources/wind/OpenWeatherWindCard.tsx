@@ -3,6 +3,7 @@ import WindCard from "@/components/cards/WindCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getCurrentWeather } from "@/generated/openweather";
 import { Coordinates } from "@/lib/types";
+import { transformOpenWeatherWind } from "@/lib/transformers";
 
 interface OpenWeatherWindCardProps {
   coords: Coordinates;
@@ -12,23 +13,10 @@ async function OpenWeatherWindContent({ coords }: OpenWeatherWindCardProps) {
   const { lat, lon } = coords;
 
   try {
-    // Get API key from environment
-    const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
-    if (!apiKey) {
-      return (
-        <NoDataCard
-          icon="💨"
-          title="No OpenWeatherMap Data"
-          description="Missing API key"
-          badge={{ text: "Config Error", color: "red" }}
-        />
-      );
-    }
-
     const data = await getCurrentWeather({
       lat,
       lon,
-      appid: apiKey,
+      appid: "placeholder",
       units: "metric"
     });
 
@@ -36,40 +24,34 @@ async function OpenWeatherWindContent({ coords }: OpenWeatherWindCardProps) {
       return (
         <NoDataCard
           icon="💨"
-          title="No OpenWeatherMap Data"
+          title="No OpenWeatherMap Wind Data"
           description="No wind data available from OpenWeatherMap"
           badge={{ text: "API Offline", color: "red" }}
         />
       );
     }
 
-    // Extract wind data from the response
-    const windSpeed = data.wind?.speed || 0;
-    const windDirection = data.wind?.deg || 0;
-    const windGust = data.wind?.gust;
-    const pressure = data.main?.pressure;
-    const location = data.name;
-    const timestamp = data.dt
-      ? new Date(data.dt * 1000).toISOString()
-      : new Date().toISOString();
+    // Transform data to normalized format
+    const normalizedData = transformOpenWeatherWind(data);
 
     return (
       <WindCard
-        apiName="OpenWeatherMap"
-        windSpeed={windSpeed}
-        windDirection={windDirection}
-        windGust={windGust}
-        pressure={pressure}
-        location={location}
-        timestamp={timestamp}
+        apiName={normalizedData.apiName}
+        windSpeed={normalizedData.windSpeed}
+        windDirection={normalizedData.windDirection}
+        windGust={normalizedData.windGust}
+        pressure={normalizedData.pressure}
+        location={normalizedData.location}
+        timestamp={normalizedData.timestamp}
       />
     );
-  } catch {
+  } catch (error) {
+    console.error("OpenWeatherMap Wind Error:", error);
     return (
       <NoDataCard
         icon="💨"
-        title="No OpenWeatherMap Data"
-        description="Unable to fetch data from OpenWeatherMap API"
+        title="No OpenWeatherMap Wind Data"
+        description="Unable to fetch wind data from OpenWeatherMap API"
         badge={{ text: "API Offline", color: "red" }}
       />
     );

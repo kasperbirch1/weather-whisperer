@@ -46,8 +46,7 @@ async function DMISeaLevelContent({ coords }: DMISeaLevelCardProps) {
         />
       );
     }
-  } catch {
-  }
+  } catch {}
 
   return (
     <NoDataCard

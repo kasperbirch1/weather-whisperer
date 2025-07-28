@@ -3,6 +3,7 @@ import ForecastCard from "@/components/cards/ForecastCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getForecast } from "@/generated/openweather";
 import { Coordinates } from "@/lib/types";
+import { transformOpenWeatherForecast } from "@/lib/transformers";
 
 interface OpenWeatherForecastCardProps {
   coords: Coordinates;
@@ -14,23 +15,10 @@ async function OpenWeatherForecastContent({
   const { lat, lon } = coords;
 
   try {
-    // Get API key from environment
-    const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
-    if (!apiKey) {
-      return (
-        <NoDataCard
-          icon="🔮"
-          title="No OpenWeatherMap Forecast"
-          description="Missing API key"
-          badge={{ text: "Config Error", color: "red" }}
-        />
-      );
-    }
-
     const data = await getForecast({
       lat,
       lon,
-      appid: apiKey,
+      appid: "placeholder",
       units: "metric"
     });
 
@@ -45,50 +33,24 @@ async function OpenWeatherForecastContent({
       );
     }
 
-    // Process forecast data - get today and tomorrow's forecast
-    const today = data.list[0];
-    const tomorrow =
-      data.list.find(
-        (item, index) =>
-          index > 0 &&
-          item.dt &&
-          today.dt &&
-          new Date(item.dt * 1000).getDate() !==
-            new Date(today.dt * 1000).getDate()
-      ) || data.list[8]; // ~24h later if no date change found
-
-    const temperature = today.main?.temp || 0;
-    const description = today.weather?.[0]?.description || "";
-    const icon = today.weather?.[0]?.icon
-      ? `https://openweathermap.org/img/wn/${today.weather[0].icon}@2x.png`
-      : "";
-    const highTemp = today.main?.temp_max || 0;
-    const lowTemp = today.main?.temp_min || 0;
-    const precipitationChance = (today.pop || 0) * 100;
-    const tomorrowHighTemp = tomorrow?.main?.temp_max || 0;
-    const tomorrowLowTemp = tomorrow?.main?.temp_min || 0;
-    const tomorrowDescription = tomorrow?.weather?.[0]?.description || "";
-    const tomorrowPrecipChance = (tomorrow?.pop || 0) * 100;
-    const location = data.city?.name || "Unknown";
-    const timestamp = today.dt
-      ? new Date(today.dt * 1000).toISOString()
-      : new Date().toISOString();
+    // Transform data to normalized format
+    const normalizedData = transformOpenWeatherForecast(data);
 
     return (
       <ForecastCard
-        apiName="OpenWeatherMap"
-        temperature={temperature}
-        description={description}
-        icon={icon}
-        highTemp={highTemp}
-        lowTemp={lowTemp}
-        precipitationChance={precipitationChance}
-        tomorrowHighTemp={tomorrowHighTemp}
-        tomorrowLowTemp={tomorrowLowTemp}
-        tomorrowDescription={tomorrowDescription}
-        tomorrowPrecipChance={tomorrowPrecipChance}
-        location={location}
-        timestamp={timestamp}
+        apiName={normalizedData.apiName}
+        temperature={normalizedData.temperature}
+        description={normalizedData.description}
+        icon={normalizedData.icon}
+        highTemp={normalizedData.highTemp}
+        lowTemp={normalizedData.lowTemp}
+        precipitationChance={normalizedData.precipitationChance}
+        tomorrowHighTemp={normalizedData.tomorrowHighTemp}
+        tomorrowLowTemp={normalizedData.tomorrowLowTemp}
+        tomorrowDescription={normalizedData.tomorrowDescription}
+        tomorrowPrecipChance={normalizedData.tomorrowPrecipChance}
+        location={normalizedData.location}
+        timestamp={normalizedData.timestamp}
       />
     );
   } catch {

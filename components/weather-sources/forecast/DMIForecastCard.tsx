@@ -3,6 +3,7 @@ import ForecastCard from "@/components/cards/ForecastCard";
 import NoDataCard from "@/components/cards/NoDataCard";
 import { getForecastByPosition } from "@/generated/dmi";
 import { Coordinates } from "@/lib/types";
+import { transformDMIForecast } from "@/lib/transformers";
 
 interface DMIForecastCardProps {
   coords: Coordinates;
@@ -12,7 +13,6 @@ async function DMIForecastContent({ coords }: DMIForecastCardProps) {
   const { lat, lon } = coords;
 
   try {
-    // Get current forecast data from DKSS North Sea Baltic Sea using position query
     const data = await getForecastByPosition("dkss_nsbs", {
       coords: `POINT(${lon} ${lat})`,
       "parameter-name": "water-temperature,wind-u,wind-v,sea-mean-deviation"
@@ -28,80 +28,47 @@ async function DMIForecastContent({ coords }: DMIForecastCardProps) {
       );
     }
 
-    // Extract the current forecast values (first value in each time series)
-    const waterTemp = data.ranges["water-temperature"]?.values?.[0];
-    const windU = data.ranges["wind-u"]?.values?.[0];
-    const windV = data.ranges["wind-v"]?.values?.[0];
-    const seaLevel = data.ranges["sea-mean-deviation"]?.values?.[0];
+    // Transform data to normalized format
+    const normalizedData = transformDMIForecast(data, coords);
 
-    // Skip if all values are null (no data available for this location)
-    if (
-      waterTemp === null &&
-      windU === null &&
-      windV === null &&
-      seaLevel === null
-    ) {
+    return (
+      <ForecastCard
+        apiName={normalizedData.apiName}
+        temperature={normalizedData.temperature}
+        description={normalizedData.description}
+        icon={normalizedData.icon}
+        highTemp={normalizedData.highTemp}
+        lowTemp={normalizedData.lowTemp}
+        precipitationChance={normalizedData.precipitationChance}
+        tomorrowHighTemp={normalizedData.tomorrowHighTemp}
+        tomorrowLowTemp={normalizedData.tomorrowLowTemp}
+        tomorrowDescription={normalizedData.tomorrowDescription}
+        tomorrowPrecipChance={normalizedData.tomorrowPrecipChance}
+        location={normalizedData.location}
+        timestamp={normalizedData.timestamp}
+      />
+    );
+  } catch (error) {
+    console.error("DMI Forecast Error:", error);
+
+    // Handle specific error types
+    if (error instanceof Error && error.message.includes("429")) {
       return (
         <NoDataCard
-          icon="🌊"
-          title="No Marine Data Available"
-          description="No forecast data available for this marine location"
+          icon="🔮"
+          title="DMI API Rate Limited"
+          description="DMI API is currently rate limited. Please try again later."
+          badge={{ text: "Rate Limited", color: "yellow" }}
         />
       );
     }
 
-    // Calculate wind speed and direction from U/V components
-    const windSpeed =
-      windU && windV ? Math.sqrt(windU * windU + windV * windV) : undefined;
-
-    // Get the forecast time from the response using generated types
-    const forecastTime =
-      data.domain?.axes?.t?.values?.[0] || new Date().toISOString();
-
-    // Process and extract all data first
-    const temperature =
-      waterTemp !== null && waterTemp !== undefined
-        ? Math.round(waterTemp * 10) / 10
-        : undefined;
-    const highTemp = temperature; // Use water temp as current high
-    const lowTemp =
-      temperature !== undefined
-        ? Math.round((temperature - 1) * 10) / 10
-        : undefined;
-    const location = `Danish Waters (${lat.toFixed(3)}°N, ${lon.toFixed(3)}°E)`;
-
-    // Format description with available data
-    const windInfo = windSpeed
-      ? ` - Wind: ${Math.round(windSpeed * 10) / 10} m/s`
-      : "";
-    const seaLevelInfo =
-      seaLevel !== null && seaLevel !== undefined
-        ? ` - Sea level: ${seaLevel > 0 ? "+" : ""}${Math.round(seaLevel * 100) / 100}m`
-        : "";
-    const description = `Marine forecast for Danish waters${windInfo}${seaLevelInfo}`;
-
-    return (
-      <ForecastCard
-        apiName="DMI Forecast EDR"
-        temperature={temperature}
-        description={description}
-        highTemp={highTemp}
-        lowTemp={lowTemp}
-        precipitationChance={undefined} // Not available in marine forecast
-        tomorrowHighTemp={undefined} // Would need separate API call
-        tomorrowLowTemp={undefined}
-        tomorrowDescription="Extended marine forecast available"
-        tomorrowPrecipChance={undefined}
-        location={location}
-        timestamp={forecastTime}
-      />
-    );
-  } catch {
     return (
       <NoDataCard
         icon="🔮"
         title="No DMI Forecast Data"
         description="Unable to fetch forecast data from DMI API"
+        badge={{ text: "API Error", color: "red" }}
       />
     );
   }
